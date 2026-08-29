@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\ExamController;
 use App\Http\Controllers\Api\V1\FeeController;
 use App\Http\Controllers\Api\V1\HomeworkController;
 use App\Http\Controllers\Api\V1\LessonPlannerController;
+use App\Http\Controllers\Api\V1\MobileBridgeController;
 use App\Http\Controllers\Api\V1\QuestionBankController;
 use App\Http\Controllers\Api\V1\RagController;
 use App\Http\Controllers\Api\V1\StudentController;
@@ -155,5 +156,13 @@ Route::prefix('v1')->group(function () {
         Route::post('/rag/documents/upload', [RagController::class, 'upload']);
         Route::get('/rag/documents/{id}/chunks', [RagController::class, 'chunks']);
         Route::post('/rag/query', [RagController::class, 'query']);
+
+        // 14. Mobile-Ready Flutter REST API Bridge & Push Subsystem
+        Route::get('/mobile/bootstrap', [MobileBridgeController::class, 'bootstrap']);
+        Route::post('/mobile/devices/register', [MobileBridgeController::class, 'registerDevice']);
+        Route::get('/mobile/notifications', [MobileBridgeController::class, 'notifications']);
+        Route::post('/mobile/notifications/{id}/read', [MobileBridgeController::class, 'markNotificationRead']);
+        Route::get('/mobile/sync/delta', [MobileBridgeController::class, 'syncDelta']);
+        Route::get('/mobile/student-feed', [MobileBridgeController::class, 'studentFeed']);
     });
 });
