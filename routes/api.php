@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\V1\AcademicController;
 use App\Http\Controllers\Api\V1\AIController;
+use App\Http\Controllers\Api\V1\AiQuestionPaperController;
+use App\Http\Controllers\Api\V1\AiWorksheetController;
 use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BillingController;
@@ -125,5 +127,16 @@ Route::prefix('v1')->group(function () {
         Route::get('/ai/circulars', [CircularGeneratorController::class, 'index']);
         Route::post('/ai/circulars/generate', [CircularGeneratorController::class, 'generate']);
         Route::post('/ai/circulars/{id}/dispatch', [CircularGeneratorController::class, 'dispatch']);
+
+        // 11. AI Education Modules: Question Paper & Worksheet Generator
+        Route::get('/ai/question-papers', [AiQuestionPaperController::class, 'index']);
+        Route::post('/ai/question-papers/generate', [AiQuestionPaperController::class, 'generate']);
+        Route::get('/ai/question-papers/{id}', [AiQuestionPaperController::class, 'show']);
+        Route::post('/ai/question-papers/{id}/sync-question-bank', [AiQuestionPaperController::class, 'syncQuestionBank']);
+
+        Route::get('/ai/worksheets', [AiWorksheetController::class, 'index']);
+        Route::post('/ai/worksheets/generate', [AiWorksheetController::class, 'generate']);
+        Route::get('/ai/worksheets/{id}', [AiWorksheetController::class, 'show']);
+        Route::post('/ai/worksheets/{id}/publish', [AiWorksheetController::class, 'publish']);
     });
 });
