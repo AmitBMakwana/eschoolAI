@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Api\V1\AcademicController;
 use App\Http\Controllers\Api\V1\AIController;
+use App\Http\Controllers\Api\V1\AiEvaluationController;
 use App\Http\Controllers\Api\V1\AiQuestionPaperController;
+use App\Http\Controllers\Api\V1\AiStudentAnalyticsController;
 use App\Http\Controllers\Api\V1\AiWorksheetController;
 use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
@@ -138,5 +140,13 @@ Route::prefix('v1')->group(function () {
         Route::post('/ai/worksheets/generate', [AiWorksheetController::class, 'generate']);
         Route::get('/ai/worksheets/{id}', [AiWorksheetController::class, 'show']);
         Route::post('/ai/worksheets/{id}/publish', [AiWorksheetController::class, 'publish']);
+
+        // 12. AI Education Modules: Answer Sheet OCR Evaluation & Longitudinal Analytics
+        Route::get('/ai/evaluations', [AiEvaluationController::class, 'index']);
+        Route::post('/ai/evaluations/evaluate', [AiEvaluationController::class, 'evaluate']);
+        Route::get('/ai/evaluations/{id}', [AiEvaluationController::class, 'show']);
+        Route::post('/ai/evaluations/{id}/approve', [AiEvaluationController::class, 'approve']);
+
+        Route::get('/ai/student-analytics/{student_id}', [AiStudentAnalyticsController::class, 'show']);
     });
 });
