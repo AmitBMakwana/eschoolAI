@@ -142,17 +142,22 @@ class AcademicSeeder extends Seeder
             'room_number' => 'Lab 2',
         ]);
 
-        // 7. Sample Attendance
-        Attendance::updateOrCreate([
-            'student_id' => $studentAlex->id,
-            'date' => date('Y-m-d'),
-            'tenant_id' => $schoolA->id,
-        ], [
-            'class_id' => $class8->id,
-            'section_id' => $sectionA->id,
-            'status' => 'present',
-            'marked_by_user_id' => $teacherUser->id,
-        ]);
+        // 7. Sample Attendance (Check and create)
+        $existingAtt = Attendance::where('student_id', $studentAlex->id)
+            ->whereDate('date', date('Y-m-d'))
+            ->first();
+
+        if (!$existingAtt) {
+            Attendance::create([
+                'tenant_id' => $schoolA->id,
+                'student_id' => $studentAlex->id,
+                'class_id' => $class8->id,
+                'section_id' => $sectionA->id,
+                'date' => date('Y-m-d'),
+                'status' => 'present',
+                'marked_by_user_id' => $teacherUser->id,
+            ]);
+        }
 
         // 8. Homework
         Homework::updateOrCreate([

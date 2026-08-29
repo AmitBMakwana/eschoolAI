@@ -5,7 +5,9 @@ use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BillingController;
 use App\Http\Controllers\Api\V1\CommunicationController;
+use App\Http\Controllers\Api\V1\ExamController;
 use App\Http\Controllers\Api\V1\HomeworkController;
+use App\Http\Controllers\Api\V1\QuestionBankController;
 use App\Http\Controllers\Api\V1\StudentController;
 use App\Http\Controllers\Api\V1\TenantController;
 use App\Http\Middleware\SubscriptionFeatureMiddleware;
@@ -73,5 +75,20 @@ Route::prefix('v1')->group(function () {
         Route::post('/notices', [CommunicationController::class, 'storeNotice']);
         Route::get('/messages', [CommunicationController::class, 'messages']);
         Route::post('/messages/send', [CommunicationController::class, 'sendMessage']);
+
+        // 6. Examinations, Grading & Results
+        Route::get('/exams/terms', [ExamController::class, 'terms']);
+        Route::post('/exams/terms', [ExamController::class, 'storeTerm']);
+        Route::get('/exams', [ExamController::class, 'index']);
+        Route::post('/exams', [ExamController::class, 'store']);
+        Route::get('/exams/{id}/marks', [ExamController::class, 'marks']);
+        Route::post('/exams/{id}/marks/bulk', [ExamController::class, 'storeBulkMarks']);
+        Route::get('/exams/grading-scales', [ExamController::class, 'gradingScales']);
+        Route::get('/exams/report-card/{student_id}', [ExamController::class, 'reportCard']);
+
+        // 7. Question Bank & Exam Papers
+        Route::get('/question-bank', [QuestionBankController::class, 'index']);
+        Route::post('/question-bank', [QuestionBankController::class, 'store']);
+        Route::post('/exam-papers/generate', [QuestionBankController::class, 'generatePaper']);
     });
 });
