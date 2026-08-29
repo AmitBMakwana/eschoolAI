@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BillingController;
 use App\Http\Controllers\Api\V1\CommunicationController;
 use App\Http\Controllers\Api\V1\ExamController;
+use App\Http\Controllers\Api\V1\FeeController;
 use App\Http\Controllers\Api\V1\HomeworkController;
 use App\Http\Controllers\Api\V1\QuestionBankController;
 use App\Http\Controllers\Api\V1\StudentController;
@@ -90,5 +91,20 @@ Route::prefix('v1')->group(function () {
         Route::get('/question-bank', [QuestionBankController::class, 'index']);
         Route::post('/question-bank', [QuestionBankController::class, 'store']);
         Route::post('/exam-papers/generate', [QuestionBankController::class, 'generatePaper']);
+
+        // 8. Fees & Financial Management Engine
+        Route::get('/finance/fee-heads', [FeeController::class, 'feeHeads']);
+        Route::post('/finance/fee-heads', [FeeController::class, 'storeFeeHead']);
+        Route::get('/finance/structures', [FeeController::class, 'structures']);
+        Route::post('/finance/structures', [FeeController::class, 'storeStructure']);
+        Route::get('/finance/concessions', [FeeController::class, 'concessions']);
+        Route::post('/finance/concessions', [FeeController::class, 'storeConcession']);
+        Route::get('/finance/invoices', [FeeController::class, 'invoices']);
+        Route::post('/finance/invoices/generate-batch', [FeeController::class, 'generateBatchInvoices']);
+        Route::post('/finance/payments/collect', [FeeController::class, 'collectPayment']);
+        Route::get('/finance/defaulters', [FeeController::class, 'defaulters']);
+        Route::get('/finance/analytics', [FeeController::class, 'analytics']);
+        Route::get('/finance/expenses', [FeeController::class, 'expenses']);
+        Route::post('/finance/expenses', [FeeController::class, 'storeExpense']);
     });
 });

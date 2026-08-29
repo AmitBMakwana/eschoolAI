@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             TenantSeeder::class,
             AcademicSeeder::class,
             ExamSeeder::class,
+            FeeSeeder::class,
         ]);
     }
 }
