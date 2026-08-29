@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\V1\FeeController;
 use App\Http\Controllers\Api\V1\HomeworkController;
 use App\Http\Controllers\Api\V1\LessonPlannerController;
 use App\Http\Controllers\Api\V1\QuestionBankController;
+use App\Http\Controllers\Api\V1\RagController;
 use App\Http\Controllers\Api\V1\StudentController;
 use App\Http\Controllers\Api\V1\TenantController;
 use App\Http\Middleware\SubscriptionFeatureMiddleware;
@@ -148,5 +149,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/ai/evaluations/{id}/approve', [AiEvaluationController::class, 'approve']);
 
         Route::get('/ai/student-analytics/{student_id}', [AiStudentAnalyticsController::class, 'show']);
+
+        // 13. Tenant-Isolated RAG Engine & Vector Search
+        Route::get('/rag/documents', [RagController::class, 'index']);
+        Route::post('/rag/documents/upload', [RagController::class, 'upload']);
+        Route::get('/rag/documents/{id}/chunks', [RagController::class, 'chunks']);
+        Route::post('/rag/query', [RagController::class, 'query']);
     });
 });
