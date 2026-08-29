@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Tenancy\Traits\TenantScoped;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,8 +33,23 @@ class AiUsageLog extends Model
         'created_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'total_tokens',
+        'cost_usd',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getTotalTokensAttribute(): int
+    {
+        return (int) ($this->input_tokens + $this->output_tokens);
+    }
+
+    public function getCostUsdAttribute(): float
+    {
+        return (float) $this->computed_cost;
     }
 }

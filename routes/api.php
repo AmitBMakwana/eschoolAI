@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AcademicController;
+use App\Http\Controllers\Api\V1\AIController;
 use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BillingController;
@@ -47,6 +48,7 @@ Route::prefix('v1')->group(function () {
 
         // Super Admin Platform Metrics
         Route::get('/platform/billing/metrics', [BillingController::class, 'platformMetrics']);
+        Route::get('/platform/ai/global-metrics', [AIController::class, 'globalMetrics']);
 
         // 1. Classes & Sections & Subjects
         Route::get('/classes', [AcademicController::class, 'classes']);
@@ -106,5 +108,9 @@ Route::prefix('v1')->group(function () {
         Route::get('/finance/analytics', [FeeController::class, 'analytics']);
         Route::get('/finance/expenses', [FeeController::class, 'expenses']);
         Route::post('/finance/expenses', [FeeController::class, 'storeExpense']);
+
+        // 9. Provider-Abstracted AI Service Layer & Token Metering
+        Route::post('/ai/prompt-preview', [AIController::class, 'promptPreview']);
+        Route::get('/ai/usage-stats', [AIController::class, 'usageStats']);
     });
 });
