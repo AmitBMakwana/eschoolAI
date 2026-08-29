@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\LessonPlannerController;
 use App\Http\Controllers\Api\V1\MobileBridgeController;
 use App\Http\Controllers\Api\V1\QuestionBankController;
 use App\Http\Controllers\Api\V1\RagController;
+use App\Http\Controllers\Api\V1\RealtimeHubController;
 use App\Http\Controllers\Api\V1\StudentController;
 use App\Http\Controllers\Api\V1\TenantController;
 use App\Http\Middleware\SubscriptionFeatureMiddleware;
@@ -164,5 +165,9 @@ Route::prefix('v1')->group(function () {
         Route::post('/mobile/notifications/{id}/read', [MobileBridgeController::class, 'markNotificationRead']);
         Route::get('/mobile/sync/delta', [MobileBridgeController::class, 'syncDelta']);
         Route::get('/mobile/student-feed', [MobileBridgeController::class, 'studentFeed']);
+
+        // 15. Realtime WebSocket Event Architecture & Instant Notification Hub
+        Route::get('/realtime/channels', [RealtimeHubController::class, 'channels']);
+        Route::post('/realtime/emergency-alert', [RealtimeHubController::class, 'emergencyAlert']);
     });
 });

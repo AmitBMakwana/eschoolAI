@@ -114,6 +114,11 @@ class User extends Authenticatable
         return $this->role?->slug === Role::SCHOOL_ADMIN;
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->isSchoolAdmin() || $this->isSuperAdmin();
+    }
+
     public function isPrincipal(): bool
     {
         return $this->role?->slug === Role::PRINCIPAL;
