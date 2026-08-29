@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BillingController;
 use App\Http\Controllers\Api\V1\CircularGeneratorController;
 use App\Http\Controllers\Api\V1\CommunicationController;
+use App\Http\Controllers\Api\V1\ComplianceController;
 use App\Http\Controllers\Api\V1\ExamController;
 use App\Http\Controllers\Api\V1\FeeController;
 use App\Http\Controllers\Api\V1\HomeworkController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\Api\V1\MobileBridgeController;
 use App\Http\Controllers\Api\V1\QuestionBankController;
 use App\Http\Controllers\Api\V1\RagController;
 use App\Http\Controllers\Api\V1\RealtimeHubController;
+use App\Http\Controllers\Api\V1\SecurityAdminController;
 use App\Http\Controllers\Api\V1\StudentController;
 use App\Http\Controllers\Api\V1\TenantController;
 use App\Http\Middleware\SubscriptionFeatureMiddleware;
@@ -55,9 +57,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/billing/invoices', [BillingController::class, 'invoices']);
         Route::post('/billing/coupons/validate', [BillingController::class, 'validateCoupon']);
 
-        // Super Admin Platform Metrics
+        // Super Admin Platform Metrics & Controls
         Route::get('/platform/billing/metrics', [BillingController::class, 'platformMetrics']);
         Route::get('/platform/ai/global-metrics', [AIController::class, 'globalMetrics']);
+        Route::post('/platform/tenants/{id}/archive', [SecurityAdminController::class, 'archiveTenant']);
 
         // 1. Classes & Sections & Subjects
         Route::get('/classes', [AcademicController::class, 'classes']);
@@ -169,5 +172,10 @@ Route::prefix('v1')->group(function () {
         // 15. Realtime WebSocket Event Architecture & Instant Notification Hub
         Route::get('/realtime/channels', [RealtimeHubController::class, 'channels']);
         Route::post('/realtime/emergency-alert', [RealtimeHubController::class, 'emergencyAlert']);
+
+        // 16. Security, Audit Trail & Enterprise Compliance
+        Route::get('/security/audit-trail', [SecurityAdminController::class, 'auditTrail']);
+        Route::get('/compliance/export/{student_id}', [ComplianceController::class, 'export']);
+        Route::post('/compliance/anonymize/{student_id}', [ComplianceController::class, 'anonymize']);
     });
 });
