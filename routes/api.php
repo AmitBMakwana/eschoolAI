@@ -5,10 +5,12 @@ use App\Http\Controllers\Api\V1\AIController;
 use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BillingController;
+use App\Http\Controllers\Api\V1\CircularGeneratorController;
 use App\Http\Controllers\Api\V1\CommunicationController;
 use App\Http\Controllers\Api\V1\ExamController;
 use App\Http\Controllers\Api\V1\FeeController;
 use App\Http\Controllers\Api\V1\HomeworkController;
+use App\Http\Controllers\Api\V1\LessonPlannerController;
 use App\Http\Controllers\Api\V1\QuestionBankController;
 use App\Http\Controllers\Api\V1\StudentController;
 use App\Http\Controllers\Api\V1\TenantController;
@@ -112,5 +114,16 @@ Route::prefix('v1')->group(function () {
         // 9. Provider-Abstracted AI Service Layer & Token Metering
         Route::post('/ai/prompt-preview', [AIController::class, 'promptPreview']);
         Route::get('/ai/usage-stats', [AIController::class, 'usageStats']);
+
+        // 10. AI Education Modules: Lesson Planner & Circular Generator
+        Route::get('/ai/lesson-plans', [LessonPlannerController::class, 'index']);
+        Route::post('/ai/lesson-plans/generate', [LessonPlannerController::class, 'generate']);
+        Route::get('/ai/lesson-plans/{id}', [LessonPlannerController::class, 'show']);
+        Route::put('/ai/lesson-plans/{id}', [LessonPlannerController::class, 'update']);
+        Route::post('/ai/lesson-plans/{id}/publish', [LessonPlannerController::class, 'publish']);
+
+        Route::get('/ai/circulars', [CircularGeneratorController::class, 'index']);
+        Route::post('/ai/circulars/generate', [CircularGeneratorController::class, 'generate']);
+        Route::post('/ai/circulars/{id}/dispatch', [CircularGeneratorController::class, 'dispatch']);
     });
 });
