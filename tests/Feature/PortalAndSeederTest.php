@@ -17,7 +17,7 @@ class PortalAndSeederTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('AI SchoolOS');
-        $response->assertSee('Platform Super Admin');
+        $response->assertSee('Fees');
     }
 
     public function test_demo_school_generator_artisan_command(): void

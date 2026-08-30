@@ -3,156 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI SchoolOS — Modern SaaS Multi-Tenant School Management Platform</title>
+    <title>AI SchoolOS — Multi-Tenant SaaS School Management & AI Education Platform</title>
     <link rel="stylesheet" href="/css/schoolos-design-system.css">
 </head>
 <body>
 
     <div class="app-container">
-        <!-- Sidebar -->
+        <!-- Sidebar Navigation (All 16 Modules Matching Reference) -->
         <aside class="app-sidebar">
             <div class="sidebar-header">
                 <div class="brand-badge">OS</div>
                 <div>
-                    <div style="font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; line-height: 1.1;">AI SchoolOS</div>
+                    <div style="font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; line-height: 1.1; color: var(--text-main);">AI SchoolOS</div>
                     <div style="font-size: 0.6875rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">Enterprise SaaS</div>
                 </div>
             </div>
 
-            <!-- Nav Groups -->
             <div class="nav-section">
-                <div class="nav-section-title">Main</div>
-                <div class="nav-item active" data-tab="dashboard" onclick="navigate('dashboard')">
-                    <span class="icon">📊</span>
+                <div class="nav-section-title">Navigation</div>
+                <div class="nav-item" data-tab="dashboard" onclick="navigate('dashboard')">
+                    <span class="icon">⊞</span>
                     <span>Dashboard</span>
                 </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title">Academic Operations</div>
                 <div class="nav-item" data-tab="students" onclick="navigate('students')">
                     <span class="icon">👥</span>
-                    <span>Student Directory</span>
+                    <span>Students</span>
+                </div>
+                <div class="nav-item" data-tab="teachers" onclick="navigate('teachers')">
+                    <span class="icon">🎓</span>
+                    <span>Teachers</span>
+                </div>
+                <div class="nav-item" data-tab="classes" onclick="navigate('classes')">
+                    <span class="icon">🏫</span>
+                    <span>Classes</span>
                 </div>
                 <div class="nav-item" data-tab="attendance" onclick="navigate('attendance')">
                     <span class="icon">📅</span>
-                    <span>Daily Attendance</span>
+                    <span>Attendance</span>
                 </div>
-                <div class="nav-item" data-tab="timetable" onclick="navigate('timetable')">
-                    <span class="icon">⏰</span>
-                    <span>Weekly Timetable</span>
+                <div class="nav-item active" data-tab="fees" onclick="navigate('fees')">
+                    <span class="icon">💲</span>
+                    <span>Fees</span>
                 </div>
                 <div class="nav-item" data-tab="homework" onclick="navigate('homework')">
                     <span class="icon">📖</span>
-                    <span>Homework & Tasks</span>
+                    <span>Homework</span>
                 </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title">Examination & Grading</div>
-                <div class="nav-item" data-tab="exams" onclick="navigate('exams')">
-                    <span class="icon">📋</span>
-                    <span>Exams & Report Cards</span>
+                <div class="nav-item" data-tab="timetable" onclick="navigate('timetable')">
+                    <span class="icon">⏰</span>
+                    <span>Timetable</span>
                 </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title">Finance & Billing</div>
-                <div class="nav-item" data-tab="fees" onclick="navigate('fees')">
-                    <span class="icon">💳</span>
-                    <span>Fee Management</span>
-                </div>
-                <div class="nav-item" data-tab="billing" onclick="navigate('billing')">
-                    <span class="icon">⭐</span>
-                    <span>SaaS Subscription</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title">✨ AI Pedagogical Suite</div>
-                <div class="nav-item" data-tab="ai_lesson_planner" onclick="navigate('ai_lesson_planner')">
-                    <span class="icon">🎓</span>
-                    <span>AI Lesson Planner</span>
-                </div>
-                <div class="nav-item" data-tab="ai_questions" onclick="navigate('ai_questions')">
-                    <span class="icon">📝</span>
-                    <span>Question Papers</span>
-                </div>
-                <div class="nav-item" data-tab="ai_worksheets" onclick="navigate('ai_worksheets')">
-                    <span class="icon">📄</span>
-                    <span>AI Worksheets</span>
-                </div>
-                <div class="nav-item" data-tab="ai_evaluator" onclick="navigate('ai_evaluator')">
-                    <span class="icon">🔍</span>
-                    <span>OCR Answer Evaluator</span>
-                </div>
-                <div class="nav-item" data-tab="ai_analytics" onclick="navigate('ai_analytics')">
-                    <span class="icon">📈</span>
-                    <span>Student Analytics</span>
-                </div>
-                <div class="nav-item" data-tab="rag_studio" onclick="navigate('rag_studio')">
-                    <span class="icon">🧠</span>
-                    <span>Curriculum RAG</span>
-                </div>
-            </div>
-
-            <div class="nav-section" style="margin-top: auto; border-top: 1px solid var(--border-subtle); padding-top: 0.5rem;">
-                <div class="nav-section-title">Administration</div>
                 <div class="nav-item" data-tab="notices" onclick="navigate('notices')">
-                    <span class="icon">🔔</span>
+                    <span class="icon">📢</span>
                     <span>Notice Board</span>
                 </div>
-                <div class="nav-item" data-tab="audit_logs" onclick="navigate('audit_logs')">
+                <div class="nav-item" data-tab="communication" onclick="navigate('communication')">
+                    <span class="icon">💬</span>
+                    <span>Communication</span>
+                </div>
+                <div class="nav-item" data-tab="reports" onclick="navigate('reports')">
+                    <span class="icon">📊</span>
+                    <span>Reports</span>
+                </div>
+                <div class="nav-item" data-tab="ai_assistant" onclick="navigate('ai_assistant')">
+                    <span class="icon">✨</span>
+                    <span>AI Assistant</span>
+                </div>
+                <div class="nav-item" data-tab="roles_permissions" onclick="navigate('roles_permissions')">
                     <span class="icon">🛡️</span>
-                    <span>Security Audit Trail</span>
+                    <span>Roles & Permissions</span>
                 </div>
-                <div class="nav-item" data-tab="backups" onclick="navigate('backups')">
-                    <span class="icon">💾</span>
-                    <span>Database Backups</span>
+                <div class="nav-item" data-tab="subject_class" onclick="navigate('subject_class')">
+                    <span class="icon">🔀</span>
+                    <span>Subject & Class</span>
                 </div>
-                <a href="/docs" class="nav-item" style="color: var(--text-muted);">
-                    <span class="icon">📘</span>
-                    <span>API Reference (/docs)</span>
-                </a>
+                <div class="nav-item" data-tab="tests_exams" onclick="navigate('tests_exams')">
+                    <span class="icon">📝</span>
+                    <span>Tests & Exams</span>
+                </div>
+                <div class="nav-item" data-tab="study_materials" onclick="navigate('study_materials')">
+                    <span class="icon">📚</span>
+                    <span>Study Materials</span>
+                </div>
             </div>
         </aside>
 
-        <!-- App Main Content Area -->
+        <!-- Main Workspace -->
         <div class="app-main">
-            <!-- Header -->
+            <!-- Top App Header -->
             <header class="app-header">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div class="tenant-selector-pill">
-                        <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--success);"></span>
-                        <span id="tenant-name-label">Greenfield International Academy</span>
-                    </div>
+                <!-- Search Bar -->
+                <div class="header-search">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search students, classes, faculty..." />
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 1.25rem;">
+                <!-- Right Actions -->
+                <div style="display: flex; align-items: center; gap: 1rem;">
                     <!-- Theme Toggle -->
-                    <button id="theme-toggle-btn" class="btn btn-secondary btn-sm" onclick="toggleTheme()" title="Toggle Light / Dark Theme" style="padding: 0.4rem 0.6rem; font-size: 1rem;">
+                    <button id="theme-btn" class="btn btn-secondary btn-sm" onclick="toggleTheme()" title="Toggle Theme" style="padding: 0.35rem 0.6rem; font-size: 0.95rem;">
                         🌙
                     </button>
 
-                    <!-- Fast Role Switcher -->
-                    <div style="display: flex; align-items: center; gap: 0.4rem;">
-                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Role View:</span>
-                        <select class="role-switcher-dropdown" onchange="switchRole(this.value)">
-                            <option value="school_admin">🏫 School Admin / Principal</option>
-                            <option value="teacher">👩‍🏫 Faculty / Teacher</option>
-                            <option value="student">🎓 Student / Parent</option>
-                            <option value="super_admin">👑 Platform Super Admin</option>
-                        </select>
+                    <!-- Notifications Bell with Red Indicator -->
+                    <div style="position: relative; cursor: pointer;" onclick="navigate('notices')">
+                        <span style="font-size: 1.25rem;">🔔</span>
+                        <span style="position: absolute; top: 0; right: 0; width: 7px; height: 7px; background: #EF4444; border-radius: 50%;"></span>
                     </div>
 
-                    <div style="height: 24px; width: 1px; background: var(--border);"></div>
-
-                    <!-- User Profile -->
-                    <div class="user-profile-widget">
-                        <div class="user-avatar">SJ</div>
-                        <div>
-                            <div id="user-name-label" style="font-weight: 700; font-size: 0.8125rem; line-height: 1.2;">Dr. Sarah Jenkins</div>
-                            <div id="user-role-label" style="font-size: 0.6875rem; color: var(--text-muted);">Principal / Admin</div>
+                    <!-- User Profile Pill -->
+                    <div class="user-profile-pill">
+                        <div class="user-avatar-circle">SA</div>
+                        <div style="font-size: 0.8125rem; font-weight: 700; color: var(--text-main); padding-right: 0.4rem;">
+                            Alflah (Principal)
                         </div>
                     </div>
                 </div>
@@ -160,7 +123,7 @@
 
             <!-- Dynamic Viewport -->
             <main class="app-viewport" id="viewport">
-                <!-- Rendered dynamically by schoolos-app.js -->
+                <!-- Injected via schoolos-app.js -->
             </main>
         </div>
     </div>

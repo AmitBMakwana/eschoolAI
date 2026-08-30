@@ -73,13 +73,20 @@ Route::prefix('v1')->group(function () {
         Route::get('/platform/ai/global-metrics', [AIController::class, 'globalMetrics']);
         Route::post('/platform/tenants/{id}/archive', [SecurityAdminController::class, 'archiveTenant']);
 
-        // 1. Classes & Sections & Subjects
+        // 1. Classes & Sections & Subjects & Teachers
         Route::get('/classes', [AcademicController::class, 'classes']);
         Route::post('/classes', [AcademicController::class, 'storeClass']);
+        Route::get('/sections', [AcademicController::class, 'sections']);
+        Route::post('/sections', [AcademicController::class, 'storeSection']);
+        Route::get('/teachers', [AcademicController::class, 'teachers']);
+        Route::post('/teachers', [AcademicController::class, 'storeTeacher']);
         Route::get('/subjects', [AcademicController::class, 'subjects']);
         Route::post('/subjects', [AcademicController::class, 'storeSubject']);
+        Route::get('/teacher-allocations', [AcademicController::class, 'teacherAllocations']);
+        Route::post('/teacher-allocations', [AcademicController::class, 'storeTeacherAllocation']);
         Route::get('/timetables', [AcademicController::class, 'timetables']);
         Route::post('/timetables', [AcademicController::class, 'storeTimetable']);
+        Route::get('/roles-permissions', [AcademicController::class, 'rolesAndPermissions']);
 
         // 2. Students & Enrollment
         Route::get('/students', [StudentController::class, 'index']);

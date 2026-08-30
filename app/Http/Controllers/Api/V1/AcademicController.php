@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\SchoolClass;
 use App\Models\Section;
 use App\Models\Subject;
+use App\Models\TeacherAllocation;
 use App\Models\Timetable;
+use App\Models\User;
 use App\Tenancy\TenantContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AcademicController extends Controller
@@ -30,7 +35,7 @@ class AcademicController extends Controller
     }
 
     /**
-     * Create a new class (Admin / Principal only).
+     * Create a new class.
      */
     public function storeClass(Request $request): JsonResponse
     {
@@ -43,7 +48,7 @@ class AcademicController extends Controller
             'name' => 'required|string|max:100',
             'code' => 'nullable|string|max:20',
             'order_index' => 'nullable|integer',
-            'sections' => 'nullable|array', // e.g. ["A", "B"]
+            'sections' => 'nullable|array',
         ]);
 
         if ($validator->fails()) {
@@ -56,7 +61,6 @@ class AcademicController extends Controller
             'order_index' => $request->input('order_index', 0),
         ]);
 
-        // Auto-create sections if provided
         $sectionNames = $request->input('sections', ['A']);
         foreach ($sectionNames as $secName) {
             Section::create([
@@ -70,6 +74,104 @@ class AcademicController extends Controller
             'success' => true,
             'message' => 'Class created successfully.',
             'data' => $schoolClass->load('sections'),
+        ], 201);
+    }
+
+    /**
+     * List sections.
+     */
+    public function sections(Request $request): JsonResponse
+    {
+        $query = Section::with(['schoolClass', 'classTeacher']);
+        if ($request->has('class_id')) {
+            $query->where('class_id', $request->input('class_id'));
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $query->get(),
+        ]);
+    }
+
+    /**
+     * Create section.
+     */
+    public function storeSection(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'class_id' => 'required|exists:school_classes,id',
+            'name' => 'required|string|max:50',
+            'capacity' => 'nullable|integer|min:1',
+            'class_teacher_id' => 'nullable|exists:users,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        $section = Section::create($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Section created successfully.',
+            'data' => $section->load(['schoolClass', 'classTeacher']),
+        ], 201);
+    }
+
+    /**
+     * List teachers in tenant.
+     */
+    public function teachers(Request $request): JsonResponse
+    {
+        $teacherRole = Role::where('slug', Role::TEACHER)->first();
+        $teachers = User::with('role')
+            ->where('tenant_id', TenantContext::get()?->id)
+            ->where(function ($q) use ($teacherRole) {
+                if ($teacherRole) {
+                    $q->where('role_id', $teacherRole->id);
+                }
+            })
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $teachers,
+        ]);
+    }
+
+    /**
+     * Create / Invite a Teacher.
+     */
+    public function storeTeacher(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:150',
+            'email' => 'required|email|max:150',
+            'phone' => 'nullable|string|max:30',
+            'password' => 'nullable|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        $teacherRole = Role::where('slug', Role::TEACHER)->first();
+        $tenantId = TenantContext::get()?->id;
+
+        $user = User::create([
+            'tenant_id' => $tenantId,
+            'role_id' => $teacherRole?->id,
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'password' => Hash::make($request->input('password', 'password')),
+            'status' => 'active',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Teacher profile created successfully.',
+            'data' => $user->load('role'),
         ], 201);
     }
 
@@ -119,6 +221,52 @@ class AcademicController extends Controller
             'success' => true,
             'message' => 'Subject created successfully.',
             'data' => $subject,
+        ], 201);
+    }
+
+    /**
+     * List Teacher Subject Allocations.
+     */
+    public function teacherAllocations(Request $request): JsonResponse
+    {
+        $allocations = TeacherAllocation::with(['teacher', 'schoolClass', 'section', 'subject'])->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $allocations,
+        ]);
+    }
+
+    /**
+     * Store Teacher Subject Allocation.
+     */
+    public function storeTeacherAllocation(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'teacher_user_id' => 'required|exists:users,id',
+            'class_id' => 'required|exists:school_classes,id',
+            'section_id' => 'nullable|exists:sections,id',
+            'subject_id' => 'required|exists:subjects,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        $allocation = TeacherAllocation::updateOrCreate(
+            [
+                'teacher_user_id' => $request->input('teacher_user_id'),
+                'class_id' => $request->input('class_id'),
+                'section_id' => $request->input('section_id'),
+                'subject_id' => $request->input('subject_id'),
+            ],
+            $request->all()
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Subject assigned to teacher successfully.',
+            'data' => $allocation->load(['teacher', 'schoolClass', 'section', 'subject']),
         ], 201);
     }
 
@@ -176,5 +324,22 @@ class AcademicController extends Controller
             'message' => 'Timetable period scheduled successfully.',
             'data' => $slot->load(['subject', 'teacher']),
         ], 201);
+    }
+
+    /**
+     * List Roles and Permissions Matrix.
+     */
+    public function rolesAndPermissions(Request $request): JsonResponse
+    {
+        $roles = Role::with('permissions')->get();
+        $permissions = Permission::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'roles' => $roles,
+                'permissions' => $permissions,
+            ],
+        ]);
     }
 }
