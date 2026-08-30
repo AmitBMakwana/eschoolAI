@@ -1,7 +1,7 @@
 /**
  * AI SchoolOS — Master SaaS Client Application
- * Complete 16-Module Suite Matching EduFlow Reference
- * Full End-to-End REST API Integration, Authentication (Login/Logout), & Dual Theme
+ * Complete 16-Module Suite Matching EduFlow / MERN Stack Specification
+ * Full End-to-End REST API Integration, Sub-Tabs, Live Modals, AI Assistant & Dual Theme
  */
 
 const API_BASE = '/api/v1';
@@ -9,6 +9,9 @@ const API_BASE = '/api/v1';
 const SchoolOS = {
     theme: localStorage.getItem('schoolos_theme') || 'light',
     activeTab: 'fees', // Default to Fees matching user's reference screenshot
+    feeSubTab: 'concessions',
+    reportSubTab: 'daybook',
+    aiSubTab: 'chat',
     token: localStorage.getItem('schoolos_token') || '',
     user: JSON.parse(localStorage.getItem('schoolos_user')) || {
         id: 2,
@@ -49,11 +52,10 @@ function toggleUserMenu(e) {
     if (menu) menu.classList.toggle('show');
 }
 
-// Close dropdown on outside click
 document.addEventListener('click', (e) => {
     const menu = document.getElementById('user-dropdown-menu');
     const pill = document.querySelector('.user-profile-pill');
-    if (menu && !menu.contains(e.target) && !pill.contains(e.target)) {
+    if (menu && !menu.contains(e.target) && !pill?.contains(e.target)) {
         menu.classList.remove('show');
     }
 });
@@ -381,7 +383,7 @@ async function renderDashboard(container) {
 }
 
 // -------------------------------------------------------------
-// 6. FEES & CONCESSIONS MODULE (Matching Screenshot)
+// 6. FEES & FINANCIAL MANAGEMENT (Exact Reference Screenshot Match)
 // -------------------------------------------------------------
 async function renderFees(container) {
     const mockConcessions = [
@@ -925,7 +927,7 @@ function renderCommunication(container) {
 }
 
 // -------------------------------------------------------------
-// 11. REPORTS MODULE
+// 11. REPORTS MODULE (With Day Book & Financial Analytics)
 // -------------------------------------------------------------
 function renderReports(container) {
     container.innerHTML = `
@@ -1160,7 +1162,6 @@ function triggerEmergencyModal() {
 // Auto-Login / Verify Session on Boot
 async function initAuth() {
     if (!SchoolOS.token) {
-        // Automatically perform demo login to establish token
         const res = await api('/auth/login', 'POST', {
             email: 'admin@greenfield.edu',
             password: 'password123'
