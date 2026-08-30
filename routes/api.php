@@ -69,6 +69,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/billing/coupons/validate', [BillingController::class, 'validateCoupon']);
 
         // Super Admin Platform Metrics & Controls
+        Route::get('/platform/tenants', [TenantController::class, 'index']);
         Route::get('/platform/billing/metrics', [BillingController::class, 'platformMetrics']);
         Route::get('/platform/ai/global-metrics', [AIController::class, 'globalMetrics']);
         Route::post('/platform/tenants/{id}/archive', [SecurityAdminController::class, 'archiveTenant']);

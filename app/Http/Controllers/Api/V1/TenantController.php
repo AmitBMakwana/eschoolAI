@@ -17,6 +17,41 @@ class TenantController extends Controller
     ) {}
 
     /**
+     * Get all school tenants (Super Admin only).
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        if (!$user || !$user->isSuperAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized: Super Admin access required.',
+            ], 403);
+        }
+
+        $tenants = TenantContext::withoutScope(function () {
+            return Tenant::with(['plan', 'subscription.plan'])
+                ->withCount(['users as students_count' => function ($q) {
+                    $q->whereHas('role', function ($rq) {
+                        $rq->where('slug', 'student');
+                    });
+                }])
+                ->withCount(['users as teachers_count' => function ($q) {
+                    $q->whereHas('role', function ($rq) {
+                        $rq->where('slug', 'teacher');
+                    });
+                }])
+                ->orderBy('created_at', 'desc')
+                ->get();
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $tenants,
+        ]);
+    }
+
+    /**
      * Get current tenant information.
      */
     public function current(Request $request): JsonResponse
