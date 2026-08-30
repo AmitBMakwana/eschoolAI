@@ -179,9 +179,21 @@ function copyTextToClipboard(text, msg = 'Copied generated output to clipboard!'
 function navigate(tab) {
     SchoolOS.activeTab = tab;
 
+    // Update main nav items
     document.querySelectorAll('.nav-item').forEach(el => {
         if (el.dataset.tab === tab) el.classList.add('active');
         else el.classList.remove('active');
+    });
+
+    // Update nested AI sub-items
+    document.querySelectorAll('.nav-subitem').forEach(el => {
+        if (el.dataset.tab === tab) {
+            el.classList.add('active');
+            const parentMenu = document.getElementById('menu-ai-main');
+            if (parentMenu) parentMenu.classList.add('active');
+        } else {
+            el.classList.remove('active');
+        }
     });
 
     const viewport = document.getElementById('viewport');
@@ -202,15 +214,15 @@ function navigate(tab) {
             case 'notices': renderNotices(viewport); break;
             case 'communication': renderCommunication(viewport); break;
             case 'reports': renderReports(viewport); break;
-            case 'ai_assistant': SchoolOS.aiTab = 'chat'; renderAiAssistant(viewport); break;
-            case 'ai_chat': SchoolOS.aiTab = 'chat'; renderAiAssistant(viewport); break;
-            case 'ai_lesson': SchoolOS.aiTab = 'lesson'; renderAiAssistant(viewport); break;
-            case 'ai_question_paper': SchoolOS.aiTab = 'question_paper'; renderAiAssistant(viewport); break;
-            case 'ai_worksheet': SchoolOS.aiTab = 'worksheet'; renderAiAssistant(viewport); break;
-            case 'ai_evaluation': SchoolOS.aiTab = 'evaluation'; renderAiAssistant(viewport); break;
-            case 'ai_circular': SchoolOS.aiTab = 'circular'; renderAiAssistant(viewport); break;
-            case 'ai_rag': SchoolOS.aiTab = 'rag'; renderAiAssistant(viewport); break;
-            case 'ai_history': SchoolOS.aiTab = 'history'; renderAiAssistant(viewport); break;
+            case 'ai_assistant': renderAiOverview(viewport); break;
+            case 'ai_chat': renderAiIndividualModule(viewport, 'chat'); break;
+            case 'ai_lesson': renderAiIndividualModule(viewport, 'lesson'); break;
+            case 'ai_question_paper': renderAiIndividualModule(viewport, 'question_paper'); break;
+            case 'ai_worksheet': renderAiIndividualModule(viewport, 'worksheet'); break;
+            case 'ai_evaluation': renderAiIndividualModule(viewport, 'evaluation'); break;
+            case 'ai_circular': renderAiIndividualModule(viewport, 'circular'); break;
+            case 'ai_rag': renderAiIndividualModule(viewport, 'rag'); break;
+            case 'ai_history': renderAiIndividualModule(viewport, 'history'); break;
             case 'roles_permissions': renderRolesPermissions(viewport); break;
             case 'subject_class': renderSubjectClass(viewport); break;
             case 'tests_exams': renderTestsExams(viewport); break;
@@ -1215,7 +1227,176 @@ function renderReports(container) {
 // -------------------------------------------------------------
 // 12. MASTER ENTERPRISE AI EDUCATION & INTELLIGENCE STUDIO
 // -------------------------------------------------------------
-async function renderAiAssistant(container) {
+// -------------------------------------------------------------
+// 12. MASTER ENTERPRISE AI EDUCATION & INTELLIGENCE STUDIO
+// -------------------------------------------------------------
+async function renderAiOverview(container) {
+    container.innerHTML = `
+        <!-- Hero AI Intelligence Banner -->
+        <div class="ai-studio-hero">
+            <div>
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.35rem;">
+                    <span style="font-size: 1.4rem;">✨</span>
+                    <h1 style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: var(--text-main);">
+                        eschoolAI Pedagogical & Intelligence Studio
+                    </h1>
+                    <span class="ai-card-badge ai-badge-bloom">Active Provider: GPT-4o / Claude 3.5 / Gemini / Ollama</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.8125rem; margin: 0;">
+                    Unified multi-tenant AI service layer. Select any individual AI module below to configure, synthesize, and view historical archives.
+                </p>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);">Monthly AI Quota: <strong>64,820 / 500,000 Tokens (13%)</strong></div>
+                <div class="ai-quota-bar">
+                    <div class="ai-quota-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8 Individual AI Module Cards Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+            <!-- Card 1: Chat Assistant -->
+            <div class="card-panel" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #3B82F6;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="font-size: 1.75rem;">💬</span>
+                        <span class="ai-card-badge ai-badge-bloom">Live Database Query</span>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0 0 0.4rem 0;">Natural Query Chat Assistant</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1rem 0;">
+                        Ask live database questions in plain English. Analyze student roll numbers, faculty schedules, and fee collections.
+                    </p>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="navigate('ai_chat')" style="width: 100%;">
+                    Open Chat Assistant ➔
+                </button>
+            </div>
+
+            <!-- Card 2: Lesson Planner -->
+            <div class="card-panel" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #FF5B37;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="font-size: 1.75rem;">🎓</span>
+                        <span class="ai-card-badge ai-badge-bloom">Bloom's Taxonomy</span>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0 0 0.4rem 0;">Bloom's Lesson Planner</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1rem 0;">
+                        Synthesize 4-phase pedagogical curriculum plans with learning objectives, time allocations, and Word .doc export.
+                    </p>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="navigate('ai_lesson')" style="width: 100%;">
+                    Open Lesson Planner ➔
+                </button>
+            </div>
+
+            <!-- Card 3: Question Paper Synthesizer -->
+            <div class="card-panel" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #10B981;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="font-size: 1.75rem;">📝</span>
+                        <span class="ai-card-badge ai-badge-exam">Exam Blueprint Matrix</span>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0 0 0.4rem 0;">Question Paper Synthesizer</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1rem 0;">
+                        Generate balanced exam papers with Section A (Recall), Section B (Reasoning), and Section C (Case study) distributions.
+                    </p>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="navigate('ai_question_paper')" style="width: 100%;">
+                    Open Question Paper ➔
+                </button>
+            </div>
+
+            <!-- Card 4: Worksheet Studio -->
+            <div class="card-panel" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #8B5CF6;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="font-size: 1.75rem;">📄</span>
+                        <span class="ai-card-badge ai-badge-bloom">Adaptive 3-Tier</span>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0 0 0.4rem 0;">Worksheet Studio</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1rem 0;">
+                        Create differentiated practice worksheets with Foundation, Standard, and Challenge tiers + teacher solution rubrics.
+                    </p>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="navigate('ai_worksheet')" style="width: 100%;">
+                    Open Worksheet Studio ➔
+                </button>
+            </div>
+
+            <!-- Card 5: Answer OCR Evaluator -->
+            <div class="card-panel" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #F59E0B;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="font-size: 1.75rem;">🔍</span>
+                        <span class="ai-card-badge ai-badge-rubric">OCR + AI Scoring</span>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0 0 0.4rem 0;">Answer Sheet OCR Evaluator</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1rem 0;">
+                        Scan handwritten student submissions, evaluate conceptual accuracy, calculate marks, and approve into Gradebook.
+                    </p>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="navigate('ai_evaluation')" style="width: 100%;">
+                    Open OCR Evaluator ➔
+                </button>
+            </div>
+
+            <!-- Card 6: Circular Generator -->
+            <div class="card-panel" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #EC4899;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="font-size: 1.75rem;">📢</span>
+                        <span class="ai-card-badge ai-badge-circular">Formal Letterhead</span>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0 0 0.4rem 0;">Circular Generator</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1rem 0;">
+                        Draft institutional campus announcements with formal school headers, audience targeting, and 1-click notice dispatch.
+                    </p>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="navigate('ai_circular')" style="width: 100%;">
+                    Open Circular Generator ➔
+                </button>
+            </div>
+
+            <!-- Card 7: Vector RAG Studio -->
+            <div class="card-panel" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #06B6D4;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="font-size: 1.75rem;">📚</span>
+                        <span class="ai-card-badge ai-badge-rag">Qdrant Vector DB</span>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0 0 0.4rem 0;">Vector RAG Studio</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1rem 0;">
+                        Semantic vector search over proprietary school textbooks with strict tenant isolation and cosine similarity scores.
+                    </p>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="navigate('ai_rag')" style="width: 100%;">
+                    Open Vector RAG Studio ➔
+                </button>
+            </div>
+
+            <!-- Card 8: AI History & Audit Logs -->
+            <div class="card-panel" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid #64748B;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <span style="font-size: 1.75rem;">📜</span>
+                        <span class="ai-card-badge ai-badge-bloom">Token & Cost Logs</span>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0 0 0.4rem 0;">AI History & Audit Logs</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 1rem 0;">
+                        Consolidated telemetry of all token consumption, calculated costs per model, and complete archive of synthesized artifacts.
+                    </p>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="navigate('ai_history')" style="width: 100%;">
+                    Open History & Logs ➔
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// Dedicated Individual Page Renderer for Each AI Module
+async function renderAiIndividualModule(container, moduleKey) {
     const [classesRes, subjectsRes, studentsRes, examsRes] = await Promise.all([
         api('/classes'),
         api('/subjects'),
@@ -1233,71 +1414,54 @@ async function renderAiAssistant(container) {
     const defaultExamId = exams[0]?.id || 1;
     const defaultStudentId = students[0]?.id || 1;
 
+    const moduleMeta = {
+        chat: { title: '💬 Natural Query Chat Assistant', sub: 'Interactive live querying against institutional database and telemetry.' },
+        lesson: { title: '🎓 Bloom\'s Taxonomy Lesson Planner', sub: 'Synthesize structured 4-phase pedagogical curriculum plans aligned to Bloom\'s Revised Taxonomy.' },
+        question_paper: { title: '📝 Exam Question Paper Synthesizer', sub: 'Generate balanced examination blueprints with difficulty split matrices.' },
+        worksheet: { title: '📄 Differentiated Worksheet Studio', sub: 'Create tiered practice worksheets with Foundation, Standard, and Challenge exercises.' },
+        evaluation: { title: '🔍 Answer Sheet OCR & Rubric Evaluator', sub: 'Scan handwritten responses, calculate rubric scores, and approve into Gradebook.' },
+        circular: { title: '📢 Institutional Circular Synthesizer', sub: 'Draft official campus circulars with school letterhead formatting and notice dispatch.' },
+        rag: { title: '📚 Tenant Vector RAG Studio', sub: 'Semantic vector retrieval directly from tenant-isolated Qdrant curriculum embeddings.' },
+        history: { title: '📜 AI Synthesis & Institutional Audit History', sub: 'Comprehensive token telemetry, cost metering, and complete historical artifact archive.' }
+    }[moduleKey] || { title: '✨ AI Studio Module', sub: 'Enterprise pedagogical AI tool' };
+
     container.innerHTML = `
-        <!-- Hero AI Intelligence Banner -->
-        <div class="ai-studio-hero">
+        <!-- Module Header Banner with Back Navigation -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
             <div>
-                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.35rem;">
-                    <span style="font-size: 1.4rem;">✨</span>
-                    <h1 style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: var(--text-main);">
-                        Enterprise AI Pedagogical Studio
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                    <a href="javascript:void(0)" onclick="navigate('ai_assistant')" style="text-decoration: none; color: var(--brand-orange); font-size: 0.8125rem; font-weight: 700;">
+                        ← AI Studio Hub
+                    </a>
+                    <span style="color: var(--text-light);">/</span>
+                    <h1 style="font-size: 1.35rem; font-weight: 800; margin: 0; color: var(--text-main);">
+                        ${moduleMeta.title}
                     </h1>
-                    <span class="ai-card-badge ai-badge-bloom">Active Provider: GPT-4o / Claude 3.5 / Gemini / Ollama</span>
                 </div>
                 <p style="color: var(--text-muted); font-size: 0.8125rem; margin: 0;">
-                    Centralized Laravel AI service layer with strict tenant isolation, automated token telemetry, and curriculum synthesis.
+                    ${moduleMeta.sub}
                 </p>
             </div>
-            <div style="text-align: right;">
-                <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);">Monthly AI Quota: <strong>64,820 / 500,000 Tokens</strong></div>
-                <div class="ai-quota-bar">
-                    <div class="ai-quota-fill"></div>
-                </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span class="ai-card-badge ai-badge-bloom">Active Provider: GPT-4o / Claude 3.5</span>
+                <span class="concession-pill concession-merit">⚡ Token Metering Active</span>
             </div>
         </div>
 
-        <!-- Horizontal Segmented AI Navigation Pills -->
-        <div class="ai-nav-pills">
-            <button class="ai-nav-pill ${SchoolOS.aiTab === 'chat' ? 'active' : ''}" onclick="switchAiTab('chat')">
-                <span>💬</span> Natural Query Assistant
-            </button>
-            <button class="ai-nav-pill ${SchoolOS.aiTab === 'lesson' ? 'active' : ''}" onclick="switchAiTab('lesson')">
-                <span>🎓</span> Bloom's Lesson Planner
-            </button>
-            <button class="ai-nav-pill ${SchoolOS.aiTab === 'question_paper' ? 'active' : ''}" onclick="switchAiTab('question_paper')">
-                <span>📝</span> Question Paper Synthesizer
-            </button>
-            <button class="ai-nav-pill ${SchoolOS.aiTab === 'worksheet' ? 'active' : ''}" onclick="switchAiTab('worksheet')">
-                <span>📄</span> Differentiated Worksheet Studio
-            </button>
-            <button class="ai-nav-pill ${SchoolOS.aiTab === 'evaluation' ? 'active' : ''}" onclick="switchAiTab('evaluation')">
-                <span>🔍</span> Answer OCR & Evaluator
-            </button>
-            <button class="ai-nav-pill ${SchoolOS.aiTab === 'circular' ? 'active' : ''}" onclick="switchAiTab('circular')">
-                <span>📢</span> Institutional Circular Synthesizer
-            </button>
-            <button class="ai-nav-pill ${SchoolOS.aiTab === 'rag' ? 'active' : ''}" onclick="switchAiTab('rag')">
-                <span>📚</span> Tenant Vector RAG Studio
-            </button>
-            <button class="ai-nav-pill ${SchoolOS.aiTab === 'history' ? 'active' : ''}" onclick="switchAiTab('history')">
-                <span>📜</span> AI History & Audit Logs
-            </button>
-        </div>
-
-        <!-- Active AI Sub-module Viewport -->
+        <!-- Standalone Module Content Viewport -->
         <div id="ai-tab-content">
-            ${getAiTabHtml(SchoolOS.aiTab, { classes, subjects, students, exams, defaultClassId, defaultSubjectId, defaultExamId, defaultStudentId })}
+            ${getAiTabHtml(moduleKey, { classes, subjects, students, exams, defaultClassId, defaultSubjectId, defaultExamId, defaultStudentId })}
         </div>
     `;
 
-    if (SchoolOS.aiTab === 'chat') {
+    if (moduleKey === 'chat') {
         scrollAiChatToBottom();
     }
 }
 
-function switchAiTab(tab) {
-    SchoolOS.aiTab = tab;
-    renderAiAssistant(document.getElementById('viewport'));
+// Fallback alias for backward compatibility
+async function renderAiAssistant(container) {
+    await renderAiOverview(container);
 }
 
 function getAiTabHtml(tab, data) {

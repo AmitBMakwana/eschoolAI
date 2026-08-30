@@ -196,6 +196,50 @@ body {
     width: 20px;
 }
 
+.nav-submenu {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1.25rem;
+    margin-bottom: 0.35rem;
+    gap: 0.15rem;
+}
+
+.nav-subitem {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.42rem 0.65rem;
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-size: 0.785rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    border-left: 2px solid transparent;
+}
+
+.nav-subitem:hover {
+    background: var(--bg-subtle);
+    color: var(--text-main);
+    border-left-color: var(--brand-orange);
+}
+
+.nav-subitem.active {
+    background: var(--brand-orange-light);
+    color: var(--brand-orange);
+    font-weight: 700;
+    border-left-color: var(--brand-orange);
+}
+
+.nav-subitem .icon {
+    font-size: 0.95rem;
+    width: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* App Main */
 .app-main {
     flex: 1;
