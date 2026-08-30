@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\V1\RealtimeHubController;
 use App\Http\Controllers\Api\V1\SecurityAdminController;
 use App\Http\Controllers\Api\V1\StudentController;
 use App\Http\Controllers\Api\V1\TenantController;
+use App\Http\Controllers\HealthCheckController;
 use App\Http\Middleware\SubscriptionFeatureMiddleware;
 use App\Http\Middleware\TenantMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -36,7 +37,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
-    // Public Auth Endpoints & Public Plans
+    // Public Health Probe, Auth & Plans
+    Route::get('/health', [HealthCheckController::class, 'check']);
     Route::post('/auth/login', [AuthController::class, 'login']);
     Route::get('/billing/plans', [BillingController::class, 'plans']);
 
