@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\V1\TenantController;
 use App\Http\Controllers\HealthCheckController;
 use App\Http\Middleware\SubscriptionFeatureMiddleware;
 use App\Http\Middleware\TenantMiddleware;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,8 +38,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
-    // Public Health Probe, Auth & Plans
+    // Public Health Probe, OpenAPI Spec, Auth & Plans
     Route::get('/health', [HealthCheckController::class, 'check']);
+    Route::get('/openapi.json', function () {
+        $specPath = base_path('docs/openapi.yaml');
+        if (File::exists($specPath)) {
+            return response(file_get_contents($specPath), 200, ['Content-Type' => 'text/yaml']);
+        }
+        return response()->json(['openapi' => '3.0.0', 'info' => ['title' => 'AI SchoolOS API', 'version' => '1.0.0']]);
+    });
     Route::post('/auth/login', [AuthController::class, 'login']);
     Route::get('/billing/plans', [BillingController::class, 'plans']);
 

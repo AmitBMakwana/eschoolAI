@@ -9,6 +9,10 @@ Route::get('/', function () {
 
 Route::get('/healthz', [HealthCheckController::class, 'check']);
 
+Route::get('/docs', function () {
+    return view('docs');
+});
+
 Route::get('/showcase', function () {
     return view('showcase');
 });

@@ -1,0 +1,158 @@
+openapi: 3.0.3
+info:
+  title: AI SchoolOS Multi-Tenant API
+  description: Complete REST API specification for AI SchoolOS SaaS platform supporting 16 modules including RBAC auth, academic administration, billing, AI education suite, tenant-isolated RAG vector search, mobile bridge, realtime WebSockets, and enterprise compliance.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Local Development Server
+  - url: https://{subdomain}.schoolos.internal/api/v1
+    description: Multi-Tenant Production Server
+    variables:
+      subdomain:
+        default: greenfield
+        description: School tenant subdomain
+
+paths:
+  /health:
+    get:
+      summary: Health and readiness probe
+      responses:
+        '200':
+          description: System healthy
+
+  /auth/login:
+    post:
+      summary: User authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  example: admin@greenfield.edu
+                password:
+                  type: string
+                  example: password
+      responses:
+        '200':
+          description: Authenticated successfully
+
+  /auth/me:
+    get:
+      security:
+        - BearerAuth: []
+      summary: Authenticated user profile and permissions
+      responses:
+        '200':
+          description: User profile
+
+  /billing/plans:
+    get:
+      summary: List public SaaS subscription tiers
+      responses:
+        '200':
+          description: Available plans
+
+  /classes:
+    get:
+      security:
+        - BearerAuth: []
+      summary: List school classes
+      responses:
+        '200':
+          description: Classes list
+
+  /students:
+    get:
+      security:
+        - BearerAuth: []
+      summary: Student directory
+      parameters:
+        - name: class_id
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Students roster
+
+  /attendance/mark:
+    post:
+      security:
+        - BearerAuth: []
+      summary: Mark bulk class attendance
+      responses:
+        '200':
+          description: Attendance marked
+
+  /ai/lesson-plans/generate:
+    post:
+      security:
+        - BearerAuth: []
+      summary: AI-powered Bloom's taxonomy lesson planner
+      responses:
+        '201':
+          description: Lesson plan generated
+
+  /ai/question-papers/generate:
+    post:
+      security:
+        - BearerAuth: []
+      summary: AI question paper synthesizer
+      responses:
+        '201':
+          description: Question paper synthesized
+
+  /rag/documents/upload:
+    post:
+      security:
+        - BearerAuth: []
+      summary: Ingest document into tenant-isolated Qdrant vector database
+      responses:
+        '201':
+          description: Document chunked and indexed
+
+  /rag/query:
+    post:
+      security:
+        - BearerAuth: []
+      summary: Semantic vector context retrieval
+      responses:
+        '200':
+          description: Top-K semantic chunks
+
+  /mobile/bootstrap:
+    get:
+      security:
+        - BearerAuth: []
+      summary: Single-call mobile app bootstrap
+      responses:
+        '200':
+          description: Cold-start payload
+
+  /compliance/export/{student_id}:
+    get:
+      security:
+        - BearerAuth: []
+      summary: FERPA/GDPR student data portability export
+      parameters:
+        - name: student_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Data archive
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Sanctum Token
