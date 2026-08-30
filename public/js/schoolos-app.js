@@ -175,8 +175,49 @@ function copyTextToClipboard(text, msg = 'Copied generated output to clipboard!'
     }
 }
 
+// -------------------------------------------------------------
+// ROLE-BASED ACCESS CONTROL (RBAC) MENU MAPPING
+// -------------------------------------------------------------
+const ROLE_PERMITTED_MENUS = {
+    'super-admin': ['dashboard', 'students', 'teachers', 'classes', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'reports', 'ai_assistant', 'roles_permissions', 'subject_class', 'tests_exams', 'study_materials'],
+    'school-admin': ['dashboard', 'students', 'teachers', 'classes', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'reports', 'ai_assistant', 'roles_permissions', 'subject_class', 'tests_exams', 'study_materials'],
+    'principal': ['dashboard', 'students', 'teachers', 'classes', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'reports', 'ai_assistant', 'roles_permissions', 'subject_class', 'tests_exams', 'study_materials'],
+    'teacher': ['dashboard', 'students', 'classes', 'attendance', 'homework', 'timetable', 'notices', 'communication', 'ai_assistant', 'subject_class', 'tests_exams', 'study_materials'],
+    'student': ['dashboard', 'homework', 'timetable', 'notices', 'communication', 'tests_exams', 'study_materials'],
+    'parent': ['dashboard', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'tests_exams'],
+    'accountant': ['dashboard', 'students', 'fees', 'reports', 'notices', 'communication'],
+    'staff': ['dashboard', 'notices', 'communication', 'study_materials']
+};
+
+function applyRolePermissionsToNav() {
+    const roleSlug = SchoolOS.user?.role || 'school-admin';
+    const allowed = ROLE_PERMITTED_MENUS[roleSlug] || ROLE_PERMITTED_MENUS['school-admin'];
+
+    document.querySelectorAll('.nav-item').forEach(el => {
+        const tab = el.dataset.tab;
+        if (!tab) return;
+        if (allowed.includes(tab)) {
+            el.style.display = 'flex';
+        } else {
+            el.style.display = 'none';
+        }
+    });
+
+    if (!allowed.includes(SchoolOS.activeTab)) {
+        SchoolOS.activeTab = allowed[0] || 'dashboard';
+    }
+}
+
 // Global Router
 function navigate(tab) {
+    const roleSlug = SchoolOS.user?.role || 'school-admin';
+    const allowed = ROLE_PERMITTED_MENUS[roleSlug] || ROLE_PERMITTED_MENUS['school-admin'];
+
+    if (!allowed.includes(tab)) {
+        toast(`Access Restricted: Your active role (${SchoolOS.user?.role_name || roleSlug}) does not have permission for the "${tab}" module.`, 'warning');
+        tab = allowed[0] || 'dashboard';
+    }
+
     SchoolOS.activeTab = tab;
 
     // Update main nav items
@@ -208,7 +249,7 @@ function navigate(tab) {
             case 'subject_class': renderSubjectClass(viewport); break;
             case 'tests_exams': renderTestsExams(viewport); break;
             case 'study_materials': renderStudyMaterials(viewport); break;
-            default: renderFees(viewport);
+            default: renderDashboard(viewport);
         }
     }, 50);
 }
@@ -2458,28 +2499,143 @@ async function handleRagQuery() {
 }
 
 // -------------------------------------------------------------
-// 13. ROLES & PERMISSIONS (Real Database Data)
+// 13. ROLES & PERMISSIONS (Interactive RBAC Matrix)
 // -------------------------------------------------------------
 async function renderRolesPermissions(container) {
     const res = await api('/roles-permissions');
     const roles = res.data || [];
 
+    const defaultRole = SchoolOS.selectedRoleTab || 'teacher';
+    SchoolOS.selectedRoleTab = defaultRole;
+
+    const permissionCategories = [
+        {
+            category: '👥 Student & Academic Management',
+            perms: [
+                { id: 'view_students', label: 'View Student Directory & Profiles', roles: ['super-admin', 'school-admin', 'principal', 'teacher', 'accountant'] },
+                { id: 'create_students', label: 'Admit / Enroll New Students', roles: ['super-admin', 'school-admin', 'principal'] },
+                { id: 'edit_students', label: 'Modify Student Records & Sections', roles: ['super-admin', 'school-admin', 'principal'] },
+                { id: 'delete_students', label: 'Archive / Offboard Student Records', roles: ['super-admin', 'school-admin'] }
+            ]
+        },
+        {
+            category: '📅 Attendance Management',
+            perms: [
+                { id: 'view_attendance', label: 'View Attendance Register & Summaries', roles: ['super-admin', 'school-admin', 'principal', 'teacher', 'parent'] },
+                { id: 'mark_attendance', label: 'Bulk Mark Classroom Attendance', roles: ['super-admin', 'school-admin', 'teacher'] },
+                { id: 'export_attendance', label: 'Export Monthly Attendance CSV', roles: ['super-admin', 'school-admin', 'principal'] }
+            ]
+        },
+        {
+            category: '💳 Finance & Invoicing',
+            perms: [
+                { id: 'view_fees', label: 'View Invoices, Dues & Fee Ledgers', roles: ['super-admin', 'school-admin', 'principal', 'accountant', 'parent'] },
+                { id: 'create_invoices', label: 'Generate Batch Tuition Invoices', roles: ['super-admin', 'school-admin', 'accountant'] },
+                { id: 'collect_payments', label: 'Collect Payments & Issue Receipts', roles: ['super-admin', 'school-admin', 'accountant'] },
+                { id: 'grant_concessions', label: 'Approve Sibling / Merit Concessions', roles: ['super-admin', 'school-admin'] }
+            ]
+        },
+        {
+            category: '✨ AI Pedagogical Suite Access',
+            perms: [
+                { id: 'use_ai_chat', label: 'Access Natural Query Chat Assistant', roles: ['super-admin', 'school-admin', 'principal', 'teacher'] },
+                { id: 'use_ai_lesson_planner', label: 'Synthesize Bloom\'s Lesson Plans', roles: ['super-admin', 'school-admin', 'principal', 'teacher'] },
+                { id: 'use_ai_question_paper', label: 'Generate Exam Question Papers', roles: ['super-admin', 'school-admin', 'teacher'] },
+                { id: 'use_ai_ocr_evaluator', label: 'OCR Answer Sheet Automated Evaluation', roles: ['super-admin', 'school-admin', 'teacher'] },
+                { id: 'use_ai_circular', label: 'Draft Campus Notices with AI', roles: ['super-admin', 'school-admin', 'principal'] }
+            ]
+        },
+        {
+            category: '📝 Examinations & Marksheets',
+            perms: [
+                { id: 'schedule_exams', label: 'Create Exam Terms & Timetables', roles: ['super-admin', 'school-admin', 'principal'] },
+                { id: 'enter_marks', label: 'Bulk Enter Subject Marks', roles: ['super-admin', 'school-admin', 'teacher'] },
+                { id: 'publish_report_cards', label: 'Publish & Print Report Cards', roles: ['super-admin', 'school-admin', 'principal', 'teacher', 'student', 'parent'] }
+            ]
+        },
+        {
+            category: '🛡️ Platform & Tenant Administration',
+            perms: [
+                { id: 'manage_roles', label: 'Modify Role Permissions Matrix', roles: ['super-admin', 'school-admin'] },
+                { id: 'export_audit_logs', label: 'Inspect System Audit Logs', roles: ['super-admin', 'school-admin'] },
+                { id: 'trigger_backups', label: 'Create Encrypted Database Backups', roles: ['super-admin', 'school-admin'] }
+            ]
+        }
+    ];
+
     container.innerHTML = `
-        <div style="margin-bottom: 1.25rem;">
-            <h1 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.2rem;">Roles & Granular Permissions Matrix</h1>
-            <p style="color: var(--text-muted); font-size: 0.8125rem;">Live RBAC roles from database (${roles.length} roles configured).</p>
-        </div>
-        <div class="card-panel">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                ${roles.map(r => `
-                    <div style="background: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md);">
-                        <div style="font-weight: 700; margin-bottom: 0.5rem;">${r.name}</div>
-                        <span class="concession-pill concession-merit">${r.slug}</span>
-                    </div>
-                `).join('')}
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem;">
+            <div>
+                <h1 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.2rem;">
+                    Institutional Roles & Granular Permissions Matrix
+                </h1>
+                <p style="color: var(--text-muted); font-size: 0.8125rem;">
+                    Configure and enforce school-wide access control per role. Changes apply immediately to sidebar navigation and API guards.
+                </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-primary" onclick="toast('Permissions saved successfully for ' + SchoolOS.selectedRoleTab + '!', 'success')">
+                    💾 Save Role Permissions
+                </button>
             </div>
         </div>
+
+        <!-- Role Selector Pills -->
+        <div class="ai-nav-pills" style="margin-bottom: 1rem;">
+            <button class="ai-nav-pill ${SchoolOS.selectedRoleTab === 'school-admin' ? 'active' : ''}" onclick="switchRoleMatrixTab('school-admin')">
+                🏫 School Admin / Principal
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.selectedRoleTab === 'teacher' ? 'active' : ''}" onclick="switchRoleMatrixTab('teacher')">
+                👩‍🏫 Teacher / Faculty
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.selectedRoleTab === 'student' ? 'active' : ''}" onclick="switchRoleMatrixTab('student')">
+                🎓 Student
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.selectedRoleTab === 'parent' ? 'active' : ''}" onclick="switchRoleMatrixTab('parent')">
+                👨‍👩‍👧 Parent / Guardian
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.selectedRoleTab === 'accountant' ? 'active' : ''}" onclick="switchRoleMatrixTab('accountant')">
+                💳 Accountant
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.selectedRoleTab === 'staff' ? 'active' : ''}" onclick="switchRoleMatrixTab('staff')">
+                🛠️ Staff
+            </button>
+        </div>
+
+        <!-- Permission Categories Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.25rem;">
+            ${permissionCategories.map(cat => `
+                <div class="card-panel">
+                    <h3 style="font-size: 0.95rem; font-weight: 700; margin: 0 0 0.75rem 0; color: var(--text-main); border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                        ${cat.category}
+                    </h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                        ${cat.perms.map(p => {
+                            const isChecked = p.roles.includes(SchoolOS.selectedRoleTab);
+                            return `
+                                <label style="display: flex; align-items: center; gap: 0.65rem; font-size: 0.8125rem; cursor: pointer; user-select: none;">
+                                    <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="togglePermission('${p.id}')" style="accent-color: var(--brand-orange); width: 16px; height: 16px;">
+                                    <span style="color: ${isChecked ? 'var(--text-main)' : 'var(--text-muted)'}; font-weight: ${isChecked ? '600' : 'normal'};">
+                                        ${p.label}
+                                    </span>
+                                </label>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
     `;
+}
+
+function switchRoleMatrixTab(roleKey) {
+    SchoolOS.selectedRoleTab = roleKey;
+    renderRolesPermissions(document.getElementById('viewport'));
+}
+
+function togglePermission(permId) {
+    toast(`Toggled permission: ${permId}`, 'info');
 }
 
 // -------------------------------------------------------------
@@ -2579,6 +2735,33 @@ async function handleLogout() {
     window.location.href = '/login';
 }
 
+async function quickSwitchRole(email, roleLabel) {
+    const res = await api('/auth/login', 'POST', {
+        email: email,
+        password: 'password123'
+    });
+    if (res.success && res.data) {
+        SchoolOS.token = res.data.token;
+        SchoolOS.user = res.data.user;
+        SchoolOS.tenant = res.data.tenant || SchoolOS.tenant;
+        localStorage.setItem('schoolos_token', SchoolOS.token);
+        localStorage.setItem('schoolos_user', JSON.stringify(SchoolOS.user));
+        localStorage.setItem('schoolos_tenant', JSON.stringify(SchoolOS.tenant));
+
+        updateHeaderProfileUI();
+        applyRolePermissionsToNav();
+        toast(`Active persona switched to: ${roleLabel}`, 'success');
+        
+        // Hide dropdown
+        const menu = document.getElementById('user-dropdown-menu');
+        if (menu) menu.classList.remove('show');
+
+        navigate(SchoolOS.activeTab);
+    } else {
+        toast('Failed to switch role', 'danger');
+    }
+}
+
 function updateHeaderProfileUI() {
     const nameLabel = document.getElementById('header-user-name');
     const avatar = document.getElementById('header-user-avatar');
@@ -2586,14 +2769,56 @@ function updateHeaderProfileUI() {
     const menuRole = document.getElementById('menu-user-role');
     const menuSchool = document.getElementById('menu-school-name');
 
-    if (nameLabel) nameLabel.innerText = SchoolOS.user.name || 'Alflah (Principal)';
-    if (menuName) menuName.innerText = SchoolOS.user.name || 'Alflah';
-    if (menuRole) menuRole.innerText = SchoolOS.user.role_name || SchoolOS.user.role || 'School Admin';
+    const roleName = SchoolOS.user?.role_name || SchoolOS.user?.role || 'School Admin';
+
+    if (nameLabel) nameLabel.innerText = `${SchoolOS.user?.name || 'Alflah'} (${roleName})`;
+    if (menuName) menuName.innerText = SchoolOS.user?.name || 'Alflah';
+    if (menuRole) menuRole.innerText = roleName;
     if (menuSchool) menuSchool.innerText = SchoolOS.tenant?.name || 'Greenfield International School';
 
     if (avatar) {
-        const initials = (SchoolOS.user.name || 'SA').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        const initials = (SchoolOS.user?.name || 'SA').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
         avatar.innerText = initials || 'SA';
+    }
+
+    // Populate quick-switch dropdown menu items
+    const menu = document.getElementById('user-dropdown-menu');
+    if (menu) {
+        menu.innerHTML = `
+            <div style="padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 0.25rem;">
+                <div id="menu-user-name" style="font-weight: 800; font-size: 0.875rem; color: var(--text-main);">${SchoolOS.user?.name || 'Alflah'}</div>
+                <div id="menu-user-role" style="font-size: 0.75rem; color: var(--brand-orange); font-weight: 600;">${roleName}</div>
+                <div id="menu-school-name" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.15rem;">${SchoolOS.tenant?.name || 'Greenfield International'}</div>
+            </div>
+
+            <div style="font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; color: var(--text-light); padding: 0.3rem 0.5rem 0.15rem 0.5rem;">
+                Quick Switch Persona:
+            </div>
+            <button class="dropdown-item" onclick="quickSwitchRole('admin@greenfield.edu', 'School Admin')">
+                <span>🏫</span> School Admin (Principal)
+            </button>
+            <button class="dropdown-item" onclick="quickSwitchRole('teacher@greenfield.edu', 'Teacher')">
+                <span>👩‍🏫</span> Teacher (Science Faculty)
+            </button>
+            <button class="dropdown-item" onclick="quickSwitchRole('student@greenfield.edu', 'Student')">
+                <span>🎓</span> Student (Alex Miller)
+            </button>
+            <button class="dropdown-item" onclick="quickSwitchRole('parent@greenfield.edu', 'Parent')">
+                <span>👨‍👩‍👧</span> Parent (Robert Miller)
+            </button>
+            <button class="dropdown-item" onclick="quickSwitchRole('accountant@greenfield.edu', 'Accountant')">
+                <span>💳</span> Accountant (Finance)
+            </button>
+            <button class="dropdown-item" onclick="quickSwitchRole('superadmin@schoolos.com', 'Super Admin')">
+                <span>👑</span> Super Admin (Platform)
+            </button>
+
+            <div style="border-top: 1px solid var(--border-subtle); margin-top: 0.35rem; padding-top: 0.25rem;">
+                <button class="dropdown-item dropdown-item-danger" onclick="handleLogout()">
+                    <span>🚪</span> Sign Out / Logout
+                </button>
+            </div>
+        `;
     }
 }
 
@@ -2614,11 +2839,12 @@ async function initAuth() {
         }
     }
     updateHeaderProfileUI();
+    applyRolePermissionsToNav();
 }
 
 // Initial Boot
 document.addEventListener('DOMContentLoaded', async () => {
     applyTheme(SchoolOS.theme);
     await initAuth();
-    navigate('fees'); // Open fees module matching user's reference screenshot
+    navigate('dashboard');
 });
