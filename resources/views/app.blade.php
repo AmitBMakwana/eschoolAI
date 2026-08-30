@@ -85,23 +85,40 @@
                     <span class="icon">📚</span>
                     <span>Study Materials</span>
                 </div>
+                <div class="nav-item" data-tab="theme_studio" onclick="navigate('theme_studio')">
+                    <span class="icon">🎨</span>
+                    <span>School Theme & Branding</span>
+                </div>
             </div>
         </aside>
+
+        <!-- Mobile Drawer Backdrop -->
+        <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleMobileSidebar()"></div>
 
         <!-- Main Workspace -->
         <div class="app-main">
             <!-- Top App Header -->
             <header class="app-header">
-                <!-- Search Bar -->
-                <div class="header-search">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" placeholder="Search students, classes, faculty..." />
+                <!-- Mobile Hamburger + Search Bar -->
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" title="Toggle Navigation Menu">
+                        ☰
+                    </button>
+                    <div class="header-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search students, classes, faculty..." />
+                    </div>
                 </div>
 
                 <!-- Right Actions -->
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <!-- Theme Toggle -->
-                    <button id="theme-btn" class="btn btn-secondary btn-sm" onclick="toggleTheme()" title="Toggle Theme" style="padding: 0.35rem 0.6rem; font-size: 0.95rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <!-- Theme Studio Trigger -->
+                    <button class="btn btn-secondary btn-sm" onclick="navigate('theme_studio')" title="Customize School Theme & Branding" style="padding: 0.35rem 0.65rem; font-size: 0.8125rem;">
+                        🎨 <span class="d-none-mobile">Theme Studio</span>
+                    </button>
+
+                    <!-- Dark/Light Theme Toggle -->
+                    <button id="theme-btn" class="btn btn-secondary btn-sm" onclick="toggleTheme()" title="Toggle Light/Dark Theme" style="padding: 0.35rem 0.6rem; font-size: 0.95rem;">
                         🌙
                     </button>
 
@@ -129,6 +146,12 @@
                                 <div id="menu-school-name" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.15rem;">Greenfield International</div>
                             </div>
 
+                            <button class="dropdown-item" onclick="navigate('theme_studio')">
+                                <span>🎨</span> Customize School Theme
+                            </button>
+                            <a href="/landing" class="dropdown-item" style="text-decoration: none; color: inherit;">
+                                <span>🌐</span> SaaS Public Landing Page
+                            </a>
                             <button class="dropdown-item" onclick="openLoginModal()">
                                 <span>🔄</span> Switch Account / Sign In
                             </button>

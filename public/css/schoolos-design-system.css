@@ -1335,4 +1335,241 @@ body {
     border-color: #334155;
 }
 
+/* =============================================================
+   DYNAMIC SCHOOL THEME & BRANDING CUSTOMIZER
+   ============================================================= */
+.theme-swatch-picker {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.theme-swatch {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 800;
+}
+
+.theme-swatch:hover {
+    transform: scale(1.1);
+}
+
+.theme-swatch.active {
+    border-color: var(--text-main);
+    box-shadow: 0 0 0 2px var(--bg-card), var(--shadow-md);
+}
+
+.school-brand-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-shadow: var(--shadow-card);
+}
+
+.brand-preview-banner {
+    background: linear-gradient(135deg, var(--brand-orange, #FF5B37), var(--primary, #4F46E5));
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* =============================================================
+   100% FLUID MOBILE RESPONSIVENESS & TOUCH ADAPTATION
+   ============================================================= */
+.mobile-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    font-size: 1.25rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease;
+}
+
+.mobile-menu-btn:hover {
+    background: var(--border);
+}
+
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-backdrop.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Tablet & Mobile Breakpoints */
+@media (max-width: 992px) {
+    .app-sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 270px;
+        height: 100vh;
+        z-index: 999;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .app-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .mobile-menu-btn {
+        display: inline-flex;
+    }
+
+    .app-main {
+        width: 100vw;
+        overflow-x: hidden;
+    }
+
+    .app-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .app-viewport {
+        padding: 1rem;
+    }
+
+    .header-search {
+        max-width: 220px;
+    }
+
+    .metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.85rem;
+    }
+
+    .ai-studio-container {
+        flex-direction: column;
+    }
+
+    .ai-studio-tabs {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .ai-tab-btn {
+        white-space: nowrap;
+        padding: 0.5rem 0.85rem;
+    }
+
+    .ai-workbench-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .comm-hub-wrapper {
+        flex-direction: column;
+        height: auto;
+        min-height: 550px;
+    }
+
+    .comm-contacts-panel {
+        width: 100%;
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+}
+
+/* Small Smartphone Viewports (< 640px) */
+@media (max-width: 640px) {
+    .header-search {
+        display: none;
+    }
+
+    .app-header {
+        justify-content: space-between;
+    }
+
+    .metrics-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .table-wrapper {
+        border-radius: var(--radius-md);
+        margin: 0 -0.5rem;
+        width: calc(100% + 1rem);
+    }
+
+    .card-panel {
+        padding: 1rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr !important;
+    }
+
+    .modal-dialog {
+        width: 95vw;
+        max-width: 95vw;
+        padding: 1.25rem;
+    }
+
+    .btn {
+        min-height: 40px;
+        padding: 0.5rem 0.85rem;
+        font-size: 0.8125rem;
+    }
+
+    .user-profile-pill {
+        padding: 0.25rem 0.5rem;
+    }
+
+    #header-user-name {
+        display: none;
+    }
+
+    .brand-preview-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
 

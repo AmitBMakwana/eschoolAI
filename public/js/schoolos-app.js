@@ -179,15 +179,34 @@ function copyTextToClipboard(text, msg = 'Copied generated output to clipboard!'
 // ROLE-BASED ACCESS CONTROL (RBAC) MENU MAPPING
 // -------------------------------------------------------------
 const ROLE_PERMITTED_MENUS = {
-    'super-admin': ['dashboard', 'students', 'teachers', 'classes', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'reports', 'ai_assistant', 'roles_permissions', 'subject_class', 'tests_exams', 'study_materials'],
-    'school-admin': ['dashboard', 'students', 'teachers', 'classes', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'reports', 'ai_assistant', 'roles_permissions', 'subject_class', 'tests_exams', 'study_materials'],
-    'principal': ['dashboard', 'students', 'teachers', 'classes', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'reports', 'ai_assistant', 'roles_permissions', 'subject_class', 'tests_exams', 'study_materials'],
+    'super-admin': ['dashboard', 'students', 'teachers', 'classes', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'reports', 'ai_assistant', 'roles_permissions', 'subject_class', 'tests_exams', 'study_materials', 'theme_studio'],
+    'school-admin': ['dashboard', 'students', 'teachers', 'classes', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'reports', 'ai_assistant', 'roles_permissions', 'subject_class', 'tests_exams', 'study_materials', 'theme_studio'],
+    'principal': ['dashboard', 'students', 'teachers', 'classes', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'reports', 'ai_assistant', 'roles_permissions', 'subject_class', 'tests_exams', 'study_materials', 'theme_studio'],
     'teacher': ['dashboard', 'students', 'classes', 'attendance', 'homework', 'timetable', 'notices', 'communication', 'ai_assistant', 'subject_class', 'tests_exams', 'study_materials'],
     'student': ['dashboard', 'homework', 'timetable', 'notices', 'communication', 'tests_exams', 'study_materials'],
     'parent': ['dashboard', 'attendance', 'fees', 'homework', 'timetable', 'notices', 'communication', 'tests_exams'],
     'accountant': ['dashboard', 'students', 'fees', 'reports', 'notices', 'communication'],
     'staff': ['dashboard', 'notices', 'communication', 'study_materials']
 };
+
+function toggleMobileSidebar(forceState) {
+    const sidebar = document.querySelector('.app-sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (!sidebar) return;
+
+    if (typeof forceState === 'boolean') {
+        if (forceState) {
+            sidebar.classList.add('open');
+            if (backdrop) backdrop.classList.add('active');
+        } else {
+            sidebar.classList.remove('open');
+            if (backdrop) backdrop.classList.remove('active');
+        }
+    } else {
+        sidebar.classList.toggle('open');
+        if (backdrop) backdrop.classList.toggle('active');
+    }
+}
 
 function applyRolePermissionsToNav() {
     const roleSlug = SchoolOS.user?.role || 'school-admin';
@@ -212,6 +231,9 @@ function applyRolePermissionsToNav() {
 function navigate(tab) {
     const roleSlug = SchoolOS.user?.role || 'school-admin';
     const allowed = ROLE_PERMITTED_MENUS[roleSlug] || ROLE_PERMITTED_MENUS['school-admin'];
+
+    // Close mobile drawer on navigation
+    toggleMobileSidebar(false);
 
     if (!allowed.includes(tab)) {
         toast(`Access Restricted: Your active role (${SchoolOS.user?.role_name || roleSlug}) does not have permission for the "${tab}" module.`, 'warning');
@@ -249,6 +271,7 @@ function navigate(tab) {
             case 'subject_class': renderSubjectClass(viewport); break;
             case 'tests_exams': renderTestsExams(viewport); break;
             case 'study_materials': renderStudyMaterials(viewport); break;
+            case 'theme_studio': renderThemeStudio(viewport); break;
             default: renderDashboard(viewport);
         }
     }, 50);
@@ -3989,6 +4012,191 @@ async function renderReports(container) {
     `;
 }
 
+// -------------------------------------------------------------
+// 18. DYNAMIC SCHOOL BRANDING & THEME STUDIO
+// -------------------------------------------------------------
+const THEME_PALETTES = [
+    { name: 'Sunset Orange', primary: '#FF5B37', light: '#FFF2EE', hover: '#E04824', secondary: '#4F46E5' },
+    { name: 'Cyber Indigo', primary: '#4F46E5', light: '#EEF2FF', hover: '#4338CA', secondary: '#06B6D4' },
+    { name: 'Emerald Academy', primary: '#10B981', light: '#ECFDF5', hover: '#059669', secondary: '#047857' },
+    { name: 'Royal Amethyst', primary: '#8B5CF6', light: '#F5F3FF', hover: '#7C3AED', secondary: '#EC4899' },
+    { name: 'Sapphire Ocean', primary: '#0284C7', light: '#F0F9FF', hover: '#0369A1', secondary: '#3B82F6' },
+    { name: 'Crimson Heritage', primary: '#E11D48', light: '#FFF1F2', hover: '#BE123C', secondary: '#9333EA' }
+];
+
+function applyThemePalette(primary, light, hover, secondary, save = true) {
+    document.documentElement.style.setProperty('--brand-orange', primary);
+    document.documentElement.style.setProperty('--brand-orange-light', light);
+    document.documentElement.style.setProperty('--brand-orange-hover', hover);
+    if (secondary) document.documentElement.style.setProperty('--primary', secondary);
+
+    if (save) {
+        const customBranding = { primary, light, hover, secondary };
+        localStorage.setItem('schoolos_custom_branding', JSON.stringify(customBranding));
+        toast('Institutional branding palette updated in real-time!', 'success');
+    }
+}
+
+function loadSavedBranding() {
+    try {
+        const saved = localStorage.getItem('schoolos_custom_branding');
+        if (saved) {
+            const b = JSON.parse(saved);
+            applyThemePalette(b.primary, b.light, b.hover, b.secondary, false);
+        }
+    } catch (e) {
+        // fallback to default
+    }
+}
+
+async function renderThemeStudio(container) {
+    const schoolName = SchoolOS.tenant?.name || 'Greenfield International School';
+    const currentPrimary = getComputedStyle(document.documentElement).getPropertyValue('--brand-orange').trim() || '#FF5B37';
+
+    container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+                <h1 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.2rem;">
+                    🎨 School Branding & Dynamic Theme Studio
+                </h1>
+                <p style="color: var(--text-muted); font-size: 0.8125rem;">
+                    Customize institutional colors, typography tokens, school badge, and theme aesthetics for ${schoolName}.
+                </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-secondary" onclick="resetDefaultTheme()">🔄 Reset Defaults</button>
+                <button class="btn btn-primary" onclick="saveSchoolBrandingForm()">💾 Save Brand Identity</button>
+            </div>
+        </div>
+
+        <!-- Live Brand Banner Preview -->
+        <div class="brand-preview-banner" style="margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="brand-badge" id="preview-brand-badge" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                    ${(schoolName || 'eS').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase()}
+                </div>
+                <div>
+                    <h2 id="preview-school-title" style="margin: 0; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em;">
+                        ${schoolName}
+                    </h2>
+                    <div style="font-size: 0.8125rem; opacity: 0.9; margin-top: 0.2rem;">
+                        Empowering Next-Generation Education with AI & Multi-Tenant SaaS
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <span style="background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); padding: 0.35rem 0.85rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">
+                    LIVE PREVIEW
+                </span>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;">
+            <!-- Brand Palette Swatches -->
+            <div class="school-brand-card">
+                <h3 style="font-size: 1rem; font-weight: 800; margin: 0; color: var(--text-main);">
+                    🎯 Curated Institutional Palettes
+                </h3>
+                <p style="font-size: 0.8125rem; color: var(--text-muted); margin: 0;">
+                    Select an official brand colorway calibrated for high readability and premium aesthetic standards.
+                </p>
+
+                <div class="theme-swatch-picker">
+                    ${THEME_PALETTES.map(p => `
+                        <div class="theme-swatch ${currentPrimary.toLowerCase() === p.primary.toLowerCase() ? 'active' : ''}" 
+                             style="background: ${p.primary};" 
+                             onclick="selectPresetPalette('${p.primary}', '${p.light}', '${p.hover}', '${p.secondary}')"
+                             title="${p.name}">
+                            ${currentPrimary.toLowerCase() === p.primary.toLowerCase() ? '✓' : ''}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div style="margin-top: 0.5rem;">
+                    <label class="form-label" style="font-weight: 700;">Custom Primary Brand Hex</label>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="color" id="custom-color-picker" value="${currentPrimary}" onchange="handleCustomColorChange(this.value)" style="width: 44px; height: 40px; border: none; border-radius: var(--radius-md); cursor: pointer;" />
+                        <input type="text" id="custom-color-hex" class="form-control" value="${currentPrimary}" oninput="handleCustomColorChange(this.value)" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- School Identity & Crest Setup -->
+            <div class="school-brand-card">
+                <h3 style="font-size: 1rem; font-weight: 800; margin: 0; color: var(--text-main);">
+                    🏫 Institutional Identity & Badging
+                </h3>
+                <p style="font-size: 0.8125rem; color: var(--text-muted); margin: 0;">
+                    Configure official school name and motto displayed in report cards and certificates.
+                </p>
+
+                <div class="form-group">
+                    <label class="form-label">School Name</label>
+                    <input type="text" id="brand-school-name" class="form-control" value="${schoolName}" oninput="updateBrandPreviewTitle(this.value)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">School Crest Initials</label>
+                    <input type="text" id="brand-school-initials" class="form-control" maxlength="3" value="${(schoolName || 'eS').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase()}" oninput="updateBrandPreviewBadge(this.value)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Theme Mode Selection</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn ${SchoolOS.theme === 'light' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="applyTheme('light'); renderThemeStudio(document.getElementById('viewport'));">
+                            ☀️ Light Mode
+                        </button>
+                        <button type="button" class="btn ${SchoolOS.theme === 'dark' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="applyTheme('dark'); renderThemeStudio(document.getElementById('viewport'));">
+                            🌙 Dark Mode
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function selectPresetPalette(primary, light, hover, secondary) {
+    applyThemePalette(primary, light, hover, secondary, true);
+    renderThemeStudio(document.getElementById('viewport'));
+}
+
+function handleCustomColorChange(hex) {
+    if (!hex || hex.length < 4) return;
+    const light = hex + '20';
+    applyThemePalette(hex, light, hex, null, true);
+}
+
+function updateBrandPreviewTitle(val) {
+    const el = document.getElementById('preview-school-title');
+    if (el) el.innerText = val || 'Your School Name';
+}
+
+function updateBrandPreviewBadge(val) {
+    const el = document.getElementById('preview-brand-badge');
+    if (el) el.innerText = (val || 'eS').toUpperCase();
+}
+
+function saveSchoolBrandingForm() {
+    const name = document.getElementById('brand-school-name')?.value || SchoolOS.tenant.name;
+    const initials = document.getElementById('brand-school-initials')?.value || 'eS';
+    
+    SchoolOS.tenant.name = name;
+    localStorage.setItem('schoolos_tenant', JSON.stringify(SchoolOS.tenant));
+
+    // Update headers and brand badges across the app
+    document.querySelectorAll('.brand-badge').forEach(el => el.innerText = initials.toUpperCase());
+    updateHeaderProfileUI();
+    toast(`Institutional branding saved for ${name}!`, 'success');
+}
+
+function resetDefaultTheme() {
+    localStorage.removeItem('schoolos_custom_branding');
+    applyThemePalette('#FF5B37', '#FFF2EE', '#E04824', '#4F46E5', false);
+    toast('Reset to default eschoolAI colorway!', 'info');
+    renderThemeStudio(document.getElementById('viewport'));
+}
+
 function triggerEmergencyModal() {
     showModal('🚨 Emergency Campus Broadcast', `
         <p style="font-size: 0.8125rem; color: var(--danger); font-weight: 600;">⚠️ Dispatches instant push notifications and WebSocket alerts across all parent and student channels.</p>
@@ -4118,6 +4326,7 @@ async function initAuth() {
 
 // Initial Boot
 document.addEventListener('DOMContentLoaded', async () => {
+    loadSavedBranding();
     applyTheme(SchoolOS.theme);
     await initAuth();
     navigate('dashboard');
