@@ -77,22 +77,29 @@ Route::prefix('v1')->group(function () {
         // 1. Classes & Sections & Subjects & Teachers
         Route::get('/classes', [AcademicController::class, 'classes']);
         Route::post('/classes', [AcademicController::class, 'storeClass']);
+        Route::delete('/classes/{id}', [AcademicController::class, 'destroyClass']);
         Route::get('/sections', [AcademicController::class, 'sections']);
         Route::post('/sections', [AcademicController::class, 'storeSection']);
         Route::get('/teachers', [AcademicController::class, 'teachers']);
         Route::post('/teachers', [AcademicController::class, 'storeTeacher']);
+        Route::delete('/teachers/{id}', [AcademicController::class, 'destroyTeacher']);
         Route::get('/subjects', [AcademicController::class, 'subjects']);
         Route::post('/subjects', [AcademicController::class, 'storeSubject']);
+        Route::delete('/subjects/{id}', [AcademicController::class, 'destroySubject']);
         Route::get('/teacher-allocations', [AcademicController::class, 'teacherAllocations']);
         Route::post('/teacher-allocations', [AcademicController::class, 'storeTeacherAllocation']);
+        Route::delete('/teacher-allocations/{id}', [AcademicController::class, 'destroyTeacherAllocation']);
         Route::get('/timetables', [AcademicController::class, 'timetables']);
         Route::post('/timetables', [AcademicController::class, 'storeTimetable']);
+        Route::delete('/timetables/{id}', [AcademicController::class, 'destroyTimetable']);
         Route::get('/roles-permissions', [AcademicController::class, 'rolesAndPermissions']);
 
         // 2. Students & Enrollment
         Route::get('/students', [StudentController::class, 'index']);
         Route::post('/students', [StudentController::class, 'store']);
         Route::get('/students/{id}', [StudentController::class, 'show']);
+        Route::put('/students/{id}', [StudentController::class, 'update']);
+        Route::delete('/students/{id}', [StudentController::class, 'destroy']);
 
         // 3. Attendance
         Route::post('/attendance/mark', [AttendanceController::class, 'mark']);
@@ -101,12 +108,14 @@ Route::prefix('v1')->group(function () {
         // 4. Homework & Submissions
         Route::get('/homework', [HomeworkController::class, 'index']);
         Route::post('/homework', [HomeworkController::class, 'store']);
+        Route::delete('/homework/{id}', [HomeworkController::class, 'destroy']);
         Route::post('/homework/{id}/submit', [HomeworkController::class, 'submit']);
         Route::post('/homework/submissions/{id}/review', [HomeworkController::class, 'review']);
 
         // 5. Notices & Communication
         Route::get('/notices', [CommunicationController::class, 'notices']);
         Route::post('/notices', [CommunicationController::class, 'storeNotice']);
+        Route::delete('/notices/{id}', [CommunicationController::class, 'destroyNotice']);
         Route::get('/messages', [CommunicationController::class, 'messages']);
         Route::post('/messages/send', [CommunicationController::class, 'sendMessage']);
 

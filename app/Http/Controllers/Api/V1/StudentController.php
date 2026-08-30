@@ -167,4 +167,49 @@ class StudentController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Update an existing student record.
+     */
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $student = Student::with('user')->findOrFail($id);
+
+        if ($request->filled('name') && $student->user) {
+            $student->user->update(['name' => $request->input('name')]);
+        }
+        if ($request->filled('class_id')) {
+            $student->class_id = $request->input('class_id');
+        }
+        if ($request->filled('section_id')) {
+            $student->section_id = $request->input('section_id');
+        }
+        if ($request->filled('roll_number')) {
+            $student->roll_number = $request->input('roll_number');
+        }
+        if ($request->filled('status')) {
+            $student->status = $request->input('status');
+        }
+        $student->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Student record updated successfully.',
+            'data' => $student->load(['user', 'schoolClass', 'section']),
+        ]);
+    }
+
+    /**
+     * Delete / Archive a student record.
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $student = Student::findOrFail($id);
+        $student->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Student record deleted successfully.',
+        ]);
+    }
 }

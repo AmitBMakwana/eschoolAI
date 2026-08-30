@@ -161,4 +161,18 @@ class HomeworkController extends Controller
             'data' => $submission,
         ]);
     }
+
+    /**
+     * Delete an assignment.
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $hw = Homework::findOrFail($id);
+        $hw->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Assignment deleted successfully.',
+        ]);
+    }
 }

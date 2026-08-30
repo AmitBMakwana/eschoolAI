@@ -79,6 +79,20 @@ class CommunicationController extends Controller
     }
 
     /**
+     * Archive / Delete a notice.
+     */
+    public function destroyNotice(int $id): JsonResponse
+    {
+        $notice = Notice::findOrFail($id);
+        $notice->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notice deleted successfully.',
+        ]);
+    }
+
+    /**
      * Get direct message thread between authenticated user and another user.
      */
     public function messages(Request $request): JsonResponse

@@ -327,6 +327,76 @@ class AcademicController extends Controller
     }
 
     /**
+     * Delete a timetable period.
+     */
+    public function destroyTimetable(int $id): JsonResponse
+    {
+        $slot = Timetable::findOrFail($id);
+        $slot->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Timetable period deleted successfully.',
+        ]);
+    }
+
+    /**
+     * Delete a teacher allocation.
+     */
+    public function destroyTeacherAllocation(int $id): JsonResponse
+    {
+        $allocation = TeacherAllocation::findOrFail($id);
+        $allocation->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Teacher allocation deleted successfully.',
+        ]);
+    }
+
+    /**
+     * Delete a school class.
+     */
+    public function destroyClass(int $id): JsonResponse
+    {
+        $class = SchoolClass::findOrFail($id);
+        $class->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Class deleted successfully.',
+        ]);
+    }
+
+    /**
+     * Delete a teacher.
+     */
+    public function destroyTeacher(int $id): JsonResponse
+    {
+        $teacher = User::findOrFail($id);
+        $teacher->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Teacher removed successfully.',
+        ]);
+    }
+
+    /**
+     * Delete a subject.
+     */
+    public function destroySubject(int $id): JsonResponse
+    {
+        $subject = Subject::findOrFail($id);
+        $subject->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Subject removed successfully.',
+        ]);
+    }
+
+    /**
      * List Roles and Permissions Matrix.
      */
     public function rolesAndPermissions(Request $request): JsonResponse
