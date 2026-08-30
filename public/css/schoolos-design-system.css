@@ -1024,3 +1024,193 @@ body {
     overflow: hidden;
 }
 
+/* ==========================================================================
+   ENTERPRISE AI STUDIO WORKBENCH & PREVIEWS
+   ========================================================================== */
+
+.ai-studio-hero {
+    background: linear-gradient(135deg, rgba(255, 91, 55, 0.08), rgba(139, 92, 246, 0.08));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.ai-studio-hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #FF5B37, #8B5CF6);
+}
+
+.ai-quota-bar {
+    width: 180px;
+    height: 6px;
+    background: var(--bg-subtle);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 0.35rem;
+}
+
+.ai-quota-fill {
+    width: 14%;
+    height: 100%;
+    background: linear-gradient(90deg, #FF5B37, #8B5CF6);
+    border-radius: 3px;
+}
+
+.ai-nav-pills {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+    scrollbar-width: none;
+}
+
+.ai-nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.15rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ai-nav-pill:hover {
+    background: var(--bg-subtle);
+    color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+.ai-nav-pill.active {
+    background: var(--brand-orange);
+    border-color: var(--brand-orange);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(255, 91, 55, 0.3);
+}
+
+.ai-workbench-grid {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .ai-workbench-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.ai-output-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ai-output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.ai-card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.ai-badge-bloom { background: #EEF2FF; color: #4F46E5; }
+.ai-badge-exam { background: #FEF3C7; color: #D97706; }
+.ai-badge-rubric { background: #ECFDF5; color: #059669; }
+.ai-badge-circular { background: #FFF1F2; color: #E11D48; }
+.ai-badge-rag { background: #F3E8FF; color: #9333EA; }
+
+.ai-timeline-item {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    position: relative;
+}
+
+.ai-timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 12px;
+    width: 2px;
+    height: calc(100% - 12px);
+    background: var(--border-subtle);
+}
+
+.ai-timeline-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--brand-orange-light);
+    color: var(--brand-orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.ai-rubric-score-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(5, 150, 105, 0.04));
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.ai-circular-letterhead {
+    background: #ffffff;
+    color: #1E293B;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem 2.25rem;
+    box-shadow: var(--shadow-sm);
+    font-family: 'Times New Roman', Times, serif;
+}
+
+[data-theme="dark"] .ai-circular-letterhead {
+    background: #1E293B;
+    color: #F8FAFC;
+    border-color: #334155;
+}
+
+

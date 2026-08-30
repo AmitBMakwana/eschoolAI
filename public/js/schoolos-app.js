@@ -1104,7 +1104,7 @@ function renderReports(container) {
 }
 
 // -------------------------------------------------------------
-// 12. MASTER AI EDUCATION & INTELLIGENCE STUDIO
+// 12. MASTER ENTERPRISE AI EDUCATION & INTELLIGENCE STUDIO
 // -------------------------------------------------------------
 async function renderAiAssistant(container) {
     const [classesRes, subjectsRes, studentsRes, examsRes] = await Promise.all([
@@ -1125,26 +1125,54 @@ async function renderAiAssistant(container) {
     const defaultStudentId = students[0]?.id || 1;
 
     container.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <!-- Hero AI Intelligence Banner -->
+        <div class="ai-studio-hero">
             <div>
-                <h1 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.2rem;">✨ AI Education & Intelligence Studio</h1>
-                <p style="color: var(--text-muted); font-size: 0.8125rem;">
-                    Unified AI service layer with provider abstraction (OpenAI, Gemini, Claude, Ollama), per-school usage limits & cost metering.
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.35rem;">
+                    <span style="font-size: 1.4rem;">✨</span>
+                    <h1 style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: var(--text-main);">
+                        Enterprise AI Pedagogical Studio
+                    </h1>
+                    <span class="ai-card-badge ai-badge-bloom">Active Provider: GPT-4o / Claude 3.5 / Gemini / Ollama</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.8125rem; margin: 0;">
+                    Centralized Laravel AI service layer with strict tenant isolation, automated token telemetry, and curriculum synthesis.
                 </p>
             </div>
-            <span class="concession-pill concession-merit">⚡ Provider: Active & Metered</span>
+            <div style="text-align: right;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);">Monthly AI Quota: <strong>64,820 / 500,000 Tokens</strong></div>
+                <div class="ai-quota-bar">
+                    <div class="ai-quota-fill"></div>
+                </div>
+            </div>
         </div>
 
-        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
-            <button class="btn ${SchoolOS.aiTab === 'chat' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchAiTab('chat')">💬 Query Assistant</button>
-            <button class="btn ${SchoolOS.aiTab === 'lesson' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchAiTab('lesson')">🎓 Lesson Planner</button>
-            <button class="btn ${SchoolOS.aiTab === 'question_paper' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchAiTab('question_paper')">📝 Question Paper</button>
-            <button class="btn ${SchoolOS.aiTab === 'worksheet' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchAiTab('worksheet')">📄 Worksheet Generator</button>
-            <button class="btn ${SchoolOS.aiTab === 'evaluation' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchAiTab('evaluation')">🔍 Answer OCR Evaluator</button>
-            <button class="btn ${SchoolOS.aiTab === 'circular' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchAiTab('circular')">📢 Circular Generator</button>
-            <button class="btn ${SchoolOS.aiTab === 'rag' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchAiTab('rag')">📚 Vector RAG Studio</button>
+        <!-- Horizontal Segmented AI Navigation Pills -->
+        <div class="ai-nav-pills">
+            <button class="ai-nav-pill ${SchoolOS.aiTab === 'chat' ? 'active' : ''}" onclick="switchAiTab('chat')">
+                <span>💬</span> Natural Query Assistant
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.aiTab === 'lesson' ? 'active' : ''}" onclick="switchAiTab('lesson')">
+                <span>🎓</span> Bloom's Lesson Planner
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.aiTab === 'question_paper' ? 'active' : ''}" onclick="switchAiTab('question_paper')">
+                <span>📝</span> Question Paper Synthesizer
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.aiTab === 'worksheet' ? 'active' : ''}" onclick="switchAiTab('worksheet')">
+                <span>📄</span> Differentiated Worksheet Studio
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.aiTab === 'evaluation' ? 'active' : ''}" onclick="switchAiTab('evaluation')">
+                <span>🔍</span> Answer OCR & Evaluator
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.aiTab === 'circular' ? 'active' : ''}" onclick="switchAiTab('circular')">
+                <span>📢</span> Institutional Circular Synthesizer
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.aiTab === 'rag' ? 'active' : ''}" onclick="switchAiTab('rag')">
+                <span>📚</span> Tenant Vector RAG Studio
+            </button>
         </div>
 
+        <!-- Active AI Sub-module Viewport -->
         <div id="ai-tab-content">
             ${getAiTabHtml(SchoolOS.aiTab, { classes, subjects, students, exams, defaultClassId, defaultSubjectId, defaultExamId, defaultStudentId })}
         </div>
@@ -1171,10 +1199,13 @@ function getAiTabHtml(tab, data) {
                             <div class="chat-avatar chat-avatar-ai">✨</div>
                             <div>
                                 <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-main);">AI SchoolOS Assistant</div>
-                                <div style="font-size: 0.75rem; color: #10B981; font-weight: 600;">● Online • Connected to Live Database</div>
+                                <div style="font-size: 0.75rem; color: #10B981; font-weight: 600;">● Online • Live Telemetry & Vector Ingestion</div>
                             </div>
                         </div>
-                        <span class="concession-pill concession-sibling">Laravel AI Service Layer</span>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <span class="ai-card-badge ai-badge-bloom">Model: GPT-4o / Claude 3.5</span>
+                            <button class="btn btn-secondary btn-sm" onclick="toast('Chat context refreshed', 'info')">🔄 Reset Session</button>
+                        </div>
                     </div>
 
                     <!-- Chat Message Area -->
@@ -1198,7 +1229,7 @@ function getAiTabHtml(tab, data) {
                     <div class="chat-input-wrapper">
                         <div class="chat-quick-chips">
                             <div class="chat-quick-chip" onclick="quickPromptAi('How many students are enrolled in Class 9?')">👥 How many students in Class 9?</div>
-                            <div class="chat-quick-chip" onclick="quickPromptAi('What is the total fee collection for Term 1?')">💳 Total fee collection summary</div>
+                            <div class="chat-quick-chip" onclick="quickPromptAi('What is the total fee collection for Term 1?')">💳 Fee collection summary</div>
                             <div class="chat-quick-chip" onclick="quickPromptAi('Who is assigned to Physics Class 9?')">👨‍🏫 Who teaches Physics?</div>
                             <div class="chat-quick-chip" onclick="quickPromptAi('Summarize institutional attendance rate')">📈 Attendance analytics</div>
                         </div>
@@ -1215,200 +1246,474 @@ function getAiTabHtml(tab, data) {
 
         case 'lesson':
             return `
-                <div class="card-panel">
-                    <div class="card-panel-header">
-                        <div class="card-panel-title">🎓 AI Bloom's Taxonomy Lesson Planner</div>
-                        <span class="concession-pill concession-merit">API: /api/v1/ai/lesson-plans/generate</span>
+                <div class="ai-workbench-grid">
+                    <!-- Left Configuration Panel -->
+                    <div class="card-panel">
+                        <div class="card-panel-header">
+                            <div class="card-panel-title">🎓 Pedagogical Parameters</div>
+                            <span class="ai-card-badge ai-badge-bloom">Bloom's Framework</span>
+                        </div>
+                        <form onsubmit="handleAiLessonPlan(event)">
+                            <div class="form-group">
+                                <label class="form-label">Lesson Topic & Subject Unit</label>
+                                <input type="text" name="topic" class="form-control" required value="Electromagnetic Induction & Faraday's Law" />
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Grade / Class</label>
+                                    <select name="class_name" class="form-control">
+                                        <option>Class 9</option>
+                                        <option>Class 10</option>
+                                        <option>Class 8</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Subject</label>
+                                    <select name="subject_name" class="form-control">
+                                        <option>Physics</option>
+                                        <option>Mathematics</option>
+                                        <option>Science</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Instructional Duration</label>
+                                    <select name="duration_minutes" class="form-control">
+                                        <option value="45">45 Minutes</option>
+                                        <option value="60">60 Minutes</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Pedagogy Model</label>
+                                    <select class="form-control">
+                                        <option>Bloom's Revised Taxonomy</option>
+                                        <option>5E Instructional Model</option>
+                                        <option>Inquiry-Based Learning</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" id="btn-gen-lesson" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                                ✨ Synthesize Lesson Plan
+                            </button>
+                        </form>
                     </div>
-                    <form onsubmit="handleAiLessonPlan(event)">
-                        <div class="form-group">
-                            <label class="form-label">Lesson Topic</label>
-                            <input type="text" name="topic" class="form-control" required value="Electromagnetic Induction & Faraday's Law" />
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;">
-                            <div class="form-group">
-                                <label class="form-label">Class</label>
-                                <select name="class_name" class="form-control"><option>Class 9</option><option>Class 10</option><option>Class 8</option></select>
+
+                    <!-- Right Structured Lesson Plan Preview -->
+                    <div class="ai-output-box" id="lesson-output">
+                        <div class="ai-output-header">
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">Physics: Electromagnetic Induction</h3>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Grade 9 • 45 Minutes • Standard Bloom's Alignment</div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Subject</label>
-                                <select name="subject_name" class="form-control"><option>Physics</option><option>Mathematics</option><option>Science</option></select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Duration</label>
-                                <select name="duration_minutes" class="form-control"><option value="45">45 Minutes</option><option value="60">60 Minutes</option></select>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-secondary btn-sm" onclick="toast('Lesson Plan copied to clipboard!', 'info')">📋 Copy</button>
+                                <button class="btn btn-primary btn-sm" onclick="toast('Lesson Plan published to curriculum database!', 'success')">💾 Publish</button>
                             </div>
                         </div>
-                        <button type="submit" id="btn-gen-lesson" class="btn btn-primary" style="width: 100%;">✨ Synthesize Lesson Plan</button>
-                    </form>
-                    <div id="lesson-output" style="margin-top: 1rem;"></div>
+
+                        <div style="margin-bottom: 1.25rem;">
+                            <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem;">🎯 Learning Objectives (Bloom's Taxonomy):</div>
+                            <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8125rem;">
+                                <div><span style="color: #10B981;">✔</span> <strong>Remembering:</strong> State Faraday's law of induction and define magnetic flux.</div>
+                                <div><span style="color: #10B981;">✔</span> <strong>Applying:</strong> Calculate induced electromotive force using $e = -N \\frac{\\Delta \\Phi}{\\Delta t}$.</div>
+                                <div><span style="color: #10B981;">✔</span> <strong>Evaluating:</strong> Predict direction of induced current using Lenz's Law and right-hand rule.</div>
+                            </div>
+                        </div>
+
+                        <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.75rem;">⏱️ Timed Pedagogical Phases:</div>
+                        <div style="display: flex; flex-direction: column;">
+                            <div class="ai-timeline-item">
+                                <div class="ai-timeline-dot">1</div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 0.8125rem;">00-10 Min: Phenomenon Hook & Prior Knowledge</div>
+                                    <div style="font-size: 0.78rem; color: var(--text-muted);">Demonstrate magnet moving through coil and galvanometer deflection.</div>
+                                </div>
+                            </div>
+                            <div class="ai-timeline-item">
+                                <div class="ai-timeline-dot">2</div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 0.8125rem;">10-25 Min: Direct Instruction & Mathematical Formulation</div>
+                                    <div style="font-size: 0.78rem; color: var(--text-muted);">Explain rate of change of flux and derive Faraday's equation with Lenz polarity.</div>
+                                </div>
+                            </div>
+                            <div class="ai-timeline-item">
+                                <div class="ai-timeline-dot">3</div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 0.8125rem;">25-40 Min: Guided Pair Calculations & Lab Simulation</div>
+                                    <div style="font-size: 0.78rem; color: var(--text-muted);">Students solve 3 numerical problems with varying coil turns and flux rates.</div>
+                                </div>
+                            </div>
+                            <div class="ai-timeline-item">
+                                <div class="ai-timeline-dot">4</div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 0.8125rem;">40-45 Min: Formative Exit Ticket Check</div>
+                                    <div style="font-size: 0.78rem; color: var(--text-muted);">2-question conceptual check to evaluate mastery before dismissal.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
 
         case 'question_paper':
             return `
-                <div class="card-panel">
-                    <div class="card-panel-header">
-                        <div class="card-panel-title">📝 AI Question Paper Synthesizer</div>
-                        <span class="concession-pill concession-merit">API: /api/v1/ai/question-papers/generate</span>
+                <div class="ai-workbench-grid">
+                    <!-- Left Configuration Panel -->
+                    <div class="card-panel">
+                        <div class="card-panel-header">
+                            <div class="card-panel-title">📝 Exam Blueprint Matrix</div>
+                            <span class="ai-card-badge ai-badge-exam">Auto-Balanced</span>
+                        </div>
+                        <form onsubmit="handleAiQuestionPaper(event, ${data.defaultClassId}, ${data.defaultSubjectId})">
+                            <div class="form-group">
+                                <label class="form-label">Examination Title</label>
+                                <input type="text" name="title" class="form-control" required value="Term 1 Mid-Year Physics Examination" />
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Class</label>
+                                    <select name="class_id" class="form-control">
+                                        ${data.classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Subject</label>
+                                    <select name="subject_id" class="form-control">
+                                        ${data.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Total Marks</label>
+                                    <input type="number" name="total_marks" class="form-control" required value="50" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Duration (Minutes)</label>
+                                    <input type="number" name="duration_minutes" class="form-control" value="90" />
+                                </div>
+                            </div>
+                            <div style="background: var(--bg-subtle); padding: 0.75rem; border-radius: var(--radius-md); font-size: 0.75rem; margin-bottom: 0.75rem;">
+                                <strong>Difficulty Split:</strong> 30% Recall • 50% Application • 20% Higher Order
+                            </div>
+                            <button type="submit" id="btn-gen-paper" class="btn btn-primary" style="width: 100%;">
+                                ✨ Synthesize Question Paper
+                            </button>
+                        </form>
                     </div>
-                    <form onsubmit="handleAiQuestionPaper(event, ${data.defaultClassId}, ${data.defaultSubjectId})">
-                        <div class="form-group">
-                            <label class="form-label">Examination Title</label>
-                            <input type="text" name="title" class="form-control" required value="Mid-Term Physics & Electromagnetism Assessment" />
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;">
-                            <div class="form-group">
-                                <label class="form-label">Class</label>
-                                <select name="class_id" class="form-control">
-                                    ${data.classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
-                                </select>
+
+                    <!-- Right Question Paper Preview -->
+                    <div class="ai-output-box" id="paper-output">
+                        <div class="ai-output-header">
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">Term 1 Mid-Year Physics Examination</h3>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Class 9 • Time: 90 Mins • Max Marks: 50</div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Subject</label>
-                                <select name="subject_id" class="form-control">
-                                    ${data.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Total Marks</label>
-                                <input type="number" name="total_marks" class="form-control" required value="50" />
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-secondary btn-sm" onclick="toast('Question Paper downloaded as PDF!', 'info')">📥 PDF</button>
+                                <button class="btn btn-primary btn-sm" onclick="toast('Synced to institutional Question Bank!', 'success')">💾 Sync Bank</button>
                             </div>
                         </div>
-                        <button type="submit" id="btn-gen-paper" class="btn btn-primary" style="width: 100%;">✨ Synthesize Question Paper</button>
-                    </form>
-                    <div id="paper-output" style="margin-top: 1rem;"></div>
+
+                        <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.8125rem;">
+                            <div style="background: var(--bg-subtle); padding: 0.75rem; border-radius: var(--radius-md);">
+                                <div style="font-weight: 800; color: var(--brand-orange); margin-bottom: 0.35rem;">SECTION A: Objective Recall & Conceptual (10 Marks)</div>
+                                <div>1. Which law describes the direction of induced current in a conductor? <em>[2 Marks]</em></div>
+                                <div>2. Define magnetic flux density and write its SI unit. <em>[2 Marks]</em></div>
+                                <div>3. Multiple Choice: Galvanometer deflection increases when coil turns are: (a) Halved (b) Doubled (c) Zero. <em>[2 Marks]</em></div>
+                            </div>
+
+                            <div style="background: var(--bg-subtle); padding: 0.75rem; border-radius: var(--radius-md);">
+                                <div style="font-weight: 800; color: var(--primary); margin-bottom: 0.35rem;">SECTION B: Numerical Application & Reasoning (20 Marks)</div>
+                                <div>4. A 500-turn coil experiences a flux change of 0.04 Wb in 0.02 seconds. Calculate the induced electromotive force. <em>[5 Marks]</em></div>
+                                <div>5. Explain with a neat diagram how an AC generator utilizes electromagnetic induction. <em>[5 Marks]</em></div>
+                            </div>
+
+                            <div style="background: var(--bg-subtle); padding: 0.75rem; border-radius: var(--radius-md);">
+                                <div style="font-weight: 800; color: #10B981; margin-bottom: 0.35rem;">SECTION C: Analytical Case Study (20 Marks)</div>
+                                <div>6. Transformer efficiency analysis and eddy current loss mitigation in core laminations. <em>[10 Marks]</em></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
 
         case 'worksheet':
             return `
-                <div class="card-panel">
-                    <div class="card-panel-header">
-                        <div class="card-panel-title">📄 AI Multi-Tier Worksheet Generator</div>
-                        <span class="concession-pill concession-merit">API: /api/v1/ai/worksheets/generate</span>
+                <div class="ai-workbench-grid">
+                    <!-- Left Configuration Panel -->
+                    <div class="card-panel">
+                        <div class="card-panel-header">
+                            <div class="card-panel-title">📄 Differentiated Worksheet Studio</div>
+                            <span class="ai-card-badge ai-badge-bloom">Adaptive Tiers</span>
+                        </div>
+                        <form onsubmit="handleAiWorksheet(event, ${data.defaultClassId}, ${data.defaultSubjectId})">
+                            <div class="form-group">
+                                <label class="form-label">Worksheet Title</label>
+                                <input type="text" name="title" class="form-control" required value="Electromagnetic Induction Practice Exercises" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Topic / Concept Focus</label>
+                                <input type="text" name="topic" class="form-control" required value="Magnetic Flux and Induced EMF Calculations" />
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Difficulty Tier</label>
+                                    <select name="difficulty" class="form-control">
+                                        <option value="adaptive">Adaptive 3-Tier</option>
+                                        <option value="easy">Foundation (Easy)</option>
+                                        <option value="medium" selected>Standard (Medium)</option>
+                                        <option value="hard">Challenge (Hard)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Target Class</label>
+                                    <select name="class_id" class="form-control">
+                                        ${data.classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" id="btn-gen-worksheet" class="btn btn-primary" style="width: 100%;">
+                                ✨ Generate Differentiated Worksheet
+                            </button>
+                        </form>
                     </div>
-                    <form onsubmit="handleAiWorksheet(event, ${data.defaultClassId}, ${data.defaultSubjectId})">
-                        <div class="form-group">
-                            <label class="form-label">Worksheet Title</label>
-                            <input type="text" name="title" class="form-control" required value="Electromagnetic Induction Practice Exercises" />
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Topic</label>
-                            <input type="text" name="topic" class="form-control" required value="Magnetic Flux and Induced EMF Calculations" />
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                            <div class="form-group">
-                                <label class="form-label">Difficulty Tier</label>
-                                <select name="difficulty" class="form-control">
-                                    <option value="adaptive">Adaptive Tiered</option>
-                                    <option value="easy">Foundation (Easy)</option>
-                                    <option value="medium" selected>Standard (Medium)</option>
-                                    <option value="hard">Challenge (Hard)</option>
-                                </select>
+
+                    <!-- Right Worksheet Preview -->
+                    <div class="ai-output-box" id="worksheet-output">
+                        <div class="ai-output-header">
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">Electromagnetic Induction Practice Worksheet</h3>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Class 9 Physics • Student Worksheet & Teacher Solution Rubric</div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Class</label>
-                                <select name="class_id" class="form-control">
-                                    ${data.classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
-                                </select>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-secondary btn-sm" onclick="toast('Teacher Solution Key unhidden!', 'info')">🔑 Solution Key</button>
+                                <button class="btn btn-primary btn-sm" onclick="toast('Assigned as Class 9 Homework in database!', 'success')">💾 Assign Homework</button>
                             </div>
                         </div>
-                        <button type="submit" id="btn-gen-worksheet" class="btn btn-primary" style="width: 100%;">✨ Generate Differentiated Worksheet</button>
-                    </form>
-                    <div id="worksheet-output" style="margin-top: 1rem;"></div>
+
+                        <div style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.8125rem;">
+                            <div style="border-left: 3px solid #10B981; padding-left: 0.75rem;">
+                                <strong>Tier 1 — Foundation:</strong> Fill in the blanks with appropriate keywords (Flux, Coil, EMF, Tesla).
+                            </div>
+                            <div style="border-left: 3px solid #F59E0B; padding-left: 0.75rem;">
+                                <strong>Tier 2 — Standard:</strong> Solve numerical word problems for induced voltage when magnetic field varies sinusoidally.
+                            </div>
+                            <div style="border-left: 3px solid #8B5CF6; padding-left: 0.75rem;">
+                                <strong>Tier 3 — Challenge Extension:</strong> Analyze induction braking mechanisms in high-speed bullet trains.
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
 
         case 'evaluation':
             return `
-                <div class="card-panel">
-                    <div class="card-panel-header">
-                        <div class="card-panel-title">🔍 AI Answer Sheet OCR & Rubric Evaluator</div>
-                        <span class="concession-pill concession-merit">API: /api/v1/ai/evaluations/evaluate</span>
+                <div class="ai-workbench-grid">
+                    <!-- Left Evaluation Panel -->
+                    <div class="card-panel">
+                        <div class="card-panel-header">
+                            <div class="card-panel-title">🔍 OCR Answer Sheet Submission</div>
+                            <span class="ai-card-badge ai-badge-rubric">OCR + AI Scoring</span>
+                        </div>
+                        <form onsubmit="handleAiEvaluation(event, ${data.defaultExamId}, ${data.defaultStudentId})">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Student</label>
+                                    <select name="student_id" class="form-control">
+                                        ${data.students.map(s => `<option value="${s.id}">${s.user?.name || 'Student'} (${s.admission_number})</option>`).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Examination</label>
+                                    <select name="exam_id" class="form-control">
+                                        ${data.exams.length ? data.exams.map(e => `<option value="${e.id}">${e.title || 'Mid-Term Exam'}</option>`).join('') : '<option value="1">Term 1 Physics Examination</option>'}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Student Handwritten Response (OCR Ingested)</label>
+                                <textarea name="extracted_text" class="form-control" rows="4">Faraday's law states that the induced electromotive force in any closed circuit is equal to the negative of the time rate of change of the magnetic flux through the circuit. Formula: e = -dPhi/dt. Lenz's law gives the negative sign indicating opposing magnetic polarity.</textarea>
+                            </div>
+                            <button type="submit" id="btn-gen-eval" class="btn btn-primary" style="width: 100%;">
+                                🔍 Perform AI OCR & Rubric Scoring
+                            </button>
+                        </form>
                     </div>
-                    <form onsubmit="handleAiEvaluation(event, ${data.defaultExamId}, ${data.defaultStudentId})">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                            <div class="form-group">
-                                <label class="form-label">Student</label>
-                                <select name="student_id" class="form-control">
-                                    ${data.students.map(s => `<option value="${s.id}">${s.user?.name || 'Student'} (${s.admission_number})</option>`).join('')}
-                                </select>
+
+                    <!-- Right Evaluation Scorecard Preview -->
+                    <div class="ai-output-box" id="evaluation-output">
+                        <div class="ai-output-header">
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">OCR Pedagogical Scorecard</h3>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Alfiya Farooqui (ADM-2026-001) • Term 1 Physics Exam</div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Exam</label>
-                                <select name="exam_id" class="form-control">
-                                    ${data.exams.length ? data.exams.map(e => `<option value="${e.id}">${e.title || 'Mid-Term Exam'}</option>`).join('') : '<option value="1">Term 1 Physics Examination</option>'}
-                                </select>
+                            <button class="btn btn-primary btn-sm" onclick="toast('Score approved and recorded in official Gradebook!', 'success')">💾 Approve to Gradebook</button>
+                        </div>
+
+                        <div class="ai-rubric-score-box">
+                            <div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Score Awarded</div>
+                                <div style="font-size: 1.6rem; font-weight: 800; color: #059669;">18 / 20 <span style="font-size: 0.9rem; font-weight: 600;">(90%)</span></div>
                             </div>
+                            <span class="ai-card-badge ai-badge-rubric" style="font-size: 0.85rem; padding: 0.4rem 0.85rem;">Grade: A (Distinction)</span>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Extracted Student Handwritten Response (OCR)</label>
-                            <textarea name="extracted_text" class="form-control" rows="4">Faraday's law states that the induced electromotive force in any closed circuit is equal to the negative of the time rate of change of the magnetic flux through the circuit. Formula: e = -dPhi/dt.</textarea>
+
+                        <div style="font-size: 0.8125rem; line-height: 1.6;">
+                            <div style="font-weight: 700; margin-bottom: 0.25rem;">📝 Rubric Evaluation Breakdown:</div>
+                            <div style="margin-bottom: 0.5rem;">• <strong>Conceptual Accuracy (10/10):</strong> Precise statement of Faraday's Law and negative flux rate derivative.</div>
+                            <div style="margin-bottom: 0.5rem;">• <strong>Mathematical Notation (4/5):</strong> Correct formula; minor recommendation to define SI units for flux $(\\text{Weber})$.</div>
+                            <div>• <strong>Lenz Law Polarity (4/5):</strong> Accurately explains energy conservation and opposing polarity.</div>
                         </div>
-                        <button type="submit" id="btn-gen-eval" class="btn btn-primary" style="width: 100%;">🔍 Perform AI OCR Evaluation</button>
-                    </form>
-                    <div id="evaluation-output" style="margin-top: 1rem;"></div>
+                    </div>
                 </div>
             `;
 
         case 'circular':
             return `
-                <div class="card-panel">
-                    <div class="card-panel-header">
-                        <div class="card-panel-title">📢 AI Circular & Notice Generator</div>
-                        <span class="concession-pill concession-merit">API: /api/v1/ai/circulars/generate</span>
+                <div class="ai-workbench-grid">
+                    <!-- Left Configuration Panel -->
+                    <div class="card-panel">
+                        <div class="card-panel-header">
+                            <div class="card-panel-title">📢 Circular Synthesis Parameters</div>
+                            <span class="ai-card-badge ai-badge-circular">Official Format</span>
+                        </div>
+                        <form onsubmit="handleAiCircular(event)">
+                            <div class="form-group">
+                                <label class="form-label">Circular Subject / Event Title</label>
+                                <input type="text" name="title" class="form-control" required value="Annual STEM & Science Innovation Fair 2026" />
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Target Audience</label>
+                                    <select name="audience" class="form-control">
+                                        <option value="all">Entire School Community</option>
+                                        <option value="parents">Parents & Guardians</option>
+                                        <option value="students">Students</option>
+                                        <option value="teachers">Faculty & Staff</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Tone of Announcement</label>
+                                    <select name="tone" class="form-control">
+                                        <option value="formal">Formal & Authoritative</option>
+                                        <option value="celebratory">Enthusiastic / Celebratory</option>
+                                        <option value="urgent">Urgent Notice</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Key Dates & Action Required</label>
+                                <textarea name="details" class="form-control" rows="3">Event on Friday, October 24th in the Main Campus Auditorium. Student project submissions close by Wednesday, October 15th. Parents cordially invited for afternoon exhibitions from 2:00 PM.</textarea>
+                            </div>
+                            <button type="submit" id="btn-gen-circular" class="btn btn-primary" style="width: 100%;">
+                                📢 Synthesize Formal Circular
+                            </button>
+                        </form>
                     </div>
-                    <form onsubmit="handleAiCircular(event)">
-                        <div class="form-group">
-                            <label class="form-label">Circular Title</label>
-                            <input type="text" name="title" class="form-control" required value="Annual Science & Innovation Fair 2026" />
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                            <div class="form-group">
-                                <label class="form-label">Target Audience</label>
-                                <select name="audience" class="form-control">
-                                    <option value="all">All School Community</option>
-                                    <option value="parents">Parents & Guardians</option>
-                                    <option value="students">Students</option>
-                                    <option value="teachers">Faculty & Staff</option>
-                                </select>
+
+                    <!-- Right Letterhead Preview -->
+                    <div class="ai-output-box" id="circular-output">
+                        <div class="ai-output-header">
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">Institutional Circular Preview</h3>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Ref: GIS/CIR/2026/089 • Date: ${new Date().toLocaleDateString()}</div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Tone</label>
-                                <select name="tone" class="form-control">
-                                    <option value="formal">Official / Formal</option>
-                                    <option value="celebratory">Celebratory / Enthusiastic</option>
-                                    <option value="urgent">Urgent Notice</option>
-                                </select>
+                            <button class="btn btn-primary btn-sm" onclick="toast('Circular dispatched to Campus Notice Board!', 'success')">📢 Dispatch to Notice Board</button>
+                        </div>
+
+                        <div class="ai-circular-letterhead">
+                            <div style="text-align: center; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                                <div style="font-size: 1.15rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;">Greenfield International School</div>
+                                <div style="font-size: 0.75rem; opacity: 0.8;">Affiliated to National Education Board • Academic Session 2026-2027</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 1rem;">
+                                <div><strong>Circular No:</strong> GIS/CIR/2026/089</div>
+                                <div><strong>Date:</strong> ${new Date().toLocaleDateString()}</div>
+                            </div>
+                            <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 0.75rem; text-decoration: underline;">
+                                SUBJECT: ANNUAL STEM & SCIENCE INNOVATION FAIR 2026
+                            </div>
+                            <div style="font-size: 0.8125rem; line-height: 1.7;">
+                                Dear Parents, Teachers, and Students,<br><br>
+                                We are pleased to announce that the Greenfield Annual STEM & Science Innovation Fair will be held on <strong>Friday, October 24th, 2026</strong> in the Main Campus Auditorium.
+                                All students from Grades 6 through 10 are encouraged to participate. Project registrations must be submitted to the Physics Department by <strong>Wednesday, October 15th</strong>.
+                                Parents are cordially invited to attend the afternoon showcase starting at 2:00 PM.
+                            </div>
+                            <div style="margin-top: 1.5rem; text-align: right; font-size: 0.8rem;">
+                                <strong>Office of the Principal</strong><br>
+                                Greenfield International School
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Key Event Details & Action Required</label>
-                            <textarea name="details" class="form-control" rows="3">Event on Friday Oct 24 in Main Auditorium. Project registrations close by next Wednesday. Parents are cordially invited for afternoon exhibitions.</textarea>
-                        </div>
-                        <button type="submit" id="btn-gen-circular" class="btn btn-primary" style="width: 100%;">📢 Synthesize Circular</button>
-                    </form>
-                    <div id="circular-output" style="margin-top: 1rem;"></div>
+                    </div>
                 </div>
             `;
 
         case 'rag':
             return `
-                <div class="card-panel">
-                    <div class="card-panel-header">
-                        <div class="card-panel-title">📚 Tenant-Isolated Qdrant RAG Vector Search</div>
-                        <span class="concession-pill concession-merit">API: /api/v1/rag/query</span>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                        <p style="font-size: 0.8125rem; color: var(--text-muted); margin: 0;">
-                            Semantic vector retrieval directly from tenant-isolated Qdrant collection for <strong>${SchoolOS.tenant.name}</strong>.
-                        </p>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="rag-query-input" class="form-control" placeholder="Search textbook vectors... e.g. What is Lenz's law?" value="Explain electromagnetic induction and Lenz's law" />
-                            <button class="btn btn-primary" onclick="handleRagQuery()">Vector Search</button>
+                <div class="ai-workbench-grid">
+                    <!-- Left Configuration Panel -->
+                    <div class="card-panel">
+                        <div class="card-panel-header">
+                            <div class="card-panel-title">📚 Qdrant Vector Search</div>
+                            <span class="ai-card-badge ai-badge-rag">Tenant-Isolated</span>
                         </div>
-                        <div id="rag-query-output" style="margin-top: 0.5rem;"></div>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <p style="font-size: 0.8125rem; color: var(--text-muted); margin: 0;">
+                                Semantic vector search over proprietary school textbooks, syllabus PDF chunks, and lesson materials for <strong>${SchoolOS.tenant.name}</strong>.
+                            </p>
+                            <div class="form-group" style="margin: 0;">
+                                <label class="form-label">Semantic Query Prompt</label>
+                                <input type="text" id="rag-query-input" class="form-control" value="Explain electromagnetic induction and Lenz's law formula" />
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Top-K Chunks</label>
+                                    <select class="form-control"><option>Top 2 Chunks</option><option>Top 5 Chunks</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Similarity Threshold</label>
+                                    <select class="form-control"><option>Cosine > 0.85</option><option>Cosine > 0.90</option></select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="handleRagQuery()" style="width: 100%;">
+                                🔍 Query Vector Space
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right RAG Results Preview -->
+                    <div class="ai-output-box" id="rag-query-output">
+                        <div class="ai-output-header">
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">Vector Matching Results</h3>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Collection: greenfield_textbooks • Dimensions: 1536</div>
+                            </div>
+                            <span class="ai-card-badge ai-badge-rag">Qdrant Online</span>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <div style="background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem; font-size: 0.8125rem;">
+                                <div style="display: flex; justify-content: space-between; font-weight: 700; color: var(--brand-orange); margin-bottom: 0.25rem;">
+                                    <span>Chunk #1 • NCERT Physics Class 9 (Page 142)</span>
+                                    <span class="concession-pill concession-merit">96.4% Similarity</span>
+                                </div>
+                                <p style="margin: 0; color: var(--text-main); font-size: 0.78rem; line-height: 1.55;">
+                                    "Whenever a conductor is placed in a varying magnetic field, an electromotive force is induced. If the conductor circuit is closed, a current is induced called induced current. The magnitude of induced EMF is proportional to the rate of change of magnetic flux."
+                                </p>
+                            </div>
+
+                            <div style="background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem; font-size: 0.8125rem;">
+                                <div style="display: flex; justify-content: space-between; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">
+                                    <span>Chunk #2 • NCERT Physics Class 9 (Page 144)</span>
+                                    <span class="concession-pill concession-merit">91.8% Similarity</span>
+                                </div>
+                                <p style="margin: 0; color: var(--text-main); font-size: 0.78rem; line-height: 1.55;">
+                                    "Lenz's Law states that the polarity of induced EMF is such that it produces a current whose magnetic field opposes the change in magnetic flux that produced it."
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
@@ -1417,6 +1722,7 @@ function getAiTabHtml(tab, data) {
             return '';
     }
 }
+
 
 // Attractive AI Chat Interactions
 function quickPromptAi(prompt) {
