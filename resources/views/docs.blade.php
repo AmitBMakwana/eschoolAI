@@ -39,7 +39,10 @@
                 <p style="margin: 0; font-size: 0.75rem; color: #94a3b8;">Interactive OpenAPI 3.0 Documentation Specification</p>
             </div>
         </div>
-        <div style="display: flex; gap: 1rem;">
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <a href="/docs/download" style="background: linear-gradient(135deg, #ff5b37, #8b5cf6); color: #ffffff; text-decoration: none; font-size: 0.875rem; font-weight: 700; padding: 0.5rem 1rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.4rem;">
+                📄 Download Word (.doc) Manual
+            </a>
             <a href="/showcase" style="color: #cbd5e1; text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;">UI Showcase</a>
             <a href="/healthz" style="color: #10b981; text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; border: 1px solid rgba(16,185,129,0.3); border-radius: 6px;">Health: Up</a>
         </div>

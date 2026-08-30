@@ -1,0 +1,636 @@
+﻿<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>eschoolAI Master Platform Documentation</title>
+<!--[if gte mso 9]>
+<xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>100</w:Zoom>
+<w:DoNotOptimizeForBrowser/>
+</w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+@page {
+    size: 8.5in 11.0in;
+    margin: 1.0in;
+    mso-header-margin: .5in;
+    mso-footer-margin: .5in;
+}
+body {
+    font-family: "Segoe UI", "Calibri", Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1e293b;
+    background: #ffffff;
+}
+.cover-page {
+    text-align: center;
+    padding: 80px 20px;
+    border-bottom: 2px solid #ff5b37;
+    margin-bottom: 40px;
+    page-break-after: always;
+}
+.brand-pill {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff5b37, #8b5cf6);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 14pt;
+    padding: 10px 22px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.cover-title {
+    font-size: 30pt;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+}
+.cover-sub {
+    font-size: 14pt;
+    color: #64748b;
+    margin: 0 0 35px 0;
+}
+.meta-card {
+    margin: 30px auto;
+    max-width: 480px;
+    text-align: left;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 20px 24px;
+    font-size: 10.5pt;
+}
+.meta-row {
+    margin-bottom: 8px;
+}
+.meta-row:last-child {
+    margin-bottom: 0;
+}
+.meta-label {
+    font-weight: bold;
+    color: #334155;
+    width: 140px;
+    display: inline-block;
+}
+h1 {
+    font-size: 19pt;
+    font-weight: 800;
+    color: #0f172a;
+    border-bottom: 2.5px solid #ff5b37;
+    padding-bottom: 8px;
+    margin-top: 36px;
+    margin-bottom: 16px;
+}
+h2 {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #1e293b;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 5px;
+    margin-top: 28px;
+    margin-bottom: 12px;
+}
+h3 {
+    font-size: 12pt;
+    font-weight: 700;
+    color: #334155;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 11pt;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px 0;
+    font-size: 10pt;
+}
+th {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-weight: 700;
+    border: 1px solid #cbd5e1;
+    padding: 9px 12px;
+    text-align: left;
+}
+td {
+    border: 1px solid #cbd5e1;
+    padding: 8px 12px;
+    vertical-align: top;
+}
+tr:nth-child(even) td {
+    background-color: #f8fafc;
+}
+pre {
+    background-color: #0f172a;
+    color: #f8fafc;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 9.5pt;
+    line-height: 1.45;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    margin: 16px 0;
+}
+code {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 9.5pt;
+    background-color: #f1f5f9;
+    color: #b91c1c;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+pre code {
+    background-color: transparent;
+    color: #f8fafc;
+    padding: 0;
+}
+blockquote {
+    border-left: 4px solid #ff5b37;
+    margin: 16px 0;
+    padding: 10px 18px;
+    background-color: #fff7ed;
+    color: #9a3412;
+    font-style: italic;
+    border-radius: 0 6px 6px 0;
+}
+ul, ol {
+    margin-top: 0;
+    margin-bottom: 14px;
+    padding-left: 24px;
+}
+li {
+    margin-bottom: 6px;
+}
+</style>
+</head>
+<body>
+
+<div class="cover-page">
+    <div class="brand-pill">eschoolAI Enterprise Platform</div>
+    <div class="cover-title">Master Project Documentation</div>
+    <div class="cover-sub">Comprehensive End-User Manual & Developer Architecture Guide (A to Z)</div>
+    
+    <div class="meta-card">
+        <div class="meta-row"><span class="meta-label">Project Name:</span> <strong>eschoolAI Multi-Tenant SaaS</strong></div>
+        <div class="meta-row"><span class="meta-label">Version:</span> 1.0.0-PROD</div>
+        <div class="meta-row"><span class="meta-label">Architecture:</span> Multi-Tenant RESTful + Realtime + Vector RAG</div>
+        <div class="meta-row"><span class="meta-label">Backend Stack:</span> Laravel 13, PHP 8.3+, MySQL, Redis</div>
+        <div class="meta-row"><span class="meta-label">Vector Database:</span> Qdrant Vector Engine (Tenant-Scoped)</div>
+        <div class="meta-row"><span class="meta-label">Test Suite:</span> 57/57 Tests Passing (303 Assertions)</div>
+        <div class="meta-row"><span class="meta-label">Date Generated:</span> August 30, 2026</div>
+        <div class="meta-row"><span class="meta-label">Repository:</span> https://github.com/AmitBMakwana/eschoolAI</div>
+        <div class="meta-row"><span class="meta-label">Release Status:</span> Production Ready</div>
+    </div>
+</div>
+
+<h1>eschoolAI — Master Platform Documentation (A to Z)</h1>
+<blockquote><strong>Production-Ready Multi-Tenant SaaS School Management & Grounded AI Education Platform</strong></blockquote>
+<blockquote><em>Version: 1.0.0-PROD • Architecture: Multi-Tenant RESTful + Realtime + Vector RAG</em></blockquote>
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+<h1>Table of Contents</h1>
+<ol>
+<li><a href="#1-executive-overview--architecture" style="color: #ff5b37; text-decoration: underline;">Executive Overview & Architecture</a></li>
+<li><a href="#2-user-roles--access-control-matrix" style="color: #ff5b37; text-decoration: underline;">User Roles & Access Control Matrix</a></li>
+<li><a href="#3-end-user-master-manual-all-16-core-modules" style="color: #ff5b37; text-decoration: underline;">End-User Master Manual (All 16 Core Modules)</a></li>
+</ol>
+<ul>
+<li><a href="#31-executive-dashboard--financial-summary" style="color: #ff5b37; text-decoration: underline;">3.1 Executive Dashboard & Financial Summary</a></li>
+<li><a href="#32-student-directory-enrollment--profiles" style="color: #ff5b37; text-decoration: underline;">3.2 Student Directory, Enrollment & Profiles</a></li>
+<li><a href="#33-faculty--teacher-management" style="color: #ff5b37; text-decoration: underline;">3.3 Faculty & Teacher Management</a></li>
+<li><a href="#34-classes-sections--class-teachers" style="color: #ff5b37; text-decoration: underline;">3.4 Classes, Sections & Class Teachers</a></li>
+<li><a href="#35-attendance-register-daily--bulk-marking" style="color: #ff5b37; text-decoration: underline;">3.5 Attendance Register (Daily & Bulk Marking)</a></li>
+<li><a href="#36-finance-fee-structures-invoices--receipts" style="color: #ff5b37; text-decoration: underline;">3.6 Finance, Fee Structures, Invoices & Receipts</a></li>
+<li><a href="#37-homework-submissions--teacher-grading" style="color: #ff5b37; text-decoration: underline;">3.7 Homework, Submissions & Teacher Grading</a></li>
+<li><a href="#38-class-timetables--schedules" style="color: #ff5b37; text-decoration: underline;">3.8 Class Timetables & Schedules</a></li>
+<li><a href="#39-campus-notice-board--broadcasts" style="color: #ff5b37; text-decoration: underline;">3.9 Campus Notice Board & Broadcasts</a></li>
+<li><a href="#310-communication--direct-messaging" style="color: #ff5b37; text-decoration: underline;">3.10 Communication & Direct Messaging</a></li>
+<li><a href="#311-institutional-reports-audit-trail--csv-exports" style="color: #ff5b37; text-decoration: underline;">3.11 Institutional Reports, Audit Trail & CSV Exports</a></li>
+<li><a href="#312-roles--permissions-matrix" style="color: #ff5b37; text-decoration: underline;">3.12 Roles & Permissions Matrix</a></li>
+<li><a href="#313-subject--class-allocation" style="color: #ff5b37; text-decoration: underline;">3.13 Subject & Class Allocation</a></li>
+<li><a href="#314-examination-question-bank--report-cards" style="color: #ff5b37; text-decoration: underline;">3.14 Examination, Question Bank & Report Cards</a></li>
+<li><a href="#315-study-materials--digital-library" style="color: #ff5b37; text-decoration: underline;">3.15 Study Materials & Digital Library</a></li>
+<li><a href="#316-institutional-backup--data-compliance" style="color: #ff5b37; text-decoration: underline;">3.16 Institutional Backup & Data Compliance</a></li>
+</ul>
+<ol>
+<li><a href="#4-unified-ai-pedagogical-studio-guide-vertical-tabs" style="color: #ff5b37; text-decoration: underline;">Unified AI Pedagogical Studio Guide (Vertical Tabs)</a></li>
+</ol>
+<ul>
+<li><a href="#41-natural-query-chat-assistant" style="color: #ff5b37; text-decoration: underline;">4.1 Natural Query Chat Assistant</a></li>
+<li><a href="#42-blooms-taxonomy-lesson-planner" style="color: #ff5b37; text-decoration: underline;">4.2 Bloom's Taxonomy Lesson Planner</a></li>
+<li><a href="#43-exam-question-paper-synthesizer" style="color: #ff5b37; text-decoration: underline;">4.3 Exam Question Paper Synthesizer</a></li>
+<li><a href="#44-differentiated-worksheet-studio" style="color: #ff5b37; text-decoration: underline;">4.4 Differentiated Worksheet Studio</a></li>
+<li><a href="#45-answer-sheet-ocr--rubric-evaluator" style="color: #ff5b37; text-decoration: underline;">4.5 Answer Sheet OCR & Rubric Evaluator</a></li>
+<li><a href="#46-institutional-circular-generator" style="color: #ff5b37; text-decoration: underline;">4.6 Institutional Circular Generator</a></li>
+<li><a href="#47-tenant-vector-rag-studio" style="color: #ff5b37; text-decoration: underline;">4.7 Tenant Vector RAG Studio</a></li>
+<li><a href="#48-ai-history-token-telemetry--doc-export" style="color: #ff5b37; text-decoration: underline;">4.8 AI History, Token Telemetry & DOC Export</a></li>
+</ul>
+<ol>
+<li><a href="#5-developer-architecture--system-design" style="color: #ff5b37; text-decoration: underline;">Developer Architecture & System Design</a></li>
+</ol>
+<ul>
+<li><a href="#51-technology-stack" style="color: #ff5b37; text-decoration: underline;">5.1 Technology Stack</a></li>
+<li><a href="#52-multi-tenancy--data-isolation-engine" style="color: #ff5b37; text-decoration: underline;">5.2 Multi-Tenancy & Data Isolation Engine</a></li>
+<li><a href="#53-ai-service-layer--swappable-providers" style="color: #ff5b37; text-decoration: underline;">5.3 AI Service Layer & Swappable Providers</a></li>
+<li><a href="#54-tenant-isolated-vector-rag-qdrant" style="color: #ff5b37; text-decoration: underline;">5.4 Tenant-Isolated Vector RAG (Qdrant)</a></li>
+<li><a href="#55-mobile-rest-api-bridge--offline-sync" style="color: #ff5b37; text-decoration: underline;">5.5 Mobile REST API Bridge & Offline Sync</a></li>
+<li><a href="#56-realtime-websocket-hub--alerts" style="color: #ff5b37; text-decoration: underline;">5.6 Realtime WebSocket Hub & Alerts</a></li>
+<li><a href="#57-security-gdpr--ferpa-compliance" style="color: #ff5b37; text-decoration: underline;">5.7 Security, GDPR & FERPA Compliance</a></li>
+</ul>
+<ol>
+<li><a href="#6-complete-rest-api-reference-catalog" style="color: #ff5b37; text-decoration: underline;">Complete REST API Reference Catalog</a></li>
+<li><a href="#7-database-schema--migrations" style="color: #ff5b37; text-decoration: underline;">Database Schema & Migrations</a></li>
+<li><a href="#8-installation-testing--deployment-guide" style="color: #ff5b37; text-decoration: underline;">Installation, Testing & Deployment Guide</a></li>
+</ol>
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+<h1>1. Executive Overview & Architecture</h1>
+<p><strong>eschoolAI</strong> is an enterprise-grade multi-tenant SaaS School Management and AI Education Platform designed to support thousands of schools with strict data isolation, end-to-end academic workflows, and a unified AI pedagogical suite.</p>
+<pre><code>graph TD
+    Client[Web Browser / Flutter Mobile App] --&gt;|HTTPS / WSS| Nginx[Nginx Reverse Proxy]
+    Nginx --&gt;|FastCGI| App[Laravel 13 API Core]
+    
+    subgraph Multi-Tenant Core
+        App --&gt; TenantCtx[TenantContext &amp; Scoping Engine]
+        TenantCtx --&gt; DB[(MySQL / SQLite Database)]
+        TenantCtx --&gt; Redis[(Redis Cache &amp; Queues)]
+    end
+    
+    subgraph AI Pedagogical Layer
+        App --&gt; AiMgr[Laravel AI Service Manager]
+        AiMgr --&gt; OpenAI[OpenAI Driver (GPT-4o)]
+        AiMgr --&gt; Claude[Anthropic Driver (Claude 3.5)]
+        AiMgr --&gt; Gemini[Google Driver (Gemini 1.5 Pro)]
+        AiMgr --&gt; Ollama[Local Ollama Driver (Llama 3)]
+        AiMgr --&gt; Qdrant[(Qdrant Vector Database - Tenant Scoped)]
+    end
+</code></pre>
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+<h1>2. User Roles & Access Control Matrix</h1>
+<p>The platform implements strict Role-Based Access Control (RBAC) with granular permissions across 8 distinct institutional personas:</p>
+<table>
+  <tr>
+    <th>Role</th>
+    <th>Scope</th>
+    <th>Key Capabilities</th>
+  </tr>
+  <tr>
+    <td><strong>Platform Super Admin</strong></td>
+    <td>Global SaaS</td>
+    <td>Manage school tenants, monitor MRR billing, configure global AI providers, inspect system audit trail.</td>
+  </tr>
+  <tr>
+    <td><strong>School Admin / Principal</strong></td>
+    <td>Tenant Scoped</td>
+    <td>Full institutional administration: staff, admissions, fee structures, examinations, circulars, AI quota management.</td>
+  </tr>
+  <tr>
+    <td><strong>Teacher / Faculty</strong></td>
+    <td>Class & Subject Scoped</td>
+    <td>Attendance marking, homework assignments, AI lesson planning, exam question paper generation, OCR grading.</td>
+  </tr>
+  <tr>
+    <td><strong>Student</strong></td>
+    <td>Personal Scoped</td>
+    <td>View class schedule, submit homework, download report cards, check fee invoices, query study materials.</td>
+  </tr>
+  <tr>
+    <td><strong>Parent / Guardian</strong></td>
+    <td>Child Scoped</td>
+    <td>Multi-child dashboard, fee invoice payments, attendance monitoring, teacher messaging, circulars.</td>
+  </tr>
+  <tr>
+    <td><strong>Accountant</strong></td>
+    <td>Financial Scoped</td>
+    <td>Fee ledger, invoice generation, discount concessions, payment collection receipts, financial reports.</td>
+  </tr>
+  <tr>
+    <td><strong>Staff / Librarian</strong></td>
+    <td>Department Scoped</td>
+    <td>Resource circulation, event coordination, study material uploads, campus logistics.</td>
+  </tr>
+</table>
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+<h1>3. End-User Master Manual (All 16 Core Modules)</h1>
+<h3>3.1 Executive Dashboard & Financial Summary</h3>
+<ul>
+<li><strong>Live Metrics</strong>: Displays active student count, registered faculty, total invoiced revenue, fee collection rate, and monthly attendance percentage.</li>
+<li><strong>Role-Aware Views</strong>: Super Admins see platform MRR; School Admins see revenue ledgers; Teachers see their immediate class rosters.</li>
+</ul>
+<h3>3.2 Student Directory, Enrollment & Profiles</h3>
+<ul>
+<li><strong>Directory</strong>: Real-time searchable and filterable table displaying Student ID, Full Name, Class, Section, Roll Number, Gender, and Status.</li>
+<li><strong>Admission Modal</strong>: Add new student with validation for email, admission number, parent phone, and date of birth.</li>
+<li><strong>Actions</strong>: Edit profile, view academic history, generate FERPA data export.</li>
+</ul>
+<h3>3.3 Faculty & Teacher Management</h3>
+<ul>
+<li><strong>Faculty Roster</strong>: Comprehensive directory of teachers with employee IDs, qualification, allocated subjects, and contact details.</li>
+<li><strong>Class Teacher Assignment</strong>: Assign teachers as primary mentors for specific classes and sections.</li>
+</ul>
+<h3>3.4 Classes, Sections & Class Teachers</h3>
+<ul>
+<li><strong>Structure</strong>: Create academic classes (e.g. <code>Class 1</code> to <code>Class 12</code>) and attach section divisions (<code>A</code>, <code>B</code>, <code>C</code>).</li>
+<li><strong>Capacity</strong>: Monitor student capacity and gender ratio per classroom.</li>
+</ul>
+<h3>3.5 Attendance Register (Daily & Bulk Marking)</h3>
+<ul>
+<li><strong>Fast Bulk Marking</strong>: Select Class, Section, and Date to render the student roster with 1-click status toggles (<code>Present</code>, <code>Absent</code>, <code>Late</code>, <code>Excused</code>).</li>
+<li><strong>Attendance Summary</strong>: Percentage metrics with low-attendance warnings (<75%).</li>
+</ul>
+<h3>3.6 Finance, Fee Structures, Invoices & Receipts</h3>
+<ul>
+<li><strong>Fee Structures</strong>: Define recurring fee heads (Tuition, Laboratory, Sports, Library, Transportation).</li>
+<li><strong>Batch Invoicing</strong>: Auto-generate student fee invoices with due dates and concessions (<code>Merit</code>, <code>Sibling</code>, <code>EWS</code>).</li>
+<li><strong>Payment Collection</strong>: Collect payments in cash, online, or bank transfer with partial/full receipt generation.</li>
+</ul>
+<h3>3.7 Homework, Submissions & Teacher Grading</h3>
+<ul>
+<li><strong>Assignment Creation</strong>: Teachers specify class, subject, title, instructions, submission deadline, and attachments.</li>
+<li><strong>Student Submission</strong>: Students upload digital files or typed responses.</li>
+<li><strong>Review & Grading</strong>: Teachers evaluate submissions, assign scores, and provide constructive feedback.</li>
+</ul>
+<h3>3.8 Class Timetables & Schedules</h3>
+<ul>
+<li><strong>Weekly Matrix</strong>: Interactive timetable grid organized by days of the week (Monday–Saturday) and periods.</li>
+<li><strong>Conflict Prevention</strong>: System alerts if a teacher is double-booked across sections.</li>
+</ul>
+<h3>3.9 Campus Notice Board & Broadcasts</h3>
+<ul>
+<li><strong>Notice Creation</strong>: Publish urgent alerts, holiday notices, and exam announcements.</li>
+<li><strong>Targeting</strong>: Filter audience by <code>All</code>, <code>Students</code>, <code>Teachers</code>, or <code>Parents</code>.</li>
+</ul>
+<h3>3.10 Communication & Direct Messaging</h3>
+<ul>
+<li><strong>Instant Messaging</strong>: Real-time chat between Teachers, Parents, and Students.</li>
+<li><strong>Threaded Conversations</strong>: Dedicated discussion channels for class subjects.</li>
+</ul>
+<h3>3.11 Institutional Reports, Audit Trail & CSV Exports</h3>
+<ul>
+<li><strong>CSV Data Exporters</strong>: 1-click data exports for:</li>
+<li><code>Student Roster CSV</code></li>
+<li><code>Attendance Register CSV</code></li>
+<li><code>Fee Ledger CSV</code></li>
+<li><code>Exam GPA Matrix CSV</code></li>
+<li><strong>System Audit Trail</strong>: Immutable log of all administrative actions with actor, IP address, timestamp, and metadata.</li>
+</ul>
+<h3>3.12 Roles & Permissions Matrix</h3>
+<ul>
+<li><strong>Granular Permissions</strong>: View, toggle, and audit permissions per role across academic, financial, and AI endpoints.</li>
+</ul>
+<h3>3.13 Subject & Class Allocation</h3>
+<ul>
+<li><strong>Curriculum Mapping</strong>: Assign subjects (Mathematics, Science, English, Computer Science) to specific grades with credit weights.</li>
+</ul>
+<h3>3.14 Examination, Question Bank & Report Cards</h3>
+<ul>
+<li><strong>Exam Scheduling</strong>: Create examination terms (Midterm, Final, Unit Tests) and assign dates.</li>
+<li><strong>Mark Entry</strong>: Bulk enter student marks with automatic GPA and grade calculation (<code>A+</code>, <code>A</code>, <code>B</code>, <code>C</code>, <code>F</code>).</li>
+<li><strong>Report Cards</strong>: Printable digital report cards with teacher remarks.</li>
+</ul>
+<h3>3.15 Study Materials & Digital Library</h3>
+<ul>
+<li><strong>Resource Repository</strong>: Upload syllabus PDFs, lecture notes, textbook chapters, and sample question papers.</li>
+<li><strong>Vector Ingestion</strong>: Automatically index study materials into the RAG vector engine.</li>
+</ul>
+<h3>3.16 Institutional Backup & Data Compliance</h3>
+<ul>
+<li><strong>Database Snapshots</strong>: Trigger 1-click database backups with encrypted JSON payloads.</li>
+<li><strong>GDPR / FERPA Engine</strong>: Right-to-be-forgotten student anonymization and portable XML/JSON data archives.</li>
+</ul>
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+<h1>4. Unified AI Pedagogical Studio Guide (Vertical Tabs)</h1>
+<p>The <strong>eschoolAI Studio</strong> is accessible from the main sidebar under <strong><code>✨ AI Assistance</code></strong>. It features a unified workspace with a sleek <strong>Left Vertical Tab Layout</strong>:</p>
+<pre><code>┌──────────────────────────────────────┬─────────────────────────────────────────────────────────────┐
+│  AI MODULES                          │  ACTIVE WORKBENCH VIEWPORT                                  │
+│  💬 Query Assistant                  │  • Top Metadata &amp; Active Provider Badge                     │
+│  🎓 Lesson Planner                   │  • 2-Column Configuration Workbench                         │
+│  📝 Question Paper                   │  • Real-time Synthesized Preview                            │
+│  📄 Worksheet Studio                 │  • Action Buttons: [📋 Copy] [📄 Export DOC] [🖨️ Print]      │
+│  🔍 Answer OCR                       │  • Module-Specific Historical Archive Table                 │
+│  📢 Circular Generator               │                                                             │
+│  📚 Vector RAG Studio                │                                                             │
+│  📜 AI History &amp; Logs                │                                                             │
+└──────────────────────────────────────┴─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>4.1 Natural Query Chat Assistant</h3>
+<ul>
+<li><strong>Live Database Telemetry</strong>: Ask questions in plain English (<em>"Show me fee defaulters in Class 10"</em>, <em>"Who teaches Physics?"</em>).</li>
+<li><strong>Suggestion Chips</strong>: Fast 1-click queries for instant administrative analysis.</li>
+</ul>
+<h3>4.2 Bloom's Taxonomy Lesson Planner</h3>
+<ul>
+<li><strong>Inputs</strong>: Topic, Target Class, Subject, Duration (45/60 Mins), Framework (<em>Bloom's Revised</em>, <em>5E Model</em>, <em>Inquiry</em>).</li>
+<li><strong>Output</strong>: 4-phase pedagogical timeline (Introduction, Exploration, Guided Practice, Evaluation) with Bloom's level checkmarks.</li>
+<li><strong>Actions</strong>: <code>📋 Copy</code>, <code>📄 Export DOC (Word file with school letterhead)</code>, <code>🖨️ Print</code>, <code>💾 Publish to Curriculum</code>.</li>
+<li><strong>History Archive</strong>: View and re-download previously generated lesson plans.</li>
+</ul>
+<h3>4.3 Exam Question Paper Synthesizer</h3>
+<ul>
+<li><strong>Inputs</strong>: Exam Title, Class, Subject, Total Marks (50/100), Duration, Difficulty Distribution (<code>30% Recall • 50% Application • 20% HOTS</code>).</li>
+<li><strong>Output</strong>: Blueprint matrix with Section A (Objective), Section B (Short Answer), Section C (Case study/Long).</li>
+<li><strong>Actions</strong>: <code>📋 Copy</code>, <code>📄 Export DOC</code>, <code>🖨️ Print</code>, <code>💾 Sync to Question Bank</code>.</li>
+</ul>
+<h3>4.4 Differentiated Worksheet Studio</h3>
+<ul>
+<li><strong>Inputs</strong>: Worksheet Title, Core Concept, Class, Difficulty Tier (<code>Foundation</code>, <code>Standard</code>, <code>Challenge</code>, <code>Adaptive 3-Tier</code>).</li>
+<li><strong>Output</strong>: Multi-tier problem sets with progressive difficulty.</li>
+<li><strong>Actions</strong>: <code>📋 Copy</code>, <code>📄 Export DOC</code>, <code>🔑 Solution Key Toggle</code>, <code>💾 Assign as Homework</code>.</li>
+</ul>
+<h3>4.5 Answer Sheet OCR & Rubric Evaluator</h3>
+<ul>
+<li><strong>Inputs</strong>: Student Name, Examination, Ingested Handwritten OCR text.</li>
+<li><strong>Output</strong>: Overall score (<code>18/20 • 90%</code>), Performance Grade, Criteria-based Rubric Breakdown, and AI Feedback.</li>
+<li><strong>Actions</strong>: <code>📋 Copy</code>, <code>📄 Export DOC</code>, <code>💾 Approve into Official Gradebook</code>.</li>
+</ul>
+<h3>4.6 Institutional Circular Generator</h3>
+<ul>
+<li><strong>Inputs</strong>: Announcement Title, Target Audience (<code>All</code>, <code>Parents</code>, <code>Students</code>, <code>Teachers</code>), Tone, Dates.</li>
+<li><strong>Output</strong>: Formatted circular with official school header, reference code, body text, and principal signature block.</li>
+<li><strong>Actions</strong>: <code>📋 Copy</code>, <code>📄 Export DOC</code>, <code>🖨️ Print</code>, <code>📢 Dispatch to Notice Board</code>.</li>
+</ul>
+<h3>4.7 Tenant Vector RAG Studio</h3>
+<ul>
+<li><strong>Inputs</strong>: Semantic query string, Top-K chunk count, similarity threshold.</li>
+<li><strong>Output</strong>: Semantic matching score (<code>96.4% Similarity</code>), page references, and extracted textbook content with strict tenant isolation.</li>
+</ul>
+<h3>4.8 AI History, Token Telemetry & DOC Export</h3>
+<ul>
+<li><strong>Audit Table</strong>: Chronological log of all generations with timestamp, module, artifact title, target student/class, model used, tokens consumed, and calculated cost.</li>
+<li><strong>Word (.doc) Generator</strong>: Native browser-side Word export with UTF-8 BOM encoding and Microsoft Word HTML styling.</li>
+</ul>
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+<h1>5. Developer Architecture & System Design</h1>
+<h3>5.1 Technology Stack</h3>
+<ul>
+<li><strong>Backend Framework</strong>: Laravel 13, PHP 8.3+</li>
+<li><strong>Database</strong>: MySQL (Production) / SQLite (Testing)</li>
+<li><strong>Caching & Queues</strong>: Redis</li>
+<li><strong>Vector Database</strong>: Qdrant (Tenant-isolated payload filtering)</li>
+<li><strong>AI Providers</strong>: Configurable Adapter (OpenAI, Anthropic Claude, Google Gemini, Local Ollama)</li>
+<li><strong>Frontend</strong>: Vanilla CSS Design System (<code>schoolos-design-system.css</code>) + Reactive Client Architecture (<code>schoolos-app.js</code>)</li>
+<li><strong>Mobile Bridge</strong>: Flutter-compatible REST API Bridge with offline sync</li>
+</ul>
+<h3>5.2 Multi-Tenancy & Data Isolation Engine</h3>
+<p>Every tenant (school) is strictly isolated using automatic Eloquent global scopes and context resolution:</p>
+<pre><code>// In app/Tenancy/TenantContext.php
+public static function id(): ?int
+{
+    return static::$tenantId;
+}
+
+// In app/Tenancy/Traits/TenantScoped.php
+protected static function bootTenantScoped(): void
+{
+    static::addGlobalScope(new TenantScope);
+    
+    static::creating(function ($model) {
+        if (!$model-&gt;tenant_id &amp;&amp; TenantContext::hasTenant()) {
+            $model-&gt;tenant_id = TenantContext::id();
+        }
+    });
+}
+</code></pre>
+<h3>5.3 AI Service Layer & Swappable Providers</h3>
+<p>All AI features interact exclusively through <code>App\Services\AI\AiServiceManager</code>. Model credentials live strictly server-side:</p>
+<pre><code>// Resolving providers dynamically via configuration
+$aiService = app(\App\Services\AI\AiServiceManager::class);
+$result = $aiService-&gt;generate(&#039;lesson_planner&#039;, [
+    &#039;topic&#039; =&gt; &#039;Photosynthesis and Calvin Cycle&#039;,
+    &#039;class&#039; =&gt; &#039;Class 9&#039;,
+    &#039;subject&#039; =&gt; &#039;Biology&#039;,
+    &#039;framework&#039; =&gt; &#039;Blooms_Taxonomy&#039;
+]);
+</code></pre>
+<h3>5.4 Tenant-Isolated Vector RAG (Qdrant)</h3>
+<p>When querying textbooks and curriculum documents, the vector query strictly includes a tenant filter:</p>
+<pre><code>{
+  &quot;filter&quot;: {
+    &quot;must&quot;: [
+      { &quot;key&quot;: &quot;tenant_id&quot;, &quot;match&quot;: { &quot;value&quot;: 1 } }
+    ]
+  },
+  &quot;vector&quot;: [0.024, -0.015, 0.089, &quot;...&quot;],
+  &quot;top&quot;: 5
+}
+</code></pre>
+<h3>5.5 Mobile REST API Bridge & Offline Sync</h3>
+<p>Mobile endpoints support offline syncing via delta timestamps:</p>
+<ul>
+<li><code>GET /api/v1/mobile/bootstrap</code>: Fetches user profile, permissions, school config, and notifications.</li>
+<li><code>GET /api/v1/mobile/sync/delta?since=2026-08-30T00:00:00Z</code>: Fetches modified records since last synchronization.</li>
+<li><code>POST /api/v1/mobile/devices/register</code>: Registers FCM / APNs device push tokens.</li>
+</ul>
+<h3>5.6 Realtime WebSocket Hub & Alerts</h3>
+<p>Realtime notification hub supporting authenticated private channels:</p>
+<ul>
+<li><code>private-tenant.{tenantId}.user.{userId}</code>: Personal alerts and grades.</li>
+<li><code>presence-tenant.{tenantId}.class.{classId}</code>: Live classroom sessions.</li>
+<li><code>broadcast-tenant.{tenantId}.emergency</code>: Instant emergency broadcasts.</li>
+</ul>
+<h3>5.7 Security, GDPR & FERPA Compliance</h3>
+<ul>
+<li><strong>Authentication</strong>: Laravel Sanctum with token expiration and revocation.</li>
+<li><strong>Rate Limiting</strong>: Tiered API rate limiting per IP and per tenant.</li>
+<li><strong>FERPA Export</strong>: Full student data export into machine-readable JSON format.</li>
+<li><strong>Right to be Forgotten</strong>: GDPR-compliant anonymization of student PII while preserving aggregate financial records.</li>
+</ul>
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+<h1>6. Complete REST API Reference Catalog</h1>
+<h3>Authentication</h3>
+<ul>
+<li><code>POST /api/v1/auth/login</code>: Authenticate and receive Sanctum bearer token.</li>
+<li><code>GET /api/v1/auth/me</code>: Fetch authenticated user profile and permissions.</li>
+<li><code>POST /api/v1/auth/logout</code>: Revoke active bearer token.</li>
+</ul>
+<h3>Academic & Student Endpoints</h3>
+<ul>
+<li><code>GET /api/v1/students</code>: List enrolled students with pagination.</li>
+<li><code>POST /api/v1/students</code>: Enroll a new student.</li>
+<li><code>GET /api/v1/classes</code>: List all academic classes and sections.</li>
+<li><code>POST /api/v1/attendance/bulk</code>: Submit bulk attendance records for a section.</li>
+<li><code>GET /api/v1/homework</code>: List homework assignments.</li>
+<li><code>POST /api/v1/homework</code>: Create homework assignment.</li>
+</ul>
+<h3>Finance & Billing Endpoints</h3>
+<ul>
+<li><code>GET /api/v1/finance/invoices</code>: List fee invoices.</li>
+<li><code>POST /api/v1/finance/invoices</code>: Generate student invoice.</li>
+<li><code>POST /api/v1/finance/payments</code>: Process fee payment collection.</li>
+<li><code>GET /api/v1/finance/summary</code>: Financial analytics summary.</li>
+</ul>
+<h3>AI Pedagogical Endpoints</h3>
+<ul>
+<li><code>POST /api/v1/ai/query</code>: Execute natural query chat against institutional data.</li>
+<li><code>POST /api/v1/ai/lesson-plans/generate</code>: Synthesize Bloom's lesson plan.</li>
+<li><code>POST /api/v1/ai/question-papers/generate</code>: Synthesize exam question paper.</li>
+<li><code>POST /api/v1/ai/worksheets/generate</code>: Generate differentiated worksheet.</li>
+<li><code>POST /api/v1/ai/evaluations/evaluate</code>: Execute OCR answer evaluation.</li>
+<li><code>POST /api/v1/ai/circulars/generate</code>: Generate institutional circular.</li>
+<li><code>POST /api/v1/rag/query</code>: Execute tenant-isolated vector retrieval.</li>
+<li><code>GET /api/v1/ai/history</code>: Fetch tenant AI generation and telemetry logs.</li>
+</ul>
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+<h1>7. Database Schema & Migrations</h1>
+<p>The database consists of structured relational tables with foreign keys and indexes:</p>
+<pre><code>tenants
+users
+roles &amp; permissions (spatie-compatible)
+school_classes &amp; sections
+subjects &amp; class_subject_allocations
+students &amp; parents
+attendances
+fee_heads, fee_structures &amp; student_fee_invoices &amp; fee_payments
+homework_assignments &amp; homework_submissions
+exam_terms, exams &amp; student_exam_marks
+study_materials
+ai_generation_logs &amp; ai_token_meters
+audit_logs &amp; backup_logs
+</code></pre>
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+<h1>8. Installation, Testing & Deployment Guide</h1>
+<h3>Local Development Setup</h3>
+<pre><code># 1. Clone repository
+git clone https://github.com/AmitBMakwana/eschoolAI.git
+cd eschoolAI
+
+# 2. Install dependencies
+composer install
+
+# 3. Environment configuration
+cp .env.example .env
+php artisan key:generate
+
+# 4. Database migrations &amp; seeders
+php artisan migrate:fresh --seed
+
+# 5. Start development server
+php artisan serve
+</code></pre>
+<h3>Running Test Suite</h3>
+<pre><code>php artisan test
+# Output: 57 passed (303 assertions)
+</code></pre>
+<h3>Production Deployment Checklist</h3>
+<ol>
+<li>Configure MySQL 8.0+ and Redis instances.</li>
+<li>Set <code>APP_ENV=production</code> and <code>APP_DEBUG=false</code>.</li>
+<li>Configure Qdrant vector database URL and API key.</li>
+<li>Set AI provider keys (<code>OPENAI_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>, <code>GEMINI_API_KEY</code>) in <code>.env</code>.</li>
+<li>Run <code>php artisan config:cache</code> and <code>php artisan route:cache</code>.</li>
+<li>Configure Nginx reverse proxy with SSL certificate.</li>
+</ol>
+
+
+</body>
+</html>
