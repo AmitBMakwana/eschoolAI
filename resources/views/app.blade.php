@@ -65,10 +65,6 @@
                     <span class="icon">📊</span>
                     <span>Reports</span>
                 </div>
-                <div class="nav-item" data-tab="ai_assistant" onclick="navigate('ai_assistant')">
-                    <span class="icon">✨</span>
-                    <span>AI Assistant</span>
-                </div>
                 <div class="nav-item" data-tab="roles_permissions" onclick="navigate('roles_permissions')">
                     <span class="icon">🛡️</span>
                     <span>Roles & Permissions</span>
@@ -84,6 +80,44 @@
                 <div class="nav-item" data-tab="study_materials" onclick="navigate('study_materials')">
                     <span class="icon">📚</span>
                     <span>Study Materials</span>
+                </div>
+
+                <div class="nav-section-title" style="margin-top: 1.25rem; color: var(--brand-orange);">✨ AI Pedagogical Suite</div>
+                <div class="nav-item" data-tab="ai_assistant" onclick="navigate('ai_assistant')">
+                    <span class="icon">✨</span>
+                    <span>AI Studio Overview</span>
+                </div>
+                <div class="nav-item" data-tab="ai_chat" onclick="navigate('ai_chat')">
+                    <span class="icon">💬</span>
+                    <span>AI Query Assistant</span>
+                </div>
+                <div class="nav-item" data-tab="ai_lesson" onclick="navigate('ai_lesson')">
+                    <span class="icon">🎓</span>
+                    <span>AI Lesson Planner</span>
+                </div>
+                <div class="nav-item" data-tab="ai_question_paper" onclick="navigate('ai_question_paper')">
+                    <span class="icon">📝</span>
+                    <span>AI Question Paper</span>
+                </div>
+                <div class="nav-item" data-tab="ai_worksheet" onclick="navigate('ai_worksheet')">
+                    <span class="icon">📄</span>
+                    <span>AI Worksheet Studio</span>
+                </div>
+                <div class="nav-item" data-tab="ai_evaluation" onclick="navigate('ai_evaluation')">
+                    <span class="icon">🔍</span>
+                    <span>AI Answer OCR</span>
+                </div>
+                <div class="nav-item" data-tab="ai_circular" onclick="navigate('ai_circular')">
+                    <span class="icon">📢</span>
+                    <span>AI Circular Generator</span>
+                </div>
+                <div class="nav-item" data-tab="ai_rag" onclick="navigate('ai_rag')">
+                    <span class="icon">📚</span>
+                    <span>Vector RAG Studio</span>
+                </div>
+                <div class="nav-item" data-tab="ai_history" onclick="navigate('ai_history')">
+                    <span class="icon">📜</span>
+                    <span>AI History & Archive</span>
                 </div>
             </div>
         </aside>

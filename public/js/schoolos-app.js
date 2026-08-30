@@ -138,6 +138,43 @@ function hideModal() {
     if (overlay) overlay.style.display = 'none';
 }
 
+// DOC File Exporter & Clipboard Helpers
+function downloadAsDocFile(filename, title, contentHtml) {
+    const header = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head><meta charset='utf-8'><title>${title}</title>
+    <style>
+        body { font-family: 'Segoe UI', Calibri, Arial, sans-serif; font-size: 11pt; line-height: 1.6; margin: 1in; color: #1E293B; }
+        h1, h2, h3 { color: #FF5B37; margin-bottom: 0.25rem; }
+        .badge { background: #f1f5f9; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 9pt; }
+        table { border-collapse: collapse; width: 100%; margin-top: 15px; margin-bottom: 15px; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+        th { background-color: #f8fafc; font-weight: bold; }
+        .section-box { border: 1px solid #e2e8f0; padding: 12px; margin-bottom: 12px; border-radius: 6px; background-color: #fafafa; }
+        .letterhead { text-align: center; border-bottom: 2px solid #334155; padding-bottom: 15px; margin-bottom: 20px; }
+    </style>
+    </head><body><div class="letterhead"><h2>GREENFIELD INTERNATIONAL SCHOOL</h2><p>Official AI Curriculum Document</p></div><h2>${title}</h2><hr/>`;
+    const footer = `</body></html>`;
+    const source = header + contentHtml + footer;
+    const blob = new Blob(['\ufeff', source], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename.endsWith('.doc') ? filename : `${filename}.doc`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast(`📥 Generated & Downloaded "${filename}" as Word (.doc) document!`, 'success');
+}
+
+function copyTextToClipboard(text, msg = 'Copied generated output to clipboard!') {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => toast(msg, 'success')).catch(() => toast(msg, 'success'));
+    } else {
+        toast(msg, 'success');
+    }
+}
+
 // Global Router
 function navigate(tab) {
     SchoolOS.activeTab = tab;
@@ -165,7 +202,15 @@ function navigate(tab) {
             case 'notices': renderNotices(viewport); break;
             case 'communication': renderCommunication(viewport); break;
             case 'reports': renderReports(viewport); break;
-            case 'ai_assistant': renderAiAssistant(viewport); break;
+            case 'ai_assistant': SchoolOS.aiTab = 'chat'; renderAiAssistant(viewport); break;
+            case 'ai_chat': SchoolOS.aiTab = 'chat'; renderAiAssistant(viewport); break;
+            case 'ai_lesson': SchoolOS.aiTab = 'lesson'; renderAiAssistant(viewport); break;
+            case 'ai_question_paper': SchoolOS.aiTab = 'question_paper'; renderAiAssistant(viewport); break;
+            case 'ai_worksheet': SchoolOS.aiTab = 'worksheet'; renderAiAssistant(viewport); break;
+            case 'ai_evaluation': SchoolOS.aiTab = 'evaluation'; renderAiAssistant(viewport); break;
+            case 'ai_circular': SchoolOS.aiTab = 'circular'; renderAiAssistant(viewport); break;
+            case 'ai_rag': SchoolOS.aiTab = 'rag'; renderAiAssistant(viewport); break;
+            case 'ai_history': SchoolOS.aiTab = 'history'; renderAiAssistant(viewport); break;
             case 'roles_permissions': renderRolesPermissions(viewport); break;
             case 'subject_class': renderSubjectClass(viewport); break;
             case 'tests_exams': renderTestsExams(viewport); break;
@@ -1323,12 +1368,12 @@ function getAiTabHtml(tab, data) {
                         <form onsubmit="handleAiLessonPlan(event)">
                             <div class="form-group">
                                 <label class="form-label">Lesson Topic & Subject Unit</label>
-                                <input type="text" name="topic" class="form-control" required value="Electromagnetic Induction & Faraday's Law" />
+                                <input type="text" name="topic" id="lesson-topic-input" class="form-control" required value="Electromagnetic Induction & Faraday's Law" />
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
                                 <div class="form-group">
                                     <label class="form-label">Grade / Class</label>
-                                    <select name="class_name" class="form-control">
+                                    <select name="class_name" id="lesson-class-input" class="form-control">
                                         <option>Class 9</option>
                                         <option>Class 10</option>
                                         <option>Class 8</option>
@@ -1336,7 +1381,7 @@ function getAiTabHtml(tab, data) {
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Subject</label>
-                                    <select name="subject_name" class="form-control">
+                                    <select name="subject_name" id="lesson-subject-input" class="form-control">
                                         <option>Physics</option>
                                         <option>Mathematics</option>
                                         <option>Science</option>
@@ -1373,52 +1418,110 @@ function getAiTabHtml(tab, data) {
                                 <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">Physics: Electromagnetic Induction</h3>
                                 <div style="font-size: 0.75rem; color: var(--text-muted);">Grade 9 • 45 Minutes • Standard Bloom's Alignment</div>
                             </div>
-                            <div style="display: flex; gap: 0.5rem;">
-                                <button class="btn btn-secondary btn-sm" onclick="toast('Lesson Plan copied to clipboard!', 'info')">📋 Copy</button>
+                            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                                <button class="btn btn-secondary btn-sm" onclick="copyTextToClipboard(document.getElementById('lesson-plan-body').innerText, 'Lesson Plan copied to clipboard!')">📋 Copy</button>
+                                <button class="btn btn-secondary btn-sm" onclick="downloadAsDocFile('Lesson_Plan_Physics_Class9.doc', 'Physics: Electromagnetic Induction - Lesson Plan', document.getElementById('lesson-plan-body').innerHTML)">📄 Export DOC</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Print</button>
                                 <button class="btn btn-primary btn-sm" onclick="toast('Lesson Plan published to curriculum database!', 'success')">💾 Publish</button>
                             </div>
                         </div>
 
-                        <div style="margin-bottom: 1.25rem;">
-                            <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem;">🎯 Learning Objectives (Bloom's Taxonomy):</div>
-                            <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8125rem;">
-                                <div><span style="color: #10B981;">✔</span> <strong>Remembering:</strong> State Faraday's law of induction and define magnetic flux.</div>
-                                <div><span style="color: #10B981;">✔</span> <strong>Applying:</strong> Calculate induced electromotive force using $e = -N \\frac{\\Delta \\Phi}{\\Delta t}$.</div>
-                                <div><span style="color: #10B981;">✔</span> <strong>Evaluating:</strong> Predict direction of induced current using Lenz's Law and right-hand rule.</div>
+                        <div id="lesson-plan-body">
+                            <div style="margin-bottom: 1.25rem;">
+                                <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem;">🎯 Learning Objectives (Bloom's Taxonomy):</div>
+                                <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8125rem;">
+                                    <div><span style="color: #10B981;">✔</span> <strong>Remembering:</strong> State Faraday's law of induction and define magnetic flux.</div>
+                                    <div><span style="color: #10B981;">✔</span> <strong>Applying:</strong> Calculate induced electromotive force using $e = -N \\frac{\\Delta \\Phi}{\\Delta t}$.</div>
+                                    <div><span style="color: #10B981;">✔</span> <strong>Evaluating:</strong> Predict direction of induced current using Lenz's Law and right-hand rule.</div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.75rem;">⏱️ Timed Pedagogical Phases:</div>
-                        <div style="display: flex; flex-direction: column;">
-                            <div class="ai-timeline-item">
-                                <div class="ai-timeline-dot">1</div>
-                                <div>
-                                    <div style="font-weight: 700; font-size: 0.8125rem;">00-10 Min: Phenomenon Hook & Prior Knowledge</div>
-                                    <div style="font-size: 0.78rem; color: var(--text-muted);">Demonstrate magnet moving through coil and galvanometer deflection.</div>
+                            <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.75rem;">⏱️ Timed Pedagogical Phases:</div>
+                            <div style="display: flex; flex-direction: column;">
+                                <div class="ai-timeline-item">
+                                    <div class="ai-timeline-dot">1</div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 0.8125rem;">00-10 Min: Phenomenon Hook & Prior Knowledge</div>
+                                        <div style="font-size: 0.78rem; color: var(--text-muted);">Demonstrate magnet moving through coil and galvanometer deflection.</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="ai-timeline-item">
-                                <div class="ai-timeline-dot">2</div>
-                                <div>
-                                    <div style="font-weight: 700; font-size: 0.8125rem;">10-25 Min: Direct Instruction & Mathematical Formulation</div>
-                                    <div style="font-size: 0.78rem; color: var(--text-muted);">Explain rate of change of flux and derive Faraday's equation with Lenz polarity.</div>
+                                <div class="ai-timeline-item">
+                                    <div class="ai-timeline-dot">2</div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 0.8125rem;">10-25 Min: Direct Instruction & Mathematical Formulation</div>
+                                        <div style="font-size: 0.78rem; color: var(--text-muted);">Explain rate of change of flux and derive Faraday's equation with Lenz polarity.</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="ai-timeline-item">
-                                <div class="ai-timeline-dot">3</div>
-                                <div>
-                                    <div style="font-weight: 700; font-size: 0.8125rem;">25-40 Min: Guided Pair Calculations & Lab Simulation</div>
-                                    <div style="font-size: 0.78rem; color: var(--text-muted);">Students solve 3 numerical problems with varying coil turns and flux rates.</div>
+                                <div class="ai-timeline-item">
+                                    <div class="ai-timeline-dot">3</div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 0.8125rem;">25-40 Min: Guided Pair Calculations & Lab Simulation</div>
+                                        <div style="font-size: 0.78rem; color: var(--text-muted);">Students solve 3 numerical problems with varying coil turns and flux rates.</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="ai-timeline-item">
-                                <div class="ai-timeline-dot">4</div>
-                                <div>
-                                    <div style="font-weight: 700; font-size: 0.8125rem;">40-45 Min: Formative Exit Ticket Check</div>
-                                    <div style="font-size: 0.78rem; color: var(--text-muted);">2-question conceptual check to evaluate mastery before dismissal.</div>
+                                <div class="ai-timeline-item">
+                                    <div class="ai-timeline-dot">4</div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 0.8125rem;">40-45 Min: Formative Exit Ticket Check</div>
+                                        <div style="font-size: 0.78rem; color: var(--text-muted);">2-question conceptual check to evaluate mastery before dismissal.</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Module-Specific History Archive -->
+                <div class="card-panel" style="margin-top: 1.5rem;">
+                    <div class="card-panel-header">
+                        <div class="card-panel-title">📜 Lesson Plan Generation History</div>
+                        <span class="ai-card-badge ai-badge-bloom">Saved Curriculum Plans</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Title / Topic</th>
+                                    <th>Grade</th>
+                                    <th>Subject</th>
+                                    <th>Date Generated</th>
+                                    <th>Model</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Electromagnetic Induction & Faraday's Law</strong></td>
+                                    <td>Class 9</td>
+                                    <td>Physics</td>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">Today, 10:45 AM</td>
+                                    <td>GPT-4o</td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="downloadAsDocFile('Lesson_Plan_Physics_Class9.doc', 'Physics: Electromagnetic Induction', document.getElementById('lesson-plan-body').innerHTML)">📄 DOC</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Quadratic Equations & Roots of Polynomials</strong></td>
+                                    <td>Class 10</td>
+                                    <td>Mathematics</td>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">Yesterday, 03:15 PM</td>
+                                    <td>Claude 3.5 Sonnet</td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="toast('Loaded Quadratic Equations Plan into preview!', 'info')">👁️ View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cellular Respiration & ATP Synthesis</strong></td>
+                                    <td>Class 8</td>
+                                    <td>Science</td>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">28 Aug 2026</td>
+                                    <td>Gemini 1.5 Pro</td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="toast('Loaded Cellular Respiration Plan into preview!', 'info')">👁️ View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             `;
@@ -1477,13 +1580,15 @@ function getAiTabHtml(tab, data) {
                                 <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">Term 1 Mid-Year Physics Examination</h3>
                                 <div style="font-size: 0.75rem; color: var(--text-muted);">Class 9 • Time: 90 Mins • Max Marks: 50</div>
                             </div>
-                            <div style="display: flex; gap: 0.5rem;">
-                                <button class="btn btn-secondary btn-sm" onclick="toast('Question Paper downloaded as PDF!', 'info')">📥 PDF</button>
+                            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                                <button class="btn btn-secondary btn-sm" onclick="copyTextToClipboard(document.getElementById('question-paper-body').innerText, 'Question Paper copied to clipboard!')">📋 Copy</button>
+                                <button class="btn btn-secondary btn-sm" onclick="downloadAsDocFile('Exam_Paper_Class9_Physics.doc', 'Term 1 Mid-Year Physics Examination', document.getElementById('question-paper-body').innerHTML)">📄 Export DOC</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Print</button>
                                 <button class="btn btn-primary btn-sm" onclick="toast('Synced to institutional Question Bank!', 'success')">💾 Sync Bank</button>
                             </div>
                         </div>
 
-                        <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.8125rem;">
+                        <div id="question-paper-body" style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.8125rem;">
                             <div style="background: var(--bg-subtle); padding: 0.75rem; border-radius: var(--radius-md);">
                                 <div style="font-weight: 800; color: var(--brand-orange); margin-bottom: 0.35rem;">SECTION A: Objective Recall & Conceptual (10 Marks)</div>
                                 <div>1. Which law describes the direction of induced current in a conductor? <em>[2 Marks]</em></div>
@@ -1502,6 +1607,47 @@ function getAiTabHtml(tab, data) {
                                 <div>6. Transformer efficiency analysis and eddy current loss mitigation in core laminations. <em>[10 Marks]</em></div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Module-Specific History Archive -->
+                <div class="card-panel" style="margin-top: 1.5rem;">
+                    <div class="card-panel-header">
+                        <div class="card-panel-title">📜 Question Paper Generation History</div>
+                        <span class="ai-card-badge ai-badge-exam">Question Bank Papers</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Exam Title</th>
+                                    <th>Class / Subject</th>
+                                    <th>Total Marks</th>
+                                    <th>Date Generated</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Term 1 Mid-Year Physics Examination</strong></td>
+                                    <td>Class 9 • Physics</td>
+                                    <td>50 Marks</td>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">Today, 09:15 AM</td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="downloadAsDocFile('Exam_Paper_Class9_Physics.doc', 'Term 1 Mid-Year Physics Examination', document.getElementById('question-paper-body').innerHTML)">📄 DOC</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Class 10 Trigonometry Unit Assessment</strong></td>
+                                    <td>Class 10 • Mathematics</td>
+                                    <td>40 Marks</td>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">29 Aug 2026</td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="toast('Loaded Trigonometry Exam Paper into preview!', 'info')">👁️ View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             `;
@@ -1554,13 +1700,15 @@ function getAiTabHtml(tab, data) {
                                 <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">Electromagnetic Induction Practice Worksheet</h3>
                                 <div style="font-size: 0.75rem; color: var(--text-muted);">Class 9 Physics • Student Worksheet & Teacher Solution Rubric</div>
                             </div>
-                            <div style="display: flex; gap: 0.5rem;">
+                            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                                <button class="btn btn-secondary btn-sm" onclick="copyTextToClipboard(document.getElementById('worksheet-body').innerText, 'Worksheet copied to clipboard!')">📋 Copy</button>
+                                <button class="btn btn-secondary btn-sm" onclick="downloadAsDocFile('Worksheet_Physics_Class9.doc', 'Electromagnetic Induction Practice Worksheet', document.getElementById('worksheet-body').innerHTML)">📄 Export DOC</button>
                                 <button class="btn btn-secondary btn-sm" onclick="toast('Teacher Solution Key unhidden!', 'info')">🔑 Solution Key</button>
                                 <button class="btn btn-primary btn-sm" onclick="toast('Assigned as Class 9 Homework in database!', 'success')">💾 Assign Homework</button>
                             </div>
                         </div>
 
-                        <div style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.8125rem;">
+                        <div id="worksheet-body" style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.8125rem;">
                             <div style="border-left: 3px solid #10B981; padding-left: 0.75rem;">
                                 <strong>Tier 1 — Foundation:</strong> Fill in the blanks with appropriate keywords (Flux, Coil, EMF, Tesla).
                             </div>
@@ -1571,6 +1719,47 @@ function getAiTabHtml(tab, data) {
                                 <strong>Tier 3 — Challenge Extension:</strong> Analyze induction braking mechanisms in high-speed bullet trains.
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Module-Specific History Archive -->
+                <div class="card-panel" style="margin-top: 1.5rem;">
+                    <div class="card-panel-header">
+                        <div class="card-panel-title">📜 Worksheet Generation History</div>
+                        <span class="ai-card-badge ai-badge-bloom">Active Worksheets</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Worksheet Title</th>
+                                    <th>Class</th>
+                                    <th>Tier / Difficulty</th>
+                                    <th>Generated On</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Electromagnetic Induction Practice Exercises</strong></td>
+                                    <td>Class 9</td>
+                                    <td>Adaptive 3-Tier</td>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">Today, 11:20 AM</td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="downloadAsDocFile('Worksheet_Physics_Class9.doc', 'Electromagnetic Induction Practice Worksheet', document.getElementById('worksheet-body').innerHTML)">📄 DOC</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Algebraic Polynomials Diagnostic Worksheet</strong></td>
+                                    <td>Class 8</td>
+                                    <td>Standard (Medium)</td>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">28 Aug 2026</td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="toast('Loaded Polynomial Worksheet into preview!', 'info')">👁️ View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             `;
@@ -1616,23 +1805,70 @@ function getAiTabHtml(tab, data) {
                                 <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">OCR Pedagogical Scorecard</h3>
                                 <div style="font-size: 0.75rem; color: var(--text-muted);">Alfiya Farooqui (ADM-2026-001) • Term 1 Physics Exam</div>
                             </div>
-                            <button class="btn btn-primary btn-sm" onclick="toast('Score approved and recorded in official Gradebook!', 'success')">💾 Approve to Gradebook</button>
-                        </div>
-
-                        <div class="ai-rubric-score-box">
-                            <div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Score Awarded</div>
-                                <div style="font-size: 1.6rem; font-weight: 800; color: #059669;">18 / 20 <span style="font-size: 0.9rem; font-weight: 600;">(90%)</span></div>
+                            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                                <button class="btn btn-secondary btn-sm" onclick="copyTextToClipboard(document.getElementById('evaluation-body').innerText, 'Scorecard copied to clipboard!')">📋 Copy</button>
+                                <button class="btn btn-secondary btn-sm" onclick="downloadAsDocFile('OCR_Scorecard_Alfiya_Farooqui.doc', 'Student OCR Pedagogical Scorecard - Alfiya Farooqui', document.getElementById('evaluation-body').innerHTML)">📄 Export DOC</button>
+                                <button class="btn btn-primary btn-sm" onclick="toast('Score approved and recorded in official Gradebook!', 'success')">💾 Approve to Gradebook</button>
                             </div>
-                            <span class="ai-card-badge ai-badge-rubric" style="font-size: 0.85rem; padding: 0.4rem 0.85rem;">Grade: A (Distinction)</span>
                         </div>
 
-                        <div style="font-size: 0.8125rem; line-height: 1.6;">
-                            <div style="font-weight: 700; margin-bottom: 0.25rem;">📝 Rubric Evaluation Breakdown:</div>
-                            <div style="margin-bottom: 0.5rem;">• <strong>Conceptual Accuracy (10/10):</strong> Precise statement of Faraday's Law and negative flux rate derivative.</div>
-                            <div style="margin-bottom: 0.5rem;">• <strong>Mathematical Notation (4/5):</strong> Correct formula; minor recommendation to define SI units for flux $(\\text{Weber})$.</div>
-                            <div>• <strong>Lenz Law Polarity (4/5):</strong> Accurately explains energy conservation and opposing polarity.</div>
+                        <div id="evaluation-body">
+                            <div class="ai-rubric-score-box">
+                                <div>
+                                    <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Score Awarded</div>
+                                    <div style="font-size: 1.6rem; font-weight: 800; color: #059669;">18 / 20 <span style="font-size: 0.9rem; font-weight: 600;">(90%)</span></div>
+                                </div>
+                                <span class="ai-card-badge ai-badge-rubric" style="font-size: 0.85rem; padding: 0.4rem 0.85rem;">Grade: A (Distinction)</span>
+                            </div>
+
+                            <div style="font-size: 0.8125rem; line-height: 1.6;">
+                                <div style="font-weight: 700; margin-bottom: 0.25rem;">📝 Rubric Evaluation Breakdown:</div>
+                                <div style="margin-bottom: 0.5rem;">• <strong>Conceptual Accuracy (10/10):</strong> Precise statement of Faraday's Law and negative flux rate derivative.</div>
+                                <div style="margin-bottom: 0.5rem;">• <strong>Mathematical Notation (4/5):</strong> Correct formula; minor recommendation to define SI units for flux $(\\text{Weber})$.</div>
+                                <div>• <strong>Lenz Law Polarity (4/5):</strong> Accurately explains energy conservation and opposing polarity.</div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Module-Specific History Archive -->
+                <div class="card-panel" style="margin-top: 1.5rem;">
+                    <div class="card-panel-header">
+                        <div class="card-panel-title">📜 Evaluated Answer Sheet History</div>
+                        <span class="ai-card-badge ai-badge-rubric">Gradebook Submissions</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Exam</th>
+                                    <th>Score Awarded</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Alfiya Farooqui</strong> (ADM-001)</td>
+                                    <td>Term 1 Physics</td>
+                                    <td><strong style="color: #059669;">18 / 20 (90%)</strong></td>
+                                    <td><span class="concession-pill concession-merit">APPROVED</span></td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="downloadAsDocFile('OCR_Scorecard_Alfiya_Farooqui.doc', 'Student OCR Scorecard', document.getElementById('evaluation-body').innerHTML)">📄 DOC</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Alex Miller</strong> (ADM-002)</td>
+                                    <td>Term 1 Physics</td>
+                                    <td><strong style="color: #059669;">16 / 20 (80%)</strong></td>
+                                    <td><span class="concession-pill concession-merit">APPROVED</span></td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="toast('Loaded Alex Miller Scorecard into preview!', 'info')">👁️ View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             `;
@@ -1687,10 +1923,15 @@ function getAiTabHtml(tab, data) {
                                 <h3 style="margin: 0; font-size: 1.1rem; color: var(--brand-orange);">Institutional Circular Preview</h3>
                                 <div style="font-size: 0.75rem; color: var(--text-muted);">Ref: GIS/CIR/2026/089 • Date: ${new Date().toLocaleDateString()}</div>
                             </div>
-                            <button class="btn btn-primary btn-sm" onclick="toast('Circular dispatched to Campus Notice Board!', 'success')">📢 Dispatch to Notice Board</button>
+                            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                                <button class="btn btn-secondary btn-sm" onclick="copyTextToClipboard(document.getElementById('circular-letterhead-body').innerText, 'Circular copied to clipboard!')">📋 Copy</button>
+                                <button class="btn btn-secondary btn-sm" onclick="downloadAsDocFile('Circular_STEM_Fair_2026.doc', 'Greenfield International School - Circular', document.getElementById('circular-letterhead-body').innerHTML)">📄 Export DOC</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Print</button>
+                                <button class="btn btn-primary btn-sm" onclick="toast('Circular dispatched to Campus Notice Board!', 'success')">📢 Dispatch Notice</button>
+                            </div>
                         </div>
 
-                        <div class="ai-circular-letterhead">
+                        <div class="ai-circular-letterhead" id="circular-letterhead-body">
                             <div style="text-align: center; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.75rem; margin-bottom: 1rem;">
                                 <div style="font-size: 1.15rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;">Greenfield International School</div>
                                 <div style="font-size: 0.75rem; opacity: 0.8;">Affiliated to National Education Board • Academic Session 2026-2027</div>
@@ -1713,6 +1954,47 @@ function getAiTabHtml(tab, data) {
                                 Greenfield International School
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Module-Specific History Archive -->
+                <div class="card-panel" style="margin-top: 1.5rem;">
+                    <div class="card-panel-header">
+                        <div class="card-panel-title">📜 Circular Dispatch History</div>
+                        <span class="ai-card-badge ai-badge-circular">Dispatched Notices</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Circular Subject</th>
+                                    <th>Audience</th>
+                                    <th>Tone</th>
+                                    <th>Dispatched Date</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Annual STEM & Science Innovation Fair 2026</strong></td>
+                                    <td>Entire School</td>
+                                    <td>Formal</td>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">Today, 11:40 AM</td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="downloadAsDocFile('Circular_STEM_Fair_2026.doc', 'Greenfield Circular', document.getElementById('circular-letterhead-body').innerHTML)">📄 DOC</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Term 1 Parent-Teacher Consultations Schedule</strong></td>
+                                    <td>Parents & Guardians</td>
+                                    <td>Urgent Notice</td>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">26 Aug 2026</td>
+                                    <td style="text-align: right;">
+                                        <button class="btn btn-secondary btn-sm" onclick="toast('Loaded PTM Circular into preview!', 'info')">👁️ View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             `;
