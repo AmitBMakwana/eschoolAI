@@ -131,6 +131,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/finance/structures', [FeeController::class, 'storeStructure']);
         Route::get('/finance/concessions', [FeeController::class, 'concessions']);
         Route::post('/finance/concessions', [FeeController::class, 'storeConcession']);
+        Route::put('/finance/concessions/{id}', [FeeController::class, 'updateConcession']);
+        Route::delete('/finance/concessions/{id}', [FeeController::class, 'destroyConcession']);
         Route::get('/finance/invoices', [FeeController::class, 'invoices']);
         Route::post('/finance/invoices/generate-batch', [FeeController::class, 'generateBatchInvoices']);
         Route::post('/finance/payments/collect', [FeeController::class, 'collectPayment']);

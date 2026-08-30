@@ -111,7 +111,7 @@ class FeeController extends Controller
      */
     public function concessions(Request $request): JsonResponse
     {
-        $concessions = FeeConcession::with('student.user')->where('is_active', true)->get();
+        $concessions = FeeConcession::with(['student.user', 'student.schoolClass'])->where('is_active', true)->get();
 
         return response()->json([
             'success' => true,
@@ -141,8 +141,43 @@ class FeeController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Fee concession / scholarship granted.',
-            'data' => $concession->load('student.user'),
+            'data' => $concession->load(['student.user', 'student.schoolClass']),
         ], 201);
+    }
+
+    public function updateConcession(Request $request, int $id): JsonResponse
+    {
+        $concession = FeeConcession::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'sometimes|string|max:150',
+            'discount_type' => 'sometimes|in:percentage,fixed',
+            'discount_value' => 'sometimes|numeric|min:0.01',
+            'reason' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        $concession->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Fee concession updated successfully.',
+            'data' => $concession->load(['student.user', 'student.schoolClass']),
+        ]);
+    }
+
+    public function destroyConcession(int $id): JsonResponse
+    {
+        $concession = FeeConcession::findOrFail($id);
+        $concession->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Fee concession removed successfully.',
+        ]);
     }
 
     /**
