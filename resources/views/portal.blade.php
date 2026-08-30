@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI SchoolOS — Multi-Role SaaS Enterprise Portal</title>
+    <title>eschoolAI — Multi-Role SaaS Enterprise Portal</title>
     <link rel="stylesheet" href="/css/schoolos-design-system.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -92,10 +92,10 @@
         <aside class="portal-sidebar">
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem;">
                 <div style="width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, #6366f1, #8b5cf6); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(99,102,241,0.4);">
-                    OS
+                    eS
                 </div>
                 <div>
-                    <div style="font-weight: 700; font-size: 1rem; letter-spacing: -0.02em;">AI SchoolOS</div>
+                    <div style="font-weight: 700; font-size: 1rem; letter-spacing: -0.02em;">eschoolAI</div>
                     <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Enterprise SaaS</div>
                 </div>
             </div>

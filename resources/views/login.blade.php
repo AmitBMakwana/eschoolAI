@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In — AI SchoolOS Enterprise Management</title>
+    <title>Sign In — eschoolAI Enterprise Platform</title>
     <link rel="stylesheet" href="/css/schoolos-design-system.css">
     <style>
         body {
@@ -56,9 +56,9 @@
     <div class="login-card">
         <div class="login-header">
             <div class="login-brand">
-                <div class="brand-badge" style="width: 42px; height: 42px; font-size: 1.15rem;">OS</div>
+                <div class="brand-badge" style="width: 42px; height: 42px; font-size: 1.15rem;">eS</div>
                 <div style="text-align: left;">
-                    <div style="font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; line-height: 1.1; color: var(--text-main);">AI SchoolOS</div>
+                    <div style="font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; line-height: 1.1; color: var(--text-main);">eschoolAI</div>
                     <div style="font-size: 0.75rem; color: var(--brand-orange); font-weight: 700; text-transform: uppercase;">Enterprise Education SaaS</div>
                 </div>
             </div>

@@ -16,7 +16,7 @@ class PortalAndSeederTest extends TestCase
         $response = $this->get('/portal');
 
         $response->assertStatus(200);
-        $response->assertSee('AI SchoolOS');
+        $response->assertSee('eschoolAI');
         $response->assertSee('Fees');
     }
 

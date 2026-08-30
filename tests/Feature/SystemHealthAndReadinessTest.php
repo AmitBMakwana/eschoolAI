@@ -17,7 +17,7 @@ class SystemHealthAndReadinessTest extends TestCase
         $healthzRes->assertStatus(200)
             ->assertJson([
                 'status' => 'healthy',
-                'platform' => 'AI SchoolOS',
+                'platform' => 'eschoolAI',
                 'services' => [
                     'database' => [
                         'status' => 'up',

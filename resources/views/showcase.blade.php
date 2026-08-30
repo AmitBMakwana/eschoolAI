@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI SchoolOS — Design System & Component Showcase</title>
+    <title>eschoolAI — Design System & Component Showcase</title>
     <link rel="stylesheet" href="/css/schoolos-design-system.css">
     <script src="/js/schoolos-ui.js"></script>
     <style>
@@ -33,7 +33,7 @@
     <aside class="app-sidebar">
         <div class="sidebar-header">
             <div class="brand-icon">✨</div>
-            <div class="brand-text">AI SchoolOS</div>
+            <div class="brand-text">eschoolAI</div>
         </div>
 
         <div class="sidebar-content">

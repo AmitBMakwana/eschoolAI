@@ -1,4 +1,4 @@
-# AI SchoolOS - Master Engineering Instructions
+# eschoolAI - Master Engineering Instructions
 
 ## PRODUCT
 Build a production-ready multi-tenant SaaS School Management and AI Education Platform.

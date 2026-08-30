@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI SchoolOS — Multi-Tenant SaaS School Management & AI Education Platform</title>
+    <title>eschoolAI — Multi-Tenant SaaS School Management & AI Education Platform</title>
     <link rel="stylesheet" href="/css/schoolos-design-system.css">
 </head>
 <body>
@@ -12,9 +12,9 @@
         <!-- Sidebar Navigation (All 16 Modules Matching Reference) -->
         <aside class="app-sidebar">
             <div class="sidebar-header">
-                <div class="brand-badge">OS</div>
+                <div class="brand-badge">eS</div>
                 <div>
-                    <div style="font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; line-height: 1.1; color: var(--text-main);">AI SchoolOS</div>
+                    <div style="font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em; line-height: 1.1; color: var(--text-main);">eschoolAI</div>
                     <div style="font-size: 0.6875rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">Enterprise SaaS</div>
                 </div>
             </div>

@@ -27,7 +27,7 @@ class BackupManagerService
         $snapshot = [
             'tenant_id' => $tenantId,
             'generated_at' => now()->toIso8601String(),
-            'platform' => 'AI SchoolOS Multi-Tenant SaaS',
+            'platform' => 'eschoolAI Multi-Tenant SaaS',
             'version' => '1.0.0-PROD',
             'data' => [
                 'users' => User::where('tenant_id', $tenantId)->get(),

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI SchoolOS — Interactive API Documentation</title>
+    <title>eschoolAI — Interactive API Documentation</title>
     <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css">
     <link rel="stylesheet" href="/css/schoolos-design-system.css">
     <style>
@@ -32,10 +32,10 @@
     <div class="docs-header">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
             <div style="width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
-                AI
+                eS
             </div>
             <div>
-                <h2 style="margin: 0; font-size: 1.125rem; color: #f8fafc;">AI SchoolOS — REST API Reference</h2>
+                <h2 style="margin: 0; font-size: 1.125rem; color: #f8fafc;">eschoolAI — REST API Reference</h2>
                 <p style="margin: 0; font-size: 0.75rem; color: #94a3b8;">Interactive OpenAPI 3.0 Documentation Specification</p>
             </div>
         </div>

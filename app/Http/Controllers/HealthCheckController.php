@@ -79,7 +79,7 @@ class HealthCheckController extends Controller
         return response()->json([
             'status' => $status,
             'timestamp' => now()->toIso8601String(),
-            'platform' => 'AI SchoolOS',
+            'platform' => 'eschoolAI',
             'version' => '1.0.0-PROD',
             'services' => $services,
         ], $statusCode);
