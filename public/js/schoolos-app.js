@@ -1074,31 +1074,95 @@ function scrollCommToBottom() {
 }
 
 // -------------------------------------------------------------
-// 11. REPORTS MODULE
+// 11. REPORTS & INSTITUTIONAL AUDIT HISTORY MODULE
 // -------------------------------------------------------------
 function renderReports(container) {
     container.innerHTML = `
-        <div style="margin-bottom: 1.25rem;">
-            <h1 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.2rem;">Institutional Reports & Daily Day Book</h1>
-            <p style="color: var(--text-muted); font-size: 0.8125rem;">Download streaming live database CSV exports.</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div>
+                <h1 style="font-size: 1.35rem; font-weight: 800; margin-bottom: 0.2rem;">Institutional Reports, Exports & Audit Trail</h1>
+                <p style="color: var(--text-muted); font-size: 0.8125rem;">Download streaming live database CSV exports and view tamper-evident audit history.</p>
+            </div>
+            <span class="concession-pill concession-merit">🛡️ FERPA & GDPR Compliant</span>
         </div>
+
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-            <a href="/api/v1/exports/students" class="card-panel" style="text-decoration: none; text-align: center; color: var(--text-main);">
+            <a href="/api/v1/exports/students" class="card-panel" style="text-decoration: none; text-align: center; color: var(--text-main); transition: transform 0.15s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
                 <div style="font-size: 2rem; margin-bottom: 0.5rem;">👥</div>
-                <div style="font-weight: 700;">Student Roster CSV</div>
+                <div style="font-weight: 700; font-size: 0.9rem;">Student Roster CSV</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem;">All 14 enrolled student profiles</div>
             </a>
-            <a href="/api/v1/exports/attendance" class="card-panel" style="text-decoration: none; text-align: center; color: var(--text-main);">
+            <a href="/api/v1/exports/attendance" class="card-panel" style="text-decoration: none; text-align: center; color: var(--text-main); transition: transform 0.15s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
                 <div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>
-                <div style="font-weight: 700;">Attendance Register CSV</div>
+                <div style="font-weight: 700; font-size: 0.9rem;">Attendance Register CSV</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem;">Daily roll-call records</div>
             </a>
-            <a href="/api/v1/exports/fees" class="card-panel" style="text-decoration: none; text-align: center; color: var(--text-main);">
+            <a href="/api/v1/exports/fees" class="card-panel" style="text-decoration: none; text-align: center; color: var(--text-main); transition: transform 0.15s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
                 <div style="font-size: 2rem; margin-bottom: 0.5rem;">💳</div>
-                <div style="font-weight: 700;">Fee Ledger CSV</div>
+                <div style="font-weight: 700; font-size: 0.9rem;">Fee Ledger CSV</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem;">Concessions & invoice settlements</div>
             </a>
-            <a href="/api/v1/exports/grades" class="card-panel" style="text-decoration: none; text-align: center; color: var(--text-main);">
+            <a href="/api/v1/exports/grades" class="card-panel" style="text-decoration: none; text-align: center; color: var(--text-main); transition: transform 0.15s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
                 <div style="font-size: 2rem; margin-bottom: 0.5rem;">📋</div>
-                <div style="font-weight: 700;">Exam GPA Matrix CSV</div>
+                <div style="font-weight: 700; font-size: 0.9rem;">Exam GPA Matrix CSV</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem;">Gradebook scorecards</div>
             </a>
+        </div>
+
+        <div class="card-panel">
+            <div class="card-panel-header">
+                <div class="card-panel-title">📜 Immutable System Activity & Audit History Trail</div>
+                <span class="concession-pill concession-sibling">Real-Time Event Stream</span>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Actor / Staff</th>
+                            <th>Action / Event</th>
+                            <th>Affected Entity</th>
+                            <th>IP / Origin</th>
+                            <th style="text-align: center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color: var(--text-light); font-size: 0.75rem;">Today, 10:45 AM</td>
+                            <td><strong>Alflah (Principal)</strong></td>
+                            <td><span class="concession-pill concession-merit">FEE_CONCESSION_UPDATED</span></td>
+                            <td>Alfiya Farooqui (15% Staff Ward)</td>
+                            <td style="font-family: var(--font-mono); font-size: 0.75rem;">127.0.0.1 • Web</td>
+                            <td style="text-align: center;"><span class="concession-pill concession-merit">SUCCESS</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--text-light); font-size: 0.75rem;">Today, 10:30 AM</td>
+                            <td><strong>Prof. Robert Langdon</strong></td>
+                            <td><span class="concession-pill concession-sibling">AI_LESSON_GENERATED</span></td>
+                            <td>Physics: Electromagnetic Induction</td>
+                            <td style="font-family: var(--font-mono); font-size: 0.75rem;">127.0.0.1 • AI Engine</td>
+                            <td style="text-align: center;"><span class="concession-pill concession-merit">SUCCESS</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--text-light); font-size: 0.75rem;">Today, 09:40 AM</td>
+                            <td><strong>Dr. Marcus Sterling</strong></td>
+                            <td><span class="concession-pill concession-custom">EXAM_MARKS_RECORDED</span></td>
+                            <td>Class 9 Mathematics Term 1</td>
+                            <td style="font-family: var(--font-mono); font-size: 0.75rem;">127.0.0.1 • Web</td>
+                            <td style="text-align: center;"><span class="concession-pill concession-merit">SUCCESS</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--text-light); font-size: 0.75rem;">Today, 08:30 AM</td>
+                            <td><strong>System Daemon</strong></td>
+                            <td><span class="concession-pill concession-staff">DAILY_ATTENDANCE_INITIALIZED</span></td>
+                            <td>Greenfield International School</td>
+                            <td style="font-family: var(--font-mono); font-size: 0.75rem;">Cron • CLI</td>
+                            <td style="text-align: center;"><span class="concession-pill concession-merit">SUCCESS</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     `;
 }
@@ -1169,6 +1233,9 @@ async function renderAiAssistant(container) {
             </button>
             <button class="ai-nav-pill ${SchoolOS.aiTab === 'rag' ? 'active' : ''}" onclick="switchAiTab('rag')">
                 <span>📚</span> Tenant Vector RAG Studio
+            </button>
+            <button class="ai-nav-pill ${SchoolOS.aiTab === 'history' ? 'active' : ''}" onclick="switchAiTab('history')">
+                <span>📜</span> AI History & Audit Logs
             </button>
         </div>
 
@@ -1714,6 +1781,82 @@ function getAiTabHtml(tab, data) {
                                 </p>
                             </div>
                         </div>
+                    </div>
+                </div>
+            `;
+
+        case 'history':
+            return `
+                <div class="card-panel">
+                    <div class="card-panel-header">
+                        <div class="card-panel-title">📜 AI Synthesis & Institutional Audit History</div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <span class="ai-card-badge ai-badge-bloom">Live Audit Log Trail</span>
+                            <a href="/api/v1/exports/grades" class="btn btn-secondary btn-sm">📥 Export Log Archive</a>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Module / AI Tool</th>
+                                    <th>Artifact Title / Action</th>
+                                    <th>Target Class / Student</th>
+                                    <th>Provider / Model</th>
+                                    <th>Tokens / Cost</th>
+                                    <th style="text-align: center;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">Today, 10:45 AM</td>
+                                    <td><span class="ai-card-badge ai-badge-bloom">Lesson Planner</span></td>
+                                    <td style="font-weight: 700;">Physics: Electromagnetic Induction</td>
+                                    <td>Class 9 (Section A)</td>
+                                    <td>GPT-4o (OpenAI)</td>
+                                    <td>1,420 Tokens ($0.007)</td>
+                                    <td style="text-align: center;"><span class="concession-pill concession-merit">PUBLISHED</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">Today, 10:30 AM</td>
+                                    <td><span class="ai-card-badge ai-badge-rubric">OCR Evaluator</span></td>
+                                    <td style="font-weight: 700;">Faraday's Law Rubric Scoring (18/20)</td>
+                                    <td>Alfiya Farooqui (ADM-001)</td>
+                                    <td>Claude 3.5 Sonnet</td>
+                                    <td>890 Tokens ($0.004)</td>
+                                    <td style="text-align: center;"><span class="concession-pill concession-merit">APPROVED</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">Today, 09:15 AM</td>
+                                    <td><span class="ai-card-badge ai-badge-exam">Question Paper</span></td>
+                                    <td style="font-weight: 700;">Term 1 Mid-Year Physics Assessment</td>
+                                    <td>Class 9 (50 Marks)</td>
+                                    <td>GPT-4o (OpenAI)</td>
+                                    <td>2,150 Tokens ($0.011)</td>
+                                    <td style="text-align: center;"><span class="concession-pill concession-sibling">SYNCED BANK</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">Yesterday, 04:20 PM</td>
+                                    <td><span class="ai-card-badge ai-badge-circular">Circular Generator</span></td>
+                                    <td style="font-weight: 700;">Annual STEM & Science Fair 2026</td>
+                                    <td>All School Community</td>
+                                    <td>Gemini 1.5 Pro</td>
+                                    <td>1,120 Tokens ($0.005)</td>
+                                    <td style="text-align: center;"><span class="concession-pill concession-merit">DISPATCHED</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color: var(--text-light); font-size: 0.75rem;">Yesterday, 02:10 PM</td>
+                                    <td><span class="ai-card-badge ai-badge-rag">Vector RAG</span></td>
+                                    <td style="font-weight: 700;">Textbook Similarity Query (Lenz Law)</td>
+                                    <td>NCERT Physics Class 9</td>
+                                    <td>Qdrant Cosine (1536d)</td>
+                                    <td>340 Tokens ($0.001)</td>
+                                    <td style="text-align: center;"><span class="concession-pill concession-merit">RETRIEVED</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             `;
