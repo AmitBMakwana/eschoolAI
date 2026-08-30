@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\AiStudentAnalyticsController;
 use App\Http\Controllers\Api\V1\AiWorksheetController;
 use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\BackupAndExportController;
 use App\Http\Controllers\Api\V1\BillingController;
 use App\Http\Controllers\Api\V1\CircularGeneratorController;
 use App\Http\Controllers\Api\V1\CommunicationController;
@@ -177,5 +178,13 @@ Route::prefix('v1')->group(function () {
         Route::get('/security/audit-trail', [SecurityAdminController::class, 'auditTrail']);
         Route::get('/compliance/export/{student_id}', [ComplianceController::class, 'export']);
         Route::post('/compliance/anonymize/{student_id}', [ComplianceController::class, 'anonymize']);
+
+        // 17. Automated Backups & System Exports Engine
+        Route::get('/backups', [BackupAndExportController::class, 'backups']);
+        Route::post('/backups/trigger', [BackupAndExportController::class, 'triggerBackup']);
+        Route::get('/exports/students', [BackupAndExportController::class, 'exportStudents']);
+        Route::get('/exports/attendance', [BackupAndExportController::class, 'exportAttendance']);
+        Route::get('/exports/fees', [BackupAndExportController::class, 'exportFees']);
+        Route::get('/exports/grades', [BackupAndExportController::class, 'exportGrades']);
     });
 });
