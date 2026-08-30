@@ -1,7 +1,7 @@
 /**
- * AI SchoolOS — Complete Enterprise SaaS Master Client Logic
- * Implements 100% of the 16 Modules from the EduFlow / MERN Stack Specification
- * Full REST API Integration, Sub-Tabs, Live Modals & Rich Aesthetics
+ * AI SchoolOS — Master SaaS Client Application
+ * Complete 16-Module Suite Matching EduFlow Reference
+ * Full End-to-End REST API Integration, Authentication (Login/Logout), & Dual Theme
  */
 
 const API_BASE = '/api/v1';
@@ -9,7 +9,6 @@ const API_BASE = '/api/v1';
 const SchoolOS = {
     theme: localStorage.getItem('schoolos_theme') || 'light',
     activeTab: 'fees', // Default to Fees matching user's reference screenshot
-    feeSubTab: 'concessions',
     token: localStorage.getItem('schoolos_token') || '',
     user: JSON.parse(localStorage.getItem('schoolos_user')) || {
         id: 2,
@@ -20,9 +19,9 @@ const SchoolOS = {
     },
     tenant: JSON.parse(localStorage.getItem('schoolos_tenant')) || {
         id: 1,
-        name: 'Greenfield International Academy',
+        name: 'Greenfield International School',
         subdomain: 'greenfield',
-        plan: 'Enterprise Tier'
+        plan: 'Professional Plan'
     },
     students: [],
     teachers: [],
@@ -42,6 +41,22 @@ function applyTheme(theme) {
 function toggleTheme() {
     applyTheme(SchoolOS.theme === 'dark' ? 'light' : 'dark');
 }
+
+// User Profile Dropdown Toggle
+function toggleUserMenu(e) {
+    if (e) e.stopPropagation();
+    const menu = document.getElementById('user-dropdown-menu');
+    if (menu) menu.classList.toggle('show');
+}
+
+// Close dropdown on outside click
+document.addEventListener('click', (e) => {
+    const menu = document.getElementById('user-dropdown-menu');
+    const pill = document.querySelector('.user-profile-pill');
+    if (menu && !menu.contains(e.target) && !pill.contains(e.target)) {
+        menu.classList.remove('show');
+    }
+});
 
 // API Helper
 async function api(endpoint, method = 'GET', body = null) {
@@ -99,7 +114,124 @@ function hideModal() {
     if (overlay) overlay.style.display = 'none';
 }
 
-// Navigation Handler
+// -------------------------------------------------------------
+// AUTHENTICATION: LOGIN, LOGOUT & QUICK ROLE SWITCHER
+// -------------------------------------------------------------
+function openLoginModal() {
+    const html = `
+        <form onsubmit="handleLoginSubmit(event)">
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" id="login-email" class="form-control" required placeholder="e.g. admin@greenfield.edu" value="admin@greenfield.edu" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="login-password" class="form-control" required value="password123" />
+            </div>
+            <button type="submit" id="btn-login-submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                🔑 Sign In to AI SchoolOS
+            </button>
+        </form>
+
+        <div style="margin-top: 1.25rem; border-top: 1px solid var(--border-subtle); padding-top: 0.75rem;">
+            <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                ⚡ 1-Click Demo Accounts
+            </div>
+            <div class="demo-auth-grid">
+                <div class="demo-auth-card" onclick="quickLogin('admin@greenfield.edu', 'password123')">
+                    <div style="font-weight: 700; font-size: 0.8125rem;">🏫 School Admin</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">admin@greenfield.edu</div>
+                </div>
+                <div class="demo-auth-card" onclick="quickLogin('teacher@greenfield.edu', 'password123')">
+                    <div style="font-weight: 700; font-size: 0.8125rem;">👩‍🏫 Faculty Teacher</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">teacher@greenfield.edu</div>
+                </div>
+                <div class="demo-auth-card" onclick="quickLogin('student@greenfield.edu', 'password123')">
+                    <div style="font-weight: 700; font-size: 0.8125rem;">🎓 Student</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">student@greenfield.edu</div>
+                </div>
+                <div class="demo-auth-card" onclick="quickLogin('superadmin@schoolos.com', 'password123')">
+                    <div style="font-weight: 700; font-size: 0.8125rem;">👑 Super Admin</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">superadmin@schoolos.com</div>
+                </div>
+            </div>
+        </div>
+    `;
+    showModal('🔐 Sign In to School Management', html);
+}
+
+async function handleLoginSubmit(e) {
+    if (e) e.preventDefault();
+    const email = document.getElementById('login-email')?.value;
+    const password = document.getElementById('login-password')?.value;
+    const btn = document.getElementById('btn-login-submit');
+
+    if (btn) { btn.innerHTML = '⏳ Authenticating...'; btn.disabled = true; }
+
+    const res = await api('/auth/login', 'POST', { email, password });
+    if (btn) { btn.innerHTML = '🔑 Sign In to AI SchoolOS'; btn.disabled = false; }
+
+    if (res.success && res.data) {
+        SchoolOS.token = res.data.token;
+        SchoolOS.user = res.data.user;
+        SchoolOS.tenant = res.data.tenant || SchoolOS.tenant;
+
+        localStorage.setItem('schoolos_token', SchoolOS.token);
+        localStorage.setItem('schoolos_user', JSON.stringify(SchoolOS.user));
+        localStorage.setItem('schoolos_tenant', JSON.stringify(SchoolOS.tenant));
+
+        updateHeaderProfileUI();
+        hideModal();
+        toast(`Signed in successfully as ${SchoolOS.user.name}!`, 'success');
+        navigate(SchoolOS.activeTab);
+    } else {
+        toast(res.message || 'Invalid login credentials.', 'danger');
+    }
+}
+
+async function quickLogin(email, password) {
+    const emailInput = document.getElementById('login-email');
+    const pwdInput = document.getElementById('login-password');
+    if (emailInput) emailInput.value = email;
+    if (pwdInput) pwdInput.value = password;
+    await handleLoginSubmit(null);
+}
+
+async function handleLogout() {
+    const menu = document.getElementById('user-dropdown-menu');
+    if (menu) menu.classList.remove('show');
+
+    await api('/auth/logout', 'POST');
+
+    SchoolOS.token = '';
+    SchoolOS.user = { id: 0, name: 'Guest', email: '', role: 'guest', role_name: 'Guest' };
+    localStorage.removeItem('schoolos_token');
+    localStorage.removeItem('schoolos_user');
+
+    updateHeaderProfileUI();
+    toast('Logged out successfully.', 'info');
+    openLoginModal();
+}
+
+function updateHeaderProfileUI() {
+    const nameLabel = document.getElementById('header-user-name');
+    const avatar = document.getElementById('header-user-avatar');
+    const menuName = document.getElementById('menu-user-name');
+    const menuRole = document.getElementById('menu-user-role');
+    const menuSchool = document.getElementById('menu-school-name');
+
+    if (nameLabel) nameLabel.innerText = SchoolOS.user.name || 'Sign In';
+    if (menuName) menuName.innerText = SchoolOS.user.name || 'Guest User';
+    if (menuRole) menuRole.innerText = SchoolOS.user.role_name || SchoolOS.user.role || '';
+    if (menuSchool) menuSchool.innerText = SchoolOS.tenant?.name || 'AI SchoolOS';
+
+    if (avatar) {
+        const initials = (SchoolOS.user.name || 'SA').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        avatar.innerText = initials || 'SA';
+    }
+}
+
+// Global Router
 function navigate(tab) {
     SchoolOS.activeTab = tab;
 
@@ -249,7 +381,7 @@ async function renderDashboard(container) {
 }
 
 // -------------------------------------------------------------
-// 6. FEES & CONCESSIONS MODULE (Exact Match with Reference Screenshot)
+// 6. FEES & CONCESSIONS MODULE (Matching Screenshot)
 // -------------------------------------------------------------
 async function renderFees(container) {
     const mockConcessions = [
@@ -793,7 +925,7 @@ function renderCommunication(container) {
 }
 
 // -------------------------------------------------------------
-// 11. REPORTS MODULE (With Day Book & Financial Analytics)
+// 11. REPORTS MODULE
 // -------------------------------------------------------------
 function renderReports(container) {
     container.innerHTML = `
@@ -823,7 +955,7 @@ function renderReports(container) {
 }
 
 // -------------------------------------------------------------
-// 12. AI ASSISTANT & NATURAL LANGUAGE QUERY CHATBOT
+// 12. AI ASSISTANT & NATURAL LANGUAGE CHATBOT
 // -------------------------------------------------------------
 function renderAiAssistant(container) {
     container.innerHTML = `
@@ -845,7 +977,7 @@ function renderAiAssistant(container) {
                         <strong>AI Assistant:</strong> Hello! Ask me anything about student enrollment, fee collections, or lesson plans.
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
-                        <input type="text" id="ai-query-text" class="form-control" placeholder="e.g. How many students in Class 9? or Generate physics worksheet" value="How many students are enrolled in Class 9?" />
+                        <input type="text" id="ai-query-text" class="form-control" placeholder="e.g. How many students in Class 9?" value="How many students are enrolled in Class 9?" />
                         <button class="btn btn-primary" onclick="handleAiAssistantQuery()">Ask</button>
                     </div>
                     <div id="ai-query-response" style="margin-top: 0.5rem;"></div>
@@ -989,7 +1121,7 @@ function renderTestsExams(container) {
 }
 
 // -------------------------------------------------------------
-// 16. STUDY MATERIALS (Curriculum RAG & Documents)
+// 16. STUDY MATERIALS
 // -------------------------------------------------------------
 function renderStudyMaterials(container) {
     container.innerHTML = `
@@ -1025,8 +1157,29 @@ function triggerEmergencyModal() {
     `);
 }
 
+// Auto-Login / Verify Session on Boot
+async function initAuth() {
+    if (!SchoolOS.token) {
+        // Automatically perform demo login to establish token
+        const res = await api('/auth/login', 'POST', {
+            email: 'admin@greenfield.edu',
+            password: 'password123'
+        });
+        if (res.success && res.data) {
+            SchoolOS.token = res.data.token;
+            SchoolOS.user = res.data.user;
+            SchoolOS.tenant = res.data.tenant || SchoolOS.tenant;
+            localStorage.setItem('schoolos_token', SchoolOS.token);
+            localStorage.setItem('schoolos_user', JSON.stringify(SchoolOS.user));
+            localStorage.setItem('schoolos_tenant', JSON.stringify(SchoolOS.tenant));
+        }
+    }
+    updateHeaderProfileUI();
+}
+
 // Initial Boot
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     applyTheme(SchoolOS.theme);
+    await initAuth();
     navigate('fees'); // Open fees module matching user's reference screenshot
 });

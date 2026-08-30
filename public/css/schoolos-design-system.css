@@ -251,6 +251,10 @@ body {
     font-size: 0.85rem;
 }
 
+.user-profile-wrapper {
+    position: relative;
+}
+
 .user-profile-pill {
     display: flex;
     align-items: center;
@@ -261,6 +265,11 @@ body {
     border-radius: var(--radius-full);
     box-shadow: var(--shadow-sm);
     cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.user-profile-pill:hover {
+    border-color: var(--brand-orange);
 }
 
 .user-avatar-circle {
@@ -274,6 +283,78 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 240px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 0.75rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 100;
+    animation: slideUp 0.2s ease;
+}
+
+.user-dropdown-menu.show {
+    display: flex;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+}
+
+.dropdown-item:hover {
+    background: var(--bg-subtle);
+    color: var(--brand-orange);
+}
+
+.dropdown-item-danger:hover {
+    background: var(--danger-50);
+    color: var(--danger);
+}
+
+.demo-auth-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+.demo-auth-card {
+    padding: 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--bg-subtle);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+    font-family: inherit;
+}
+
+.demo-auth-card:hover {
+    border-color: var(--brand-orange);
+    background: var(--brand-orange-light);
 }
 
 /* Viewport Area */

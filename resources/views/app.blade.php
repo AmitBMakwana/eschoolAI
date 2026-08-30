@@ -111,11 +111,30 @@
                         <span style="position: absolute; top: 0; right: 0; width: 7px; height: 7px; background: #EF4444; border-radius: 50%;"></span>
                     </div>
 
-                    <!-- User Profile Pill -->
-                    <div class="user-profile-pill">
-                        <div class="user-avatar-circle">SA</div>
-                        <div style="font-size: 0.8125rem; font-weight: 700; color: var(--text-main); padding-right: 0.4rem;">
-                            Alflah (Principal)
+                    <!-- User Profile Wrapper with Dropdown Menu -->
+                    <div class="user-profile-wrapper">
+                        <div class="user-profile-pill" onclick="toggleUserMenu(event)">
+                            <div class="user-avatar-circle" id="header-user-avatar">SA</div>
+                            <div id="header-user-name" style="font-size: 0.8125rem; font-weight: 700; color: var(--text-main); padding-right: 0.3rem;">
+                                Alflah (Principal)
+                            </div>
+                            <span style="font-size: 0.7rem; color: var(--text-light);">▼</span>
+                        </div>
+
+                        <!-- Dropdown Popover -->
+                        <div class="user-dropdown-menu" id="user-dropdown-menu">
+                            <div style="padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--border-subtle); margin-bottom: 0.25rem;">
+                                <div id="menu-user-name" style="font-weight: 800; font-size: 0.875rem; color: var(--text-main);">Alflah</div>
+                                <div id="menu-user-role" style="font-size: 0.75rem; color: var(--brand-orange); font-weight: 600;">School Admin</div>
+                                <div id="menu-school-name" style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.15rem;">Greenfield International</div>
+                            </div>
+
+                            <button class="dropdown-item" onclick="openLoginModal()">
+                                <span>🔄</span> Switch Account / Sign In
+                            </button>
+                            <button class="dropdown-item dropdown-item-danger" onclick="handleLogout()">
+                                <span>🚪</span> Sign Out / Logout
+                            </button>
                         </div>
                     </div>
                 </div>
