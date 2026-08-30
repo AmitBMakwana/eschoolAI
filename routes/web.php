@@ -8,11 +8,13 @@ Route::get('/login', function () {
 });
 
 Route::get('/', function () {
-    return view('landing');
+    $plans = \App\Models\Plan::where('is_active', true)->orderBy('price_monthly')->get();
+    return view('landing', compact('plans'));
 });
 
 Route::get('/landing', function () {
-    return view('landing');
+    $plans = \App\Models\Plan::where('is_active', true)->orderBy('price_monthly')->get();
+    return view('landing', compact('plans'));
 });
 
 Route::get('/app', function () {
